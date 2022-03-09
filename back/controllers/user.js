@@ -8,6 +8,8 @@ const errorMessages = {
   WrongPassword: 'Wrong Password'
 }
 
+// GET A COLLECTION OF EXISTING EMAILS AND NICKNAMES
+// TO HYDRATE THE SIGNUP FORM
 exports.listEmailsAndNicknames = async (req, res) => {
   try {
     const emailsAndNicknames = await pool.query(/*sql*/`
@@ -25,6 +27,7 @@ exports.listEmailsAndNicknames = async (req, res) => {
   }
 }
 
+// GET ALL THE USERS
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await pool.query(/*sql*/`
@@ -37,6 +40,7 @@ exports.getAllUsers = async (req, res) => {
   }
 }
 
+// GET ONE USER
 exports.getUser = async (req, res) => {
   const { userId } = req.params;
   try {
@@ -51,6 +55,7 @@ exports.getUser = async (req, res) => {
   }
 }
 
+// SIGN UP A USER
 exports.signup = async (req, res) => {
   try {
     const hash = await bcrypt.hash(req.body.password, 10);
@@ -76,6 +81,7 @@ exports.signup = async (req, res) => {
   }
 };
 
+// LOGIN A USER
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -102,6 +108,7 @@ exports.login = async (req, res) => {
   }
 };
 
+// UPDATE A USER'S MOTTO
 exports.updateUserMotto = async (req, res) => {
   const { userId } = req.params;
   const { motto } = req.body;
@@ -117,6 +124,7 @@ exports.updateUserMotto = async (req, res) => {
   }
 }
 
+// UPDATE A USER'S PICTURE
 exports.updateUserPicture = async (req, res) => {
   const { userId } = req.params;
   const url = req.protocol + '://' + req.get('host');
@@ -143,6 +151,7 @@ exports.updateUserPicture = async (req, res) => {
   }
 }
 
+// ADMIN CAN UPADTE A USER'S ROLE
 exports.updateUserRole = async (req, res) => {
   const { userId } = req.params;
   const { roleId } = req.body;
@@ -158,6 +167,7 @@ exports.updateUserRole = async (req, res) => {
   }
 }
 
+// ADMIN CAN DELETE A USER
 exports.deleteUser = async (req, res) => {
   const { userId } = req.params;
   try {

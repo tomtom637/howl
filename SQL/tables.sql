@@ -1,0 +1,49 @@
+CREATE EXTENSION citext;
+
+CREATE TABLE categories (
+	id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+	"name" VARCHAR(255) NOT NULL UNIQUE,
+	"description" TEXT NOT NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE roles (
+	id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+	"name" varchar(255) NOT NULL UNIQUE,
+	"description" TEXT NOT NULL,
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE users (
+	id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+	role_id INT DEFAULT 1,
+	email CITEXT NOT NULL UNIQUE,
+	password_hash VARCHAR(60) NOT NULL,
+	nickname VARCHAR(150) NOT NULL UNIQUE,
+	motto VARCHAR(150) DEFAULT NULL,
+	picture VARCHAR(150) DEFAULT NULL,
+	register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(id),
+  FOREIGN KEY(role_id) REFERENCES roles(id)
+);
+
+CREATE TABLE posts (
+	id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+	user_id INT NOT NULL,
+	category_id INT NOT NULL,
+	parent_id INT DEFAULT NULL,
+	"content" text NOT NULL,
+	gif_address VARCHAR(150) DEFAULT NULL,
+	creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(id),
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE read_posts (
+	user_id INT NOT NULL,
+	post_id INT NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(post_id) REFERENCES posts(id),
+  UNIQUE (user_id, post_id)
+);

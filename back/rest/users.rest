@@ -1,0 +1,46 @@
+# Authorization: token <token>
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY0NjY4MTE2Nn0.qsaOkQq2KYAp84cEykVM3LcTiMkJddgy54tVLpOmFKY
+
+
+###
+# LIST EMAILS AND NICKNAMES
+GET http://localhost:3000/api/auth/emails-and-nicknames HTTP/1.1
+
+
+###
+# GET A USER
+GET http://localhost:3000/api/auth/1 HTTP/1.1
+
+
+###
+# REGISTER NEW USER
+POST http://localhost:3000/api/auth/signup HTTP/1.1
+content-type: application/json
+
+{
+  "email": "newuser@newuser.com",
+  "nickname": "newuser",
+  "password": "123"
+}
+
+
+###
+# LOGIN THE USER
+POST http://localhost:3000/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "newuser@newuser.com",
+  "password": "123"
+}
+
+
+###
+# LOGIN THE USER WITH ERROR
+POST http://localhost:3000/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "colleaguez@happy.com",
+  "password": "1234"
+}

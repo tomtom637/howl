@@ -2,6 +2,8 @@ const pool = require('../helpers/pool');
 const getUserTokenInfos = require('../helpers/getUserTokenInfos');
 
 // GET THE 20 MOST RECENT POSTS FROM OFFSET
+// BRINGING ITS REPLIES IF ANY
+// ALSO CHECKING IF THE USER HAS READ THEM
 exports.getTwentyPostsAndTheirReplies = async (req, res) => {
   const userID = getUserTokenInfos(req).userId;
   let result;
@@ -74,7 +76,8 @@ exports.addToReadPosts = async (req, res) => {
 
 // ADD A POST
 exports.addPost = async (req, res) => {
-  const { userId, categoryId, content, gifAddress } = req.body.post;
+  const { userId } = getUserTokenInfos(req);
+  const { categoryId, content, gifAddress } = req.body.post;
   try {
     await pool.query(/*sql*/`
       INSERT INTO posts (
@@ -98,7 +101,8 @@ exports.addPost = async (req, res) => {
 
 // ADD A REPLY
 exports.addReply = async (req, res) => {
-  const { userId, categoryId, content, gifAddress } = req.body.post;
+  const { userId } = getUserTokenInfos(req);
+  const { categoryId, content, gifAddress } = req.body.post;
   const { parentId } = req.params;
   try {
     await pool.query(/*sql*/`
@@ -124,7 +128,7 @@ exports.addReply = async (req, res) => {
 }
 
 // DELETE A REPLY OR A POST WITH ITS REPLIES
-// ALSO DELETING ANY REFERENCE TO THE POST IN THE READ-POSTS TABLE
+// ALSO DELETE ANY REFERENCE TO THE POST IN THE READ-POSTS TABLE
 exports.deletePost = async (req, res) => {
   const { postId } = req.params;
   // if the user is neither the author nor an admin, he can't delete the post

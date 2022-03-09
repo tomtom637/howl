@@ -3,34 +3,70 @@ const getUserTokenInfos = require('../helpers/getUserTokenInfos');
 
 // GET THE 20 MOST RECENT POSTS FROM OFFSET
 exports.getTwentyPostsAndTheirReplies = async (req, res) => {
+  const userID = getUserTokenInfos(req).userId;
   let result;
   try {
     const twentyPosts = await pool.query(/*sql*/`
-    SELECT p.id AS id, to_char(p.creation_date, 'MM.DD.yyyy') AS "date", u.nickname AS user, p.content AS "message", c.name AS from_category
-    FROM users u
-    JOIN posts p ON u.id = p.user_id
-    JOIN categories c ON c.id = p.category_id
-    WHERE p.parent_id IS NULL
-    ORDER BY p.creation_date desc
-    LIMIT 20
-    OFFSET ${req.params.offset};    
+
+      SELECT p.id AS id,
+      to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
+      u.nickname AS user,
+      p.content AS "message",
+      c.name AS from_category
+      FROM users u
+      JOIN posts p ON u.id = p.user_id
+      JOIN categories c ON c.id = p.category_id
+      WHERE p.parent_id IS NULL
+      ORDER BY p.creation_date desc
+      LIMIT 20
+      OFFSET ${req.params.offset};
     `);
+
     const twentyPostsIds = twentyPosts.rows.map(post => post.id);
     result = twentyPosts.rows;
     
     const repliesPromises = twentyPostsIds.map(async (post, i) => {
       const replies = await pool.query(/*sql*/`
-        SELECT p.id AS id, to_char(p.creation_date, 'MM.DD.yyyy') AS "date", u.nickname AS user, p.content AS "message", c.name AS from_category
+
+        SELECT p.id AS id,
+        to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
+        u.nickname AS user,
+        p.content AS "message",
+        c.name AS from_category,
+        rp.user_id AS "read"        
         FROM users u
         JOIN posts p ON u.id = p.user_id
         JOIN categories c ON c.id = p.category_id
+        LEFT JOIN read_posts rp ON rp.post_id = p.id AND rp.user_id = ${userID}
         WHERE p.parent_id = ${post}
         ORDER BY p.creation_date ASC;
       `);
+
       result[i].replies = replies.rows;
     });
     await Promise.all(repliesPromises);
     res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+}
+
+// ADD TO READ-POSTS WHEN A POST IS READ
+exports.addToReadPosts = async (req, res) => {
+  const { userId } = getUserTokenInfos(req);
+  const { postId } = req.params;
+  try {
+    await pool.query(/*sql*/`
+      INSERT INTO read_posts (
+        user_id,
+        post_id
+      )
+      VALUES (
+        ${userId},
+        ${postId}
+      );
+    `);
+    res.status(201).json({ message: 'Post added to read posts successfully!' });
   } catch (error) {
     res.status(400).json({ error });
   }
@@ -88,6 +124,7 @@ exports.addReply = async (req, res) => {
 }
 
 // DELETE A REPLY OR A POST WITH ITS REPLIES
+// ALSO DELETING ANY REFERENCE TO THE POST IN THE READ-POSTS TABLE
 exports.deletePost = async (req, res) => {
   const { postId } = req.params;
   // if the user is neither the author nor an admin, he can't delete the post
@@ -114,7 +151,13 @@ exports.deletePost = async (req, res) => {
         WHERE id = ${postToDelete};
       `);
     });
-    await Promise.all(postsToDeletePromises);
+    const readPostsToDeletePromises = [...repliesIds, postId].map(async postToDelete => {
+      await pool.query(/*sql*/`
+        DELETE FROM read_posts
+        WHERE post_id = ${postToDelete};
+      `);  
+    });
+    await Promise.all(postsToDeletePromises, readPostsToDeletePromises);
     res.status(200).json({ message: 'Post(s) deleted successfully!' });
   } catch (error) {
     res.status(400).json({ error });

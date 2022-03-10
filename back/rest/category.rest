@@ -1,0 +1,34 @@
+###
+# FETCH ALL CATEGORIES
+GET http://localhost:3000/api/categories/ HTTP/1.1
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTY0Njg2MDk3OH0.dCPi8U2kV8hOolAxFgQv5mVrZ_qN6rL0iy_EUDZmhhg
+
+
+###
+# FETCH THE MOST RECENT 20 POSTS WITH PARAMS AS OFFSET FROM A CATEGORY
+GET http://localhost:3000/api/categories/3/0 HTTP/1.1
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTY0Njg2MDk3OH0.dCPi8U2kV8hOolAxFgQv5mVrZ_qN6rL0iy_EUDZmhhg
+
+
+###
+# POST A NEW CATEGORY
+POST http://localhost:3000/api/categories/ HTTP/1.1
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDY5MTU0ODB9.w81AQ-X0apTFvvRKeVMgxMxjhwjzGB97cceo_a5Rpzg
+Content-Type: application/json
+
+{
+  "name": "New Category",
+  "description": "New Category Description"
+}
+
+
+###
+# UPDATE A CATEGORY NAME
+PUT http://localhost:3000/api/categories/name/2 HTTP/1.1
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDY5MTU0ODB9.w81AQ-X0apTFvvRKeVMgxMxjhwjzGB97cceo_a5Rpzg
+Content-Type: application/json
+
+{
+  "name": "Work adventures",
+  "description": "Let''s talk about work adventures"
+}

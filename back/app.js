@@ -7,9 +7,9 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
+const categoryRoutes = require('./routes/category');
 const postRoutes = require('./routes/post');
 const authRoutes = require('./routes/auth');
-//const sauceRoutes = require('./routes/sauce');
 
 // HIDES CERTAIN INFORMATIONS IN THE RESPONSE HEADERS
 app.use(helmet());
@@ -35,6 +35,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //ROUTES
+app.use('/api/categories', categoryRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/auth', authRoutes);
 

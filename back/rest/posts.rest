@@ -4,7 +4,13 @@
 
 # FETCH THE MOST RECENT 20 POSTS WITH PARAMS AS OFFSET 
 GET http://localhost:3000/api/posts/0 HTTP/1.1
-Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDY3MzIzNzh9.8LaKMIViOBkoOLjhh4tYIHyyeScstA9iB537RNrDKaA
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTY0Njg2MDk3OH0.dCPi8U2kV8hOolAxFgQv5mVrZ_qN6rL0iy_EUDZmhhg
+
+
+###
+# ADD A READ-POST TO THE USER'S READ-POSTS
+POST http://localhost:3000/api/posts/read/37 HTTP/1.1
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTY0Njg2MDk3OH0.dCPi8U2kV8hOolAxFgQv5mVrZ_qN6rL0iy_EUDZmhhg
 
 
 ###
@@ -15,7 +21,6 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdC
 
 {
   "post": {
-    "userId": 1,
     "categoryId": 3,
     "content": "What games are you guys playing online"
   }
@@ -24,22 +29,21 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdC
 
 ###
 # PUBLISH A REPLY TO A POST
-POST http://localhost:3000/api/posts/19 HTTP/1.1
+POST http://localhost:3000/api/posts/36 HTTP/1.1
 content-type: application/json
-Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY0NjY4MTE2Nn0.qsaOkQq2KYAp84cEykVM3LcTiMkJddgy54tVLpOmFKY
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTY0Njg2MDk3OH0.dCPi8U2kV8hOolAxFgQv5mVrZ_qN6rL0iy_EUDZmhhg
 
 {
   "post": {
-    "userId": 1,
     "categoryId": 3,
-    "content": "I wish I too could sail the seas"
+    "content": "I like to play with friends in Valheim"
   }
 }
 
 
 ###
 # DELETE A REPLY OR A POST ALONG WITH ALL THE REPLIES IT MAY HAVE
-DELETE http://localhost:3000/api/posts/22 HTTP/1.1
+DELETE http://localhost:3000/api/posts/34 HTTP/1.1
 Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDY3MzIzNzh9.8LaKMIViOBkoOLjhh4tYIHyyeScstA9iB537RNrDKaA
 
 

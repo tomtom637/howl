@@ -150,12 +150,13 @@ exports.deletePost = async (req, res) => {
     `);
     const repliesIds = replies.rows.map(reply => reply.id);
     // first delete the reference(s) to the post(s) in the read-posts table
-    [...repliesIds, postId].map(async postToDelete => {
+    const readPostsPromises = [...repliesIds, postId].map(async postToDelete => {
       await pool.query(/*sql*/`
         DELETE FROM read_posts
         WHERE post_id = ${postToDelete};
       `);  
     });
+    await Promise.all(readPostsPromises);
     // then delete the post(s)
     [...repliesIds, postId].map(async postToDelete => {
       await pool.query(/*sql*/`

@@ -21,4 +21,7 @@ router.put('/name/:categoryId', admin, userCtrl.updateCategoryNameAndDesc);
 // UPDATE A CATEGORY'S PICTURE
 router.put('/picture/:categoryId', admin, multer, userCtrl.updateCategoryPicture);
 
+// DELETE A CATEGORY AND ITS ASSOCIATED POSTS
+router.delete('/:categoryId', admin, userCtrl.deleteCategory);
+
 module.exports = router;

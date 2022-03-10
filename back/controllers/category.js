@@ -114,7 +114,7 @@ exports.updateCategoryPicture = async (req, res) => {
     const thePicture = currentPicture.rows[0].picture;
     if (thePicture) {
       const filename = thePicture.split('/images/')[1];
-      fs.unlink('images/' + filename, () => true);
+      fs.unlink('back/images/' + filename, () => true);
     }
     await pool.query(/*sql*/`
       UPDATE categories
@@ -122,6 +122,47 @@ exports.updateCategoryPicture = async (req, res) => {
       WHERE id = ${categoryId};
     `);
     res.status(200).json({ message: 'Category picture updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}
+
+// DELETE A CATEGORY, ALL ITS ASSOCIATED POSTS
+// AND READ_POSTS RECORDS ASSOCIATED WITH THEM
+exports.deleteCategory = async (req, res) => {
+  const { categoryId } = req.params;
+  try {
+    const category = await pool.query(/*sql*/`
+      SELECT picture
+      FROM categories
+      WHERE id = ${categoryId};
+    `);
+    const thePicture = category.rows[0].picture;
+    if (thePicture) {
+      const filename = thePicture.split('/images/')[1];
+      fs.unlink('back/images/' + filename, () => true);
+    }
+    // we first delete from read_posts the records associated with the posts
+    const readPostsPromise = await pool.query(/*sql*/`
+      DELETE FROM read_posts
+      WHERE post_id IN (
+        SELECT id FROM posts
+        WHERE category_id = ${categoryId}
+      );
+    `);
+    for(p of [readPostsPromise]) { await p; }
+    // then we delete the posts
+    const postsPromise = await pool.query(/*sql*/`
+      DELETE FROM posts
+      WHERE category_id = ${categoryId};
+    `);
+    for(p of [postsPromise]) { await p; }
+    // then we delete the category
+    await pool.query(/*sql*/`
+      DELETE FROM categories
+      WHERE id = ${categoryId};
+    `);
+    res.status(200).json({ message: 'Category deleted successfully' });
   } catch (error) {
     res.status(500).json({ error });
   }

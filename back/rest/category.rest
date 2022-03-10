@@ -32,3 +32,9 @@ Content-Type: application/json
   "name": "Work adventures",
   "description": "Let''s talk about work adventures"
 }
+
+
+###
+# DELETE A CATEGORY
+DELETE http://localhost:3000/api/categories/6 HTTP/1.1
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDY5MTU0ODB9.w81AQ-X0apTFvvRKeVMgxMxjhwjzGB97cceo_a5Rpzg

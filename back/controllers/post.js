@@ -149,19 +149,20 @@ exports.deletePost = async (req, res) => {
       WHERE p.parent_id = ${postId};
     `);
     const repliesIds = replies.rows.map(reply => reply.id);
-    const postsToDeletePromises = [...repliesIds, postId].map(async postToDelete => {
-      await pool.query(/*sql*/`
-        DELETE FROM posts
-        WHERE id = ${postToDelete};
-      `);
-    });
-    const readPostsToDeletePromises = [...repliesIds, postId].map(async postToDelete => {
+    // first delete the reference(s) to the post(s) in the read-posts table
+    [...repliesIds, postId].map(async postToDelete => {
       await pool.query(/*sql*/`
         DELETE FROM read_posts
         WHERE post_id = ${postToDelete};
       `);  
     });
-    await Promise.all(postsToDeletePromises, readPostsToDeletePromises);
+    // then delete the post(s)
+    [...repliesIds, postId].map(async postToDelete => {
+      await pool.query(/*sql*/`
+        DELETE FROM posts
+        WHERE id = ${postToDelete};
+      `);
+    });
     res.status(200).json({ message: 'Post(s) deleted successfully!' });
   } catch (error) {
     res.status(400).json({ error });

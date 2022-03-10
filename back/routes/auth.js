@@ -32,6 +32,6 @@ router.put('/picture/:userId', oneself, multer, userCtrl.updateUserPicture);
 router.put('/role/:userId', admin, userCtrl.updateUserRole);
 
 // DELETE A USER
-router.delete('/:userId', admin, multer, userCtrl.deleteUser);
+router.delete('/:userId', admin, userCtrl.deleteUser);
 
 module.exports = router;

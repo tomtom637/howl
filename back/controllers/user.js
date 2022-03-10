@@ -138,7 +138,7 @@ exports.updateUserPicture = async (req, res) => {
     const thePicture = currentPicture.rows[0].picture;
     if (thePicture) {
       const filename = thePicture.split('/images/')[1];
-      fs.unlink('images/' + filename, () => true);
+      fs.unlink('back/images/' + filename, () => true);
     }
     await pool.query(/*sql*/`
       UPDATE users
@@ -179,7 +179,7 @@ exports.deleteUser = async (req, res) => {
     const thePicture = currentPicture.rows[0].picture;
     if (thePicture) {
       const filename = thePicture.split('/images/')[1];
-      fs.unlink('images/' + filename, () => true);
+      fs.unlink('back/images/' + filename, () => true);
     }
     await pool.query(/*sql*/`
       DELETE FROM users

@@ -9,7 +9,7 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZX
 
 ###
 # ADD A READ-POST TO THE USER'S READ-POSTS
-POST http://localhost:3000/api/posts/read/39 HTTP/1.1
+POST http://localhost:3000/api/posts/read/45 HTTP/1.1
 Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTY0Njg2MDk3OH0.dCPi8U2kV8hOolAxFgQv5mVrZ_qN6rL0iy_EUDZmhhg
 
 
@@ -21,22 +21,22 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdC
 
 {
   "post": {
-    "categoryId": 3,
-    "content": "What games are you guys playing online"
+    "categoryId": 6,
+    "content": "It''s sad to think about being deleted soon. I hope you''re happy with your life."
   }
 }
 
 
 ###
 # PUBLISH A REPLY TO A POST
-POST http://localhost:3000/api/posts/38 HTTP/1.1
+POST http://localhost:3000/api/posts/44 HTTP/1.1
 content-type: application/json
 Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTY0Njg2MDk3OH0.dCPi8U2kV8hOolAxFgQv5mVrZ_qN6rL0iy_EUDZmhhg
 
 {
   "post": {
-    "categoryId": 3,
-    "content": "I like to play with friends in Valheim"
+    "categoryId": 6,
+    "content": "Don''t worry, I will be deleted along with you."
   }
 }
 

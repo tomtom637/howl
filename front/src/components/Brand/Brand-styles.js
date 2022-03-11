@@ -1,6 +1,5 @@
-import '../icons.css';
 import styled from 'styled-components';
-import { device } from '../device';
+import { device } from '../../device';
 
 const BrandStyled = styled.div`
   font-size: 25px;
@@ -23,11 +22,4 @@ const BrandStyled = styled.div`
   }
 `;
 
-export default function Brand({ toggledMenu }) {
-  return (
-    <BrandStyled toggledMenu={toggledMenu} className="brand-container">
-      <i className="icon-logo"></i>
-      <i className="icon-brand"></i>
-    </BrandStyled>
-  );
-}
+export default BrandStyled;

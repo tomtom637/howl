@@ -1,6 +1,5 @@
-import Burger from '../components/Burger';
-import Nav from '../components/Nav';
-import styled from 'styled-components';
+import Burger from '../components/Burger/Burger';
+import Nav from '../components/Nav/Nav';
 
 export default function Menu({toggledMenu, setToggledMenu}) {
 

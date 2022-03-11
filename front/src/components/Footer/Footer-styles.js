@@ -14,10 +14,4 @@ const FooterStyled = styled.footer`
     }
 `;
 
-export default function Footer() {
-    return (
-        <FooterStyled>
-            <span>Howl</span> by CONNECT-E            
-        </FooterStyled>
-    );
-}
+export default FooterStyled;

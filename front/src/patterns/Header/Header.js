@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Brand from '../../components/Brand/Brand';
 import Menu from '../Menu/Menu';
 import HeaderStyled from './Header-styles';
+import { device, size } from '../../device';
 
 export default function Header() {
   const [toggledMenu, setToggledMenu] = useState(false);

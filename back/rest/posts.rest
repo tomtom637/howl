@@ -17,11 +17,11 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInVzZX
 # PUBLISH A NEW POST
 POST http://localhost:3000/api/posts/ HTTP/1.1
 content-type: application/json
-Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY0NjY4MTE2Nn0.qsaOkQq2KYAp84cEykVM3LcTiMkJddgy54tVLpOmFKY
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksInVzZXJSb2xlIjoidXNlciIsImlhdCI6MTY0Njk0NDc4NX0.n_3J15dumE71j8FG4Iwm-KpBTwK8FkXou26j8jaFVe0
 
 {
   "post": {
-    "categoryId": 6,
+    "categoryId": 1,
     "content": "It''s sad to think about being deleted soon. I hope you''re happy with your life."
   }
 }

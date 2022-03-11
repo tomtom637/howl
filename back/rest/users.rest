@@ -18,8 +18,8 @@ POST http://localhost:3000/api/auth/signup HTTP/1.1
 content-type: application/json
 
 {
-  "email": "newuser@newuser.com",
-  "nickname": "newuser",
+  "email": "test@test.com",
+  "nickname": "test",
   "password": "123"
 }
 
@@ -44,3 +44,9 @@ content-type: application/json
   "email": "colleaguez@happy.com",
   "password": "1234"
 }
+
+
+###
+# DELETE USER
+DELETE http://localhost:3000/api/auth/1 HTTP/1.1
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDcwMDMwNDl9.gq8GuWjR3oK1UVZJCRrFW8-RgwWOL1i5OtrsRWVh_3s

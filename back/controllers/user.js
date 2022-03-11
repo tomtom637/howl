@@ -181,6 +181,32 @@ exports.deleteUser = async (req, res) => {
       const filename = thePicture.split('/images/')[1];
       fs.unlink('back/images/' + filename, () => true);
     }
+    // we delete all of the read_posts
+    const readPosts = await pool.query(/*sql*/`
+      DELETE FROM read_posts
+      WHERE post_id IN (
+        SELECT id FROM posts
+        WHERE user_id = ${userId}
+        OR parent_id IN (
+          SELECT id
+          FROM posts
+          WHERE user_id = ${userId}
+        )
+      )
+    `);
+    await Promise.all([readPosts]);
+    // we delete all of the posts
+    const posts = await pool.query(/*sql*/`
+      DELETE FROM posts
+      WHERE user_id = ${userId}
+      OR parent_id IN (
+        SELECT id
+        FROM posts
+        WHERE user_id = ${userId}
+      );
+    `);
+    await Promise.all([posts]);
+    // we delete the user
     await pool.query(/*sql*/`
       DELETE FROM users
       WHERE id = ${userId};

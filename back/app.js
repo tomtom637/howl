@@ -15,7 +15,7 @@ const authRoutes = require('./routes/auth');
 app.use(helmet());
 
 // CORS
-const whitelist = ['http://localhost:8081', 'http://127.0.0.1:8081'];
+const whitelist = ['http://localhost:3001', 'http://127.0.0.1:3001', 'http://localhost:3002', 'http://127.0.0.1:3002'];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {

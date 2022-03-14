@@ -13,13 +13,23 @@ GET http://localhost:3000/api/auth/1 HTTP/1.1
 
 
 ###
+# GET USER INFOS FROM TOKEN
+POST http://localhost:3000/api/auth/own HTTP/1.1
+content-type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDcyNjQzODR9.nbPPsIvJ0tFEwI3z3PFHs6ReqZ0C4R-4EEcP29GEgY0"
+}
+
+
+###
 # REGISTER NEW USER
 POST http://localhost:3000/api/auth/signup HTTP/1.1
 content-type: application/json
 
 {
-  "email": "test@test.com",
-  "nickname": "test",
+  "email": "test2@test2.com",
+  "nickname": "test2",
   "password": "123"
 }
 

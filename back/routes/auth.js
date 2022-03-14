@@ -16,6 +16,9 @@ router.get('/', admin, userCtrl.getAllUsers);
 // GET A USER
 router.get('/:userId', auth, userCtrl.getUser);
 
+// GET USER INFOS FROM TOKEN
+router.post('/own', userCtrl.getUserFromToken);
+
 // REGISTER A NEW USER
 router.post('/signup', userCtrl.signup);
 

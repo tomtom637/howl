@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../helpers/pool');
 const fs = require('fs');
+const getUserTokenInfos = require('../helpers/getUserTokenInfos');
 
 const errorMessages = {
   EmailNotFound: 'Email not found',
@@ -55,6 +56,30 @@ exports.getUser = async (req, res) => {
   }
 }
 
+// GET USER INFOS FROM TOKEN
+exports.getUserFromToken = async (req, res) => {
+  const { token } = req.body;
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const { userId, userRole } = decodedToken;
+  try {
+    const user = await pool.query(/*sql*/`
+      SELECT id, nickname, email, motto, picture
+      FROM users
+      WHERE id = ${userId};
+    `);
+    res.status(200).json({ 
+      user_id: user.rows[0].id,
+      user_nickname: user.rows[0].nickname,
+      user_email: user.rows[0].email,
+      user_motto: user.rows[0].motto,
+      user_picture: user.rows[0].picture,
+      user_role: userRole
+    });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}
+
 // SIGN UP A USER
 exports.signup = async (req, res) => {
   try {
@@ -88,7 +113,10 @@ exports.login = async (req, res) => {
     const user = await pool.query(/*sql*/`
       SELECT u.id AS user_id,
         u.email AS user_email,
+        u.nickname AS user_nickname,
+        u.picture AS user_picture,
         u.password_hash AS user_password,
+        u.motto AS user_motto,
         r."name" AS user_role
       FROM users u
       JOIN roles r ON u.role_id = r.id
@@ -102,7 +130,15 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: errorMessages.WrongPassword });
     }
     const token = jwt.sign({ userId: user.rows[0].user_id, userRole: user.rows[0].user_role }, process.env.JWT_SECRET);
-    res.status(200).json({ token });
+    res.status(200).json({ 
+      token,
+      userId: user.rows[0].user_id,
+      userRole: user.rows[0].user_role,
+      userEmail: user.rows[0].user_email,
+      userNickname: user.rows[0].user_nickname,
+      userPicture: user.rows[0].user_picture,
+      userMotto: user.rows[0].user_motto
+    });
   } catch (error) {
     res.status(500).json({ error });
   }

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Form from '../Form/Form';
 import NavStyled from './Nav-styles';
 
 export default function Nav({ toggledMenu, setToggledMenu }) {
@@ -38,7 +37,6 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
               <i className="icon-fingerprint"></i>
               LOGIN
               </div>
-              <Form />
             </li>
             <li className="nav-item">
               <div className="nav-title">

@@ -10,6 +10,9 @@ const Variable = /*css*/`
     --light-grey: #f5f5f5;
     --grey: #e4e4e4;
     --dark-grey: #2e2e2e;
+    --red: #d35;
+    --box-shadow: 3px 6px 5px rgba(0, 0, 0, 0.25);
+    --border-radius: 5px;
   }
 `;
  

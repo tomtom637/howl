@@ -6,8 +6,10 @@ const getUserTokenInfos = require('../helpers/getUserTokenInfos');
 
 const errorMessages = {
   EmailNotFound: 'Email not found',
-  WrongPassword: 'Wrong Password'
-}
+  WrongPassword: 'Wrong Password',
+  EmailAlreadyExists: 'Email already exists',
+  NicknameAlreadyExists: 'Nickname already exists'
+};
 
 // GET A COLLECTION OF EXISTING EMAILS AND NICKNAMES
 // TO HYDRATE THE SIGNUP FORM
@@ -26,7 +28,7 @@ exports.listEmailsAndNicknames = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // GET ALL THE USERS
 exports.getAllUsers = async (req, res) => {
@@ -39,7 +41,7 @@ exports.getAllUsers = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // GET ONE USER
 exports.getUser = async (req, res) => {
@@ -54,7 +56,7 @@ exports.getUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // GET USER INFOS FROM TOKEN
 exports.getUserFromToken = async (req, res) => {
@@ -67,36 +69,52 @@ exports.getUserFromToken = async (req, res) => {
       FROM users
       WHERE id = ${userId};
     `);
-    res.status(200).json({ 
-      user_id: user.rows[0].id,
-      user_nickname: user.rows[0].nickname,
-      user_email: user.rows[0].email,
-      user_motto: user.rows[0].motto,
-      user_picture: user.rows[0].picture,
-      user_role: userRole
+    res.status(200).json({
+      id: user.rows[0].id,
+      nickname: user.rows[0].nickname,
+      email: user.rows[0].email,
+      motto: user.rows[0].motto,
+      picture: user.rows[0].picture,
+      role: userRole
     });
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // SIGN UP A USER
 exports.signup = async (req, res) => {
   try {
+    const { email, nickname } = req.body;
+    const emailsAndNicknames = await pool.query(/*sql*/`
+      SELECT email, nickname
+      FROM users;
+    `);
+
+    const errors = [];
+    emailsAndNicknames.rows.forEach(row => {
+      if (row.email === email) {
+        errors.push({ type: 'email', errorMessage: errorMessages.EmailAlreadyExists });
+      }
+      if (row.nickname.toLowerCase() === nickname.toLowerCase()) {
+        errors.push({ type: 'nickname', errorMessage: errorMessages.NicknameAlreadyExists });
+      }
+    });
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
+    }
+
     const hash = await bcrypt.hash(req.body.password, 10);
-    const { email, nickname, motto } = req.body;
     const password = hash;
     await pool.query(/*sql*/`
       INSERT INTO users (
         email,
         nickname,
-        ${motto ? 'motto, ' : ''}
         password_hash
       )
       VALUES (
         '${email}',
-        '${nickname}',
-        ${motto ? `'${motto}', ` : ''}      
+        '${nickname.toLowerCase()}',     
         '${password}'
       );
     `);
@@ -108,38 +126,44 @@ exports.signup = async (req, res) => {
 
 // LOGIN A USER
 exports.login = async (req, res) => {
+  const errors = [];
+  let match = false;
   try {
     const { email, password } = req.body;
     const user = await pool.query(/*sql*/`
-      SELECT u.id AS user_id,
-        u.email AS user_email,
-        u.nickname AS user_nickname,
-        u.picture AS user_picture,
-        u.password_hash AS user_password,
-        u.motto AS user_motto,
-        r."name" AS user_role
+      SELECT u.id AS id,
+        u.email AS email,
+        u.nickname AS nickname,
+        u.picture AS picture,
+        u.password_hash AS "password",
+        u.motto AS motto,
+        r."name" AS "role"
       FROM users u
       JOIN roles r ON u.role_id = r.id
       WHERE u.email = '${email}';
     `);
     if (!user.rows[0]) {
-      return res.status(401).json({ error: errorMessages.EmailNotFound });
+      errors.push({ type: 'email', errorMessage: errorMessages.EmailNotFound });
     }
-    const isMatch = await bcrypt.compare(password, user.rows[0].user_password);
+    const isMatch = await bcrypt.compare(password, user.rows[0].password);
     if (!isMatch) {
-      return res.status(401).json({ error: errorMessages.WrongPassword });
+      errors.push({ type: 'password', errorMessage: errorMessages.WrongPassword });
+      return res.status(400).json({ errors });
     }
-    const token = jwt.sign({ userId: user.rows[0].user_id, userRole: user.rows[0].user_role }, process.env.JWT_SECRET);
-    res.status(200).json({ 
+    const token = jwt.sign({ userId: user.rows[0].id, userRole: user.rows[0].role }, process.env.JWT_SECRET);
+    res.status(200).json({
       token,
-      userId: user.rows[0].user_id,
-      userRole: user.rows[0].user_role,
-      userEmail: user.rows[0].user_email,
-      userNickname: user.rows[0].user_nickname,
-      userPicture: user.rows[0].user_picture,
-      userMotto: user.rows[0].user_motto
+      id: user.rows[0].id,
+      nickname: user.rows[0].nickname,
+      email: user.rows[0].email,
+      motto: user.rows[0].motto,
+      picture: user.rows[0].picture,
+      role: user.rows[0].role
     });
-  } catch (error) {
+  } catch(error) {
+    if(errors.length > 0) {
+      return res.status(401).json({ errors });
+    }
     res.status(500).json({ error });
   }
 };
@@ -158,7 +182,7 @@ exports.updateUserMotto = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // UPDATE A USER'S PICTURE
 exports.updateUserPicture = async (req, res) => {
@@ -185,7 +209,7 @@ exports.updateUserPicture = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // ADMIN CAN UPADTE A USER'S ROLE
 exports.updateUserRole = async (req, res) => {
@@ -201,7 +225,7 @@ exports.updateUserRole = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // ADMIN CAN DELETE A USER
 exports.deleteUser = async (req, res) => {
@@ -251,4 +275,4 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};

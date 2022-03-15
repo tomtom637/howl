@@ -28,9 +28,9 @@ POST http://localhost:3000/api/auth/signup HTTP/1.1
 content-type: application/json
 
 {
-  "email": "test2@test2.com",
-  "nickname": "test2",
-  "password": "123"
+  "email": "dodo@dodo.com",
+  "nickname": "dodo",
+  "password": "dodo"
 }
 
 

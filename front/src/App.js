@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { atom, useAtom } from 'jotai';
 import { tokenAtom, userInfosAtom, formAtom, loggedAtom } from './store';
@@ -9,6 +10,7 @@ import GlobalStyles from './global-styles/GlobalStyles';
 
 import Header from './patterns/Header/Header';
 import Hero from './patterns/Hero/Hero';
+import About from './components/About/About';
 import { LoginForm, SignupForm } from './components/Forms/Forms';
 import Footer from './components/Footer/Footer';
 
@@ -28,21 +30,32 @@ const App = () => {
 
   const { nickname, email, motto, picture, role } = userInfos ?? {};
   return (
-    <>
-      <GlobalStyles />
-      <div className="site-wrapper">
-        <div className='main-content-wrapper'>
+    <Router>
+      <>
+        <GlobalStyles />
+        <div className="site-wrapper">
           <Header />
-          <Hero />
-          {!logged && (
-            formType === 'login'
-              ? <LoginForm />
-              : <SignupForm />
-          )}
+          <div className='main-content-wrapper'>
+            <Switch>
+              <Route exact path="/">
+                <>
+                  <Hero />
+                  {!logged && (
+                    formType === 'login'
+                      ? <LoginForm />
+                      : <SignupForm />
+                  )}
+                </>
+              </Route>
+              <Route path="/about">
+                <About />
+              </Route>
+            </Switch>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </>
+      </>
+    </Router>
   );
 };
 

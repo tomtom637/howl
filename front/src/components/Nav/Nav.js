@@ -1,14 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
+import { useAtom } from 'jotai';
+import { tokenAtom, userInfosAtom, loggedAtom } from '../../store';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import Profile from '../Profile/Profile';
 import NavStyled from './Nav-styles';
 
 export default function Nav({ toggledMenu, setToggledMenu }) {
 
   const nav = useRef(null);
+  const profile = useRef(null);
+  const [token, setToken] = useAtom(tokenAtom);
+  const [userInfos, setUserInfos] = useAtom(userInfosAtom);
+  const [logged, setLogged] = useAtom(loggedAtom);
+  const [toggledProfile, setToggledProfile] = useState(false);
 
   useEffect(() => {
     function handleClick(e) {
-      if(toggledMenu && e.target !== nav.current && !nav.current.contains(e.target)) {
+      if (toggledMenu && e.target !== nav.current && !nav.current.contains(e.target)) {
         setToggledMenu(false);
       }
     }
@@ -16,7 +25,7 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
     document.addEventListener('click', handleClick);
     return () => {
       document.removeEventListener('click', handleClick);
-    }
+    };
   }, [toggledMenu, setToggledMenu]);
 
   return (
@@ -34,24 +43,34 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
           <ul className="nav-list">
             <li className="nav-item">
               <div className="nav-title">
-              <i className="icon-fingerprint"></i>
-              LOGIN
+                <Link to="/about">ABOUT</Link>
               </div>
             </li>
-            <li className="nav-item">
-              <div className="nav-title">
-                <i className="icon-signup"></i>
-                SIGNUP
-              </div>
-              
-            </li>
-            <li className="nav-item">
-              <div className="nav-title">
-                <i className="icon-profile"></i>
-                PROFILE
-              </div>
-              
-            </li>
+            {logged && (
+              <>
+                <li className="nav-item">
+                  <div className="nav-title">
+                    <i className="icon-profile"></i>
+                    PROFILE
+                  </div>
+                  <Profile />
+                </li>
+                <li className="nav-item">
+                  <div className="nav-title">
+                    <i className="icon-logout"></i>
+                    <Link
+                      to="/"
+                      onClick={() => {
+                        setToken(null);
+                        setUserInfos(null);
+                        setLogged(false);
+                        setToggledMenu(false);
+                      }}
+                    >LOGOUT</Link>
+                  </div>
+                </li>
+              </>
+            )}
           </ul>
         </NavStyled>
       )}

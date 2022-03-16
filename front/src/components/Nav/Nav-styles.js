@@ -8,24 +8,25 @@ const NavStyled = styled.nav`
   position: fixed;
   top: 35px;
   bottom: 0;
-  width: 250px;
+  width: 80%;
   right: 0%;
   overflow-y: auto;
   z-index: 1000;
+
   ul {
     display: flex;
     flex-direction: column;
     width: 85%;
     margin: 50px 30px;
   }
-  li {
+  .nav-item {
     position: relative;
     border-bottom: 1px solid rgba(255, 255, 255, 0.23);
     padding-bottom: 20px;
     margin-bottom: 20px;
     cursor: pointer;
   }
-  li:last-child {
+  .nav-item:last-child {
     border-bottom: none;
   }
   .nav-title {
@@ -34,6 +35,9 @@ const NavStyled = styled.nav`
   }
   i {
     margin-right: 25px;
+  }
+  .icon-logout {
+    color: var(--secondary);
   }
   @media ${device.tablet} {
     position: static;
@@ -45,7 +49,7 @@ const NavStyled = styled.nav`
       width: auto;
       margin: 0;
     }
-    li {
+    .nav-item {
       border: none;
       padding: 0;
       margin: 0 35px 0 0;

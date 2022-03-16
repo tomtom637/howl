@@ -6,6 +6,7 @@ const Variable = /*css*/`
     --primary: #416f89;
     --primary-dark: #2a4758;
     --secondary: #ea5a47;
+    --secondary-light: #dfaaa4;
     --secondary-dark: #ad2817;
     --light-grey: #f5f5f5;
     --grey: #e4e4e4;

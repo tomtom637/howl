@@ -51,9 +51,9 @@ export const loginUser = (
       const result = await response.json();
       setEmailError(null);
       setPasswordError(null);
-      if(result.errors) {
+      if (result.errors) {
         result.errors.forEach(error => {
-          switch(error.type) {
+          switch (error.type) {
             case 'email':
               setEmailError(error.errorMessage);
               break;
@@ -77,7 +77,7 @@ export const loginUser = (
     } catch (error) {
       console.log(error);
     }
-    
+
   };
   fetchData().catch(error => console.error(error));
 };
@@ -107,9 +107,9 @@ export const signupUser = (
     setEmailError(null);
     setNicknameError(null);
     setPasswordError(null);
-    if(result.errors) {
+    if (result.errors) {
       result.errors.forEach(error => {
-        switch(error.type) {
+        switch (error.type) {
           case 'email':
             setEmailError(error.errorMessage);
             break;
@@ -140,6 +140,23 @@ export const updateMotto = (userInfos, token) => {
       body: JSON.stringify({ motto: userInfos.motto }),
     };
     await fetch(`http://192.168.1.62:3000/api/auth/motto/${userInfos.id}`, options);
-  }
+  };
   fetchData().catch(error => console.error(error));
-}
+};
+
+export const updatePicture = (userInfos, setUserInfos, token, file) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        // 'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`,
+      },
+      body: file,
+    };
+    const response = await fetch(`http://192.168.1.62:3000/api/auth/picture/${userInfos.id}`, options);
+    const result = await response.json();
+    setUserInfos({ ...userInfos, picture: result.url });
+  };
+  fetchData().catch(error => console.error(error));
+};

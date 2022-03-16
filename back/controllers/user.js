@@ -172,10 +172,12 @@ exports.login = async (req, res) => {
 exports.updateUserMotto = async (req, res) => {
   const { userId } = req.params;
   const { motto } = req.body;
+
+  const cleanedMotto = motto.replace(/'/g, "''");
   try {
     await pool.query(/*sql*/`
       UPDATE users
-      SET motto = '${motto}'
+      SET motto = '${cleanedMotto}'
       WHERE id = ${userId};
     `);
     res.status(200).json({ message: 'User\'s motto updated successfully' });
@@ -205,7 +207,10 @@ exports.updateUserPicture = async (req, res) => {
       SET picture = '${picture}'
       WHERE id = ${userId};
     `);
-    res.status(200).json({ message: 'User\'s picture updated successfully' });
+    res.status(200).json({
+      message: 'User\'s picture updated successfully',
+      url: picture
+    });
   } catch (error) {
     res.status(500).json({ error });
   }

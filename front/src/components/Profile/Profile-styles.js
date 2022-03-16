@@ -4,13 +4,36 @@ const ProfileStyled = styled.div`
   display: flex;
   overflow: hidden;
 
-  li {
+  .profile__list {
+    margin: 0;
+    cursor: default;
+  }
+  .profile__item {
     border-bottom: none;
     padding: 0;
-    margin: 0.5rem 0;
+  }
+  .profile__name {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+  .profile__picture {
+    width: 150px;
+    margin-top: 1rem;
+  }
+  .profile__picture-label {
+    cursor: pointer;
+  }
+  .profile__picture-input {
+    display: none;
+  }
+  .profile__email {
+    font-size: 1rem;
+    color: var(--secondary-light);
+    text-decoration: underline;
   }
   .profile__motto {
-    color: #fff;
+    margin-top: 1rem;
+    color: #ddd;
     background: var(--dark-grey);
     font-style: italic;
     font-size: 0.9rem;
@@ -33,6 +56,12 @@ const ProfileStyled = styled.div`
     color: #fff;
     border-radius: var(--border-radius);
   }
+  text-area {
+    overflow: hidden;
+  }
+  .scroll::-webkit-scrollbar {
+   display: none;
+ }
 `;
 
 export default ProfileStyled;

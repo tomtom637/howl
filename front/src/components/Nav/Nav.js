@@ -43,7 +43,8 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
           <ul className="nav-list">
             <li className="nav-item">
               <div className="nav-title">
-                <Link to="/about">ABOUT</Link>
+                <i className='icon-logo'></i>
+                <Link onClick={() => setToggledMenu(false)} to="/about">ABOUT</Link>
               </div>
             </li>
             {logged && (

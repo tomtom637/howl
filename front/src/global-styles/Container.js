@@ -13,6 +13,23 @@ const Container = /*css*/`
       padding-right: 25px;
     }
   }
+
+  .site-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .main-content-wrapper {
+    margin-top: 35px;
+  }
+  @media ${device.tablet} {
+    .main-content-wrapper {
+      margin-top: 49.594px;
+    }
+  }
+
 `;
 
 export default Container;

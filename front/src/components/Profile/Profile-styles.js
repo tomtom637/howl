@@ -36,8 +36,8 @@ const ProfileStyled = styled.div`
     color: #ddd;
     background: var(--dark-grey);
     font-style: italic;
-    font-size: 0.9rem;
-    line-height: 1.3rem;
+    font-size: 1.05rem;
+    line-height: 1.4rem;
     border: none;
     outline: none;
     width: 100%;

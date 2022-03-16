@@ -127,3 +127,19 @@ export const signupUser = (
   };
   fetchData().catch(error => console.error(error));
 };
+
+export const updateMotto = (userInfos, token) => {
+  console.log(userInfos);
+  const fetchData = async () => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ motto: userInfos.motto }),
+    };
+    await fetch(`http://192.168.1.62:3000/api/auth/motto/${userInfos.id}`, options);
+  }
+  fetchData().catch(error => console.error(error));
+}

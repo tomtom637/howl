@@ -6,7 +6,6 @@ const HeroStyled = styled.section`
   position: relative;
   padding: 55px;
   overflow: hidden;
-  margin-top: 35px;
   &::after {
     display: block;
     content: '';
@@ -41,7 +40,6 @@ const HeroStyled = styled.section`
   }
   @media ${device.tablet} {
       padding: 80px;
-      margin-top: 48px;
       h1 {
         font-size: 55px;
         padding: 50px;

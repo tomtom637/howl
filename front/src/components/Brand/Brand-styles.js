@@ -3,8 +3,11 @@ import { device } from '../../device';
 
 const BrandStyled = styled.div`
   font-size: 25px;
-  display: flex;
-  align-items: center;
+
+  .brand-container {
+    display: flex;
+    align-items: center;
+  }
   .icon-logo {
     color: var(--secondary);
     margin-right: 5px;

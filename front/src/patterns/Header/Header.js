@@ -25,10 +25,8 @@ export default function Header() {
       <div className="container header-container">
         <Brand toggledMenu={toggledMenu} />
         {windowWidth < size.tablet
-          ?
-          <Menu toggledMenu={toggledMenu} setToggledMenu={setToggledMenu}/>
-          :
-          <Menu toggledMenu={true} setToggledMenu={setToggledMenu}/>
+          ? <Menu toggledMenu={toggledMenu} setToggledMenu={setToggledMenu}/>
+          : <Menu toggledMenu={true} setToggledMenu={setToggledMenu}/>
         }
       </div>
     </HeaderStyled>

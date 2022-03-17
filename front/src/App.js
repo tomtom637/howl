@@ -19,12 +19,13 @@ const App = () => {
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [formType, setFormType] = useAtom(formAtom);
   const [logged, setLogged] = useAtom(loggedAtom);
+  const [busy, setBusy] = useState(true);
 
   useEffect(() => {
     if (token) {
-      getInfosFromToken(userInfos, setUserInfos, token, setLogged);
+      getInfosFromToken(userInfos, setUserInfos, token, setLogged, setBusy);
     } else {
-      setLogged(false);
+      setBusy(() => false);
     }
   }, []);
 
@@ -40,7 +41,7 @@ const App = () => {
               <Route exact path="/">
                 <>
                   <Hero />
-                  {!logged && (
+                  {!logged && !busy && (
                     formType === 'login'
                       ? <LoginForm />
                       : <SignupForm />

@@ -10,3 +10,5 @@ export const userInfosAtom = atom(null);
 export const formAtom = atom('login');
 
 export const loggedAtom = atom(false);
+
+export const toggledProfileAtom = atom(false);

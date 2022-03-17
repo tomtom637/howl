@@ -11,7 +11,7 @@
 // }
 
 // GET USER INFOS FROM TOKEN
-export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged) => {
+export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged, setBusy) => {
   const fetchData = async () => {
     const options = {
       method: 'POST',
@@ -24,6 +24,7 @@ export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged) => 
     const result = await response.json();
     setUserInfos(result);
     setLogged(true);
+    setBusy(() => false);
   };
   fetchData().catch(error => console.error(error));
 };
@@ -128,8 +129,7 @@ export const signupUser = (
   fetchData().catch(error => console.error(error));
 };
 
-export const updateMotto = (userInfos, token) => {
-  console.log(userInfos);
+export const updateMotto = (userInfos, setUserInfos, currentMotto, token) => {
   const fetchData = async () => {
     const options = {
       method: 'PUT',
@@ -137,9 +137,10 @@ export const updateMotto = (userInfos, token) => {
         'Content-Type': 'application/json',
         'authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({ motto: userInfos.motto }),
+      body: JSON.stringify({ motto: currentMotto }),
     };
     await fetch(`http://192.168.1.62:3000/api/auth/motto/${userInfos.id}`, options);
+    setUserInfos({ ...userInfos, motto: currentMotto });
   };
   fetchData().catch(error => console.error(error));
 };

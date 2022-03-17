@@ -11,6 +11,7 @@ const Profile = () => {
   const [token, setToken] = useAtom(tokenAtom);
   const [pictureChanged, setPictureChanged] = useState(false);
   const [mottoChanged, setMottoChanged] = useState(false);
+  const [currentMotto, setCurrentMotto] = useState(userInfos.motto);
   const preview = useRef(null);
   const textArea = useRef(null);
   const inputFile = useRef(null);
@@ -31,7 +32,7 @@ const Profile = () => {
   const handleMottoSubmit = e => {
     e.preventDefault();
     setMottoChanged(false);
-    updateMotto(userInfos, token);
+    updateMotto(userInfos, setUserInfos, currentMotto, token);
   };
 
   const handlePictureSubmit = e => {
@@ -85,17 +86,16 @@ const Profile = () => {
           <form onSubmit={e => handleMottoSubmit(e)}>
             <textarea
               ref={textArea}
-              rows="1"
               onFocus={e => handleTextAreaSize(e)}
               onKeyDown={e => handleTextAreaSize(e)}
               onBlur={e => {handleTextAreaSize(e)}}
               onChange={e => {
                 setMottoChanged(true);
-                setUserInfos({ ...userInfos, motto: e.target.value });
+                setCurrentMotto(e.target.value);
               }}
               className="profile__motto scroll"
-              value={motto}
-              placeholder="update picture & motto by clicking on them"
+              value={currentMotto || ''}
+              placeholder="write your motto here"
             ></textarea>
             {mottoChanged && <button type="submit" className="profile__edit">UPDATE</button>}
           </form>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { tokenAtom, userInfosAtom, loggedAtom } from '../../store';
+import { tokenAtom, userInfosAtom, loggedAtom, toggledProfileAtom } from '../../store';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Profile from '../Profile/Profile';
@@ -13,12 +13,13 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
   const [token, setToken] = useAtom(tokenAtom);
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [logged, setLogged] = useAtom(loggedAtom);
-  const [toggledProfile, setToggledProfile] = useState(false);
+  const [toggledProfile, setToggledProfile] = useAtom(toggledProfileAtom);
 
   useEffect(() => {
     function handleClick(e) {
       if (toggledMenu && e.target !== nav.current && !nav.current.contains(e.target)) {
         setToggledMenu(false);
+        setToggledProfile(false);
       }
     }
 
@@ -42,33 +43,45 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
         >
           <ul className="nav-list">
             <li className="nav-item">
-              <div className="nav-title">
+              <Link className='nav-title' onClick={() => setToggledMenu(false)} to="/about">
                 <i className='icon-logo'></i>
-                <Link onClick={() => setToggledMenu(false)} to="/about">ABOUT</Link>
-              </div>
+                ABOUT
+              </Link>
             </li>
             {logged && (
               <>
                 <li className="nav-item">
-                  <div className="nav-title">
+                  <div className="nav-title" onClick={() => setToggledProfile(!toggledProfile)}>
                     <i className="icon-profile"></i>
                     PROFILE
                   </div>
-                  <Profile />
+                  <AnimatePresence>
+                    {toggledProfile && (
+                      <motion.div
+                        initial={{ x: 100, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: 100, opacity: 0 }}
+                        transition={{ duration: 0.2, ease: 'easeInOut' }}
+                      >
+                        <Profile />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </li>
                 <li className="nav-item">
-                  <div className="nav-title">
+                  <Link
+                    className='nav-title'
+                    to="/"
+                    onClick={() => {
+                      setToken(null);
+                      setUserInfos(null);
+                      setLogged(false);
+                      setToggledMenu(false);
+                    }}
+                  >
                     <i className="icon-logout"></i>
-                    <Link
-                      to="/"
-                      onClick={() => {
-                        setToken(null);
-                        setUserInfos(null);
-                        setLogged(false);
-                        setToggledMenu(false);
-                      }}
-                    >LOGOUT</Link>
-                  </div>
+                    LOGOUT
+                  </Link>
                 </li>
               </>
             )}

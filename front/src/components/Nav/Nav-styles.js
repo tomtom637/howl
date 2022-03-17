@@ -13,6 +13,10 @@ const NavStyled = styled.nav`
   overflow-y: auto;
   z-index: 1000;
 
+  div {
+    cursor: default;
+  }
+
   ul {
     display: flex;
     flex-direction: column;
@@ -24,7 +28,6 @@ const NavStyled = styled.nav`
     border-bottom: 1px solid rgba(255, 255, 255, 0.23);
     padding-bottom: 20px;
     margin-bottom: 20px;
-    cursor: pointer;
   }
   .nav-item:last-child {
     border-bottom: none;
@@ -32,6 +35,7 @@ const NavStyled = styled.nav`
   .nav-title {
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   i {
     margin-right: 25px;

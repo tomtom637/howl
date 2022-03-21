@@ -3,7 +3,7 @@ import { device } from '../../device';
 import topography from '../../images/topography.svg';
 
 const PostsStyled = styled.div`
-  margin: 1.5rem auto;
+  margin: 1rem auto;
   max-width: 750px;
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@ const PostsStyled = styled.div`
 
   .post {
     &__container {
-      margin-bottom: 1rem;
+      margin: 1rem 0;
       position: relative;
       overflow: hidden;
       background: rgba(0, 0, 0, 0) url(${topography});
@@ -43,7 +43,8 @@ const PostsStyled = styled.div`
                             "  picture message message "
                             "  picture message message "
                             "  name  message  message  "
-                            "  date  motto  motto  "
+                            "  date    motto    motto  "
+                            "  show    show    show    "
                             "  replies replies replies ";
       grid-template-columns: 0.4fr 1fr 1fr;
       grid-gap: 0.1rem;
@@ -87,6 +88,19 @@ const PostsStyled = styled.div`
       grid-area: motto;
       margin-left: 1rem;
     }
+    &__show-replies {
+      grid-area: show;
+      text-align: center;
+      padding: 1rem;
+      background: #ccc;
+      margin-top: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      word-spacing: 0.3rem;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+    }
   }
   .replies-container {
     grid-area: replies;
@@ -100,7 +114,8 @@ const PostsStyled = styled.div`
     &__container {
       margin-bottom: 1rem;
       padding: 1rem 1rem 1rem 1rem;
-      background: rgba(0, 0, 0, 0.05);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+      //background: rgba(0, 0, 0, 0.05);
       display: grid;
       justify-content: start;
       align-items: start;
@@ -110,10 +125,10 @@ const PostsStyled = styled.div`
                             "  reply-picture reply-message reply-message "
                             "  reply-name  reply-message  reply-message  "
                             "  reply-date  reply-motto  reply-motto      ";
-      grid-template-columns: 0.4fr 1fr 1fr;
+      grid-template-columns: 0.9fr 1fr 1fr;
       grid-gap: 0.1rem;
       border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
+      //box-shadow: var(--box-shadow);
     }
     &__picture {
       grid-area: reply-picture;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { device } from '../../device';
 
 const ProfileStyled = styled.div`
   display: flex;
@@ -47,20 +48,27 @@ const ProfileStyled = styled.div`
     padding: 0.2rem;
   }
   .profile__edit {
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.05rem;
-    padding: 0.2rem 0.3rem;
-    margin-top: 0.5rem;
-    background: var(--primary);
-    color: #fff;
-    border-radius: var(--border-radius);
+    
   }
   text-area {
     overflow: hidden;
   }
   .scroll::-webkit-scrollbar {
    display: none;
+ }
+
+ @media ${device.tablet} {
+   
+   .profile__list {
+      background: var(--dark-grey);
+      width: 100%;
+      position: fixed;
+      flex-direction: column;
+      padding: 1rem;
+      right: 0;
+      left: 0;
+      top: 35px;
+   }
  }
 `;
 

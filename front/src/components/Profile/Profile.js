@@ -79,7 +79,7 @@ const Profile = () => {
               className="profile__picture-input"
               accept="image/png, image/jpeg, image/jpg, image/gif"
             />
-            {pictureChanged && <button type="submit" className="profile__edit">UPDATE</button>}
+            {pictureChanged && <button type="submit" className="edit-button profile__edit">UPDATE</button>}
           </form>
         </li>
         <li className="profile__item">
@@ -97,7 +97,7 @@ const Profile = () => {
               value={currentMotto || ''}
               placeholder="write your motto here"
             ></textarea>
-            {mottoChanged && <button type="submit" className="profile__edit">UPDATE</button>}
+            {mottoChanged && <button type="submit" className="edit-button profile__edit">UPDATE</button>}
           </form>
         </li>
       </ul>

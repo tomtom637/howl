@@ -34,8 +34,10 @@ exports.listEmailsAndNicknames = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await pool.query(/*sql*/`
-      SELECT id, nickname, email, motto, picture
-      FROM users;
+      SELECT u.id, u.nickname, u.email, u.motto, u.picture, r."name" AS role
+      FROM users u
+      JOIN roles r ON u.role_id = r.id
+      ORDER BY u.nickname;
     `);
     res.status(200).json({ users: users.rows });
   } catch (error) {

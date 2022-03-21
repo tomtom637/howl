@@ -22,10 +22,11 @@ const App = () => {
   const [formType, setFormType] = useAtom(formAtom);
   const [logged, setLogged] = useAtom(loggedAtom);
   const [busy, setBusy] = useState(true);
+  const [connectionError, setConnectionError] = useState(false);
 
   useEffect(() => {
     if (token) {
-      getInfosFromToken(userInfos, setUserInfos, token, setLogged, setBusy);
+      getInfosFromToken(userInfos, setUserInfos, token, setLogged, setBusy, setConnectionError);
     } else {
       setBusy(() => false);
     }
@@ -43,6 +44,14 @@ const App = () => {
               <Route exact path="/">
                 <>
                   <Hero />
+                  {connectionError && (
+                    <div className="container">
+                      <div className="error-message">
+                        <p>It seems we can't connect to the server at this time...</p>
+                        <small>You couldn't even start to comprehend how very sorry we are :(</small>
+                      </div>
+                    </div>
+                  )}
                   {!logged && !busy && (
                     formType === 'login'
                       ? <LoginForm />

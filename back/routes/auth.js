@@ -11,7 +11,7 @@ const userCtrl = require('../controllers/user');
 router.get('/emails-and-nicknames', userCtrl.listEmailsAndNicknames);
 
 // GET ALL USERS
-router.get('/', admin, userCtrl.getAllUsers);
+router.get('/', auth, userCtrl.getAllUsers);
 
 // GET A USER
 router.get('/:userId', auth, userCtrl.getUser);

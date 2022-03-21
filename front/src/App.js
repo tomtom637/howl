@@ -10,7 +10,9 @@ import GlobalStyles from './global-styles/GlobalStyles';
 
 import Header from './patterns/Header/Header';
 import Hero from './patterns/Hero/Hero';
+import Posts from './components/Posts/Posts';
 import About from './components/About/About';
+import Stats from './components/Stats/Stats';
 import { LoginForm, SignupForm } from './components/Forms/Forms';
 import Footer from './components/Footer/Footer';
 
@@ -46,10 +48,18 @@ const App = () => {
                       ? <LoginForm />
                       : <SignupForm />
                   )}
+                  {logged && !busy && (
+                    <Posts />
+                  )}
                 </>
               </Route>
               <Route path="/about">
                 <About />
+              </Route>
+              <Route path="/stats">
+                {logged && !busy && (
+                  <Stats />
+                )}
               </Route>
             </Switch>
           </div>

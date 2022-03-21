@@ -6,8 +6,6 @@ const URLS = {
 
 const BASE_URL = URLS.local;
 
-
-// GET USER INFOS FROM TOKEN
 export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged, setBusy, setConnectionError) => {
   const fetchData = async () => {
     const options = {

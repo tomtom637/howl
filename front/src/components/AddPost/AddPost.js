@@ -61,7 +61,12 @@ const AddPost = ({ category, parentId }) => {
           value={post.content}
           placeholder="write your message here"
         ></textarea>
-        <input type="text" className="add-post__hidden-gif-input" value={post.gifAddress} />
+        <input
+          type="text"
+          className="add-post__hidden-gif-input"
+          value={post.gifAddress || ''}
+          readOnly
+        />
         <button type="submit" className="add-post__submit"></button>
       </form>
       <form onSubmit={e => handleGifSearch} className="add-gif">
@@ -76,6 +81,7 @@ const AddPost = ({ category, parentId }) => {
             && gifsPreview.map(gif => (
               <img
                 className="add-gif__gifs-preview"
+                key={gif}
                 src={gif}
                 alt="gif"
                 onClick={e => {
@@ -92,7 +98,7 @@ const AddPost = ({ category, parentId }) => {
         </div>
       </form>
 
-      {mottoChanged && <button type="submit" className="edit-button profile__edit">UPDATE</button>}
+      {/* {mottoChanged && <button type="submit" className="edit-button profile__edit">UPDATE</button>} */}
     </AddPostStyled>
   );
 };

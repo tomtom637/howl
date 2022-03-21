@@ -9,6 +9,10 @@
 //     fetchData().catch(error => console.error(error));
 //   }
 // }
+const URLS = {home: 'http://192.168.1.62:3000/api', local: 'http://localhost:3000/api'};
+
+const BASE_URL = URLS.local;
+
 
 // GET USER INFOS FROM TOKEN
 export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged, setBusy) => {
@@ -20,7 +24,7 @@ export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged, set
       },
       body: JSON.stringify({ token }),
     };
-    const response = await fetch('http://192.168.1.62:3000/api/auth/own', options);
+    const response = await fetch(BASE_URL + '/auth/own', options);
     const result = await response.json();
     setUserInfos(result);
     setLogged(true);
@@ -48,7 +52,7 @@ export const loginUser = (
       body: JSON.stringify({ email, password }),
     };
     try {
-      const response = await fetch('http://192.168.1.62:3000/api/auth/login', options);
+      const response = await fetch(BASE_URL + '/auth/login', options);
       const result = await response.json();
       setEmailError(null);
       setPasswordError(null);
@@ -103,7 +107,7 @@ export const signupUser = (
       },
       body: JSON.stringify({ email, nickname, password }),
     };
-    const response = await fetch('http://192.168.1.62:3000/api/auth/signup', options);
+    const response = await fetch(BASE_URL + '/auth/signup', options);
     const result = await response.json();
     setEmailError(null);
     setNicknameError(null);
@@ -139,7 +143,7 @@ export const updateMotto = (userInfos, setUserInfos, currentMotto, token) => {
       },
       body: JSON.stringify({ motto: currentMotto }),
     };
-    await fetch(`http://192.168.1.62:3000/api/auth/motto/${userInfos.id}`, options);
+    await fetch(BASE_URL + `/auth/motto/${userInfos.id}`, options);
     setUserInfos({ ...userInfos, motto: currentMotto });
   };
   fetchData().catch(error => console.error(error));
@@ -155,9 +159,57 @@ export const updatePicture = (userInfos, setUserInfos, token, file) => {
       },
       body: file,
     };
-    const response = await fetch(`http://192.168.1.62:3000/api/auth/picture/${userInfos.id}`, options);
+    const response = await fetch(BASE_URL + `/auth/picture/${userInfos.id}`, options);
     const result = await response.json();
     setUserInfos({ ...userInfos, picture: result.url });
   };
   fetchData().catch(error => console.error(error));
 };
+
+export const getAllUsers = (setUsers, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(BASE_URL + '/auth/', options);
+    const result = await response.json();
+    setUsers(result.users);
+  };
+  fetchData().catch(error => console.error(error));
+};
+
+export const getPosts = (posts, setPosts, setBusy, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(BASE_URL + '/posts/0', options);
+    const result = await response.json();
+    setPosts(() => result);
+    setBusy(false);
+  };
+  fetchData().catch(error => console.error(error));
+}
+
+export const addPost = (post, setPost, userInfos, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(post),
+    };
+    const response = await fetch(BASE_URL + '/posts', options);
+    const result = await response.json();
+    setPost(result);
+  };
+  fetchData().catch(error => console.error(error));
+}

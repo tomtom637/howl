@@ -8,12 +8,15 @@ const AddPost = ({ category, parentId }) => {
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [token, setToken] = useAtom(tokenAtom);
   const textArea = useRef(null);
+  const searchInput = useRef(null);
   const [post, setPost] = useState({
     categoryId: category,
     content: '',
     gifAddress: null,
     parentId: parentId
   });
+  const [gifLoading, setGifLoading] = useState(false);
+  const [gifsPreview, setGifsPreview] = useState([]);
   const { nickname, email, motto, picture } = userInfos ?? {};
 
   const handleTextAreaSize = () => {
@@ -30,9 +33,14 @@ const AddPost = ({ category, parentId }) => {
 
   const handlePostSubmit = (e) => {
     e.preventDefault();
-    const message = textArea.current.value;
-    addPost(post, token, userInfos, setToken);
-  }
+    const content = textArea.current.value;
+    const gif =
+      addPost(content, setPost, token, userInfos, setToken);
+  };
+
+  const handleGifSearch = (e) => {
+    e.preventDefault();
+  };
 
   useEffect(() => {
     handleTextAreaSize();
@@ -40,21 +48,51 @@ const AddPost = ({ category, parentId }) => {
 
   return (
     <AddPostStyled>
-      <form onSubmit={e => handlePostSubmit(e)}>
+      <form className="add-post" onSubmit={e => handlePostSubmit(e)}>
         <textarea
+          className="add-post__textarea"
           ref={textArea}
           onFocus={e => handleTextAreaSize(e)}
           onKeyDown={e => handleTextAreaSize(e)}
           onBlur={e => { handleTextAreaSize(e); }}
           onChange={e => {
-            setPost(e.target.value);
+            setPost({ ...post, content: e.target.value });
           }}
-          className="profile__motto scroll"
-          value={post || ''}
-          placeholder="write your motto here"
+          value={post.content}
+          placeholder="write your message here"
         ></textarea>
-        {mottoChanged && <button type="submit" className="edit-button profile__edit">UPDATE</button>}
+        <input type="text" className="add-post__hidden-gif-input" value={post.gifAddress} />
+        <button type="submit" className="add-post__submit"></button>
       </form>
+      <form onSubmit={e => handleGifSearch} className="add-gif">
+        <div className="add-gif__gif-container">
+          <div className="add-gif__gif-search">
+            <label className="add-gif__label" htmlFor="search">Search for an emoji</label>
+            <input ref={searchInput} className="add-gif__input" type="search" name="search" id="search" />
+          </div>
+          <button className="add-gif__button" type="button">search</button>
+          {post.gifsPreview !== []
+            && !gifLoading
+            && gifsPreview.map(gif => (
+              <img
+                className="add-gif__gifs-preview"
+                src={gif}
+                alt="gif"
+                onClick={e => {
+                  setPost({ ...post, gifAddress: gif });
+                  setGifsPreview([]);
+                }}
+              />
+            ))}
+          {!post.gifAddress && (
+            <div className="add-gif__gif-chosen">
+              <img src={post.gifAddress} alt="gif" />
+            </div>
+          )}
+        </div>
+      </form>
+
+      {mottoChanged && <button type="submit" className="edit-button profile__edit">UPDATE</button>}
     </AddPostStyled>
   );
 };

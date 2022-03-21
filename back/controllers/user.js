@@ -11,25 +11,6 @@ const errorMessages = {
   NicknameAlreadyExists: 'Nickname already exists'
 };
 
-// GET A COLLECTION OF EXISTING EMAILS AND NICKNAMES
-// TO HYDRATE THE SIGNUP FORM
-exports.listEmailsAndNicknames = async (req, res) => {
-  try {
-    const emailsAndNicknames = await pool.query(/*sql*/`
-      SELECT email, nickname
-      FROM users;
-    `);
-    const result = { emails: [], nicknames: [] };
-    emailsAndNicknames.rows.forEach(row => {
-      result.emails.push(row.email);
-      result.nicknames.push(row.nickname);
-    });
-    res.status(200).json({ result });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-};
-
 // GET ALL THE USERS
 exports.getAllUsers = async (req, res) => {
   try {

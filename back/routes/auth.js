@@ -7,9 +7,6 @@ const multer = require('../middleware/multer-config');
 
 const userCtrl = require('../controllers/user');
 
-// LIST EMAILS AND NICKNAMES
-router.get('/emails-and-nicknames', userCtrl.listEmailsAndNicknames);
-
 // GET ALL USERS
 router.get('/', auth, userCtrl.getAllUsers);
 

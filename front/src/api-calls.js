@@ -1,21 +1,14 @@
-// CHECK LOCALSTORAGE FOR TOKEN
-// export const checkStorage = (data, setData) => {
-//   const fetchData = async () => {
-//     const response = await fetch('https://jsonplaceholder.typicode.com/users/1');
-//     const result = await response.json();
-//     setData(result.name);
-//   }
-//   if(!data) {
-//     fetchData().catch(error => console.error(error));
-//   }
-// }
-const URLS = {home: 'http://192.168.1.62:3000/api', local: 'http://localhost:3000/api'};
+const URLS = {
+  home: 'http://192.168.1.62:3000/api',
+  local: 'http://localhost:3000/api',
+  wrong: 'http://error.com/abracadabroo'
+};
 
 const BASE_URL = URLS.local;
 
 
 // GET USER INFOS FROM TOKEN
-export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged, setBusy) => {
+export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged, setBusy, setConnectionError) => {
   const fetchData = async () => {
     const options = {
       method: 'POST',
@@ -24,16 +17,21 @@ export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged, set
       },
       body: JSON.stringify({ token }),
     };
-    const response = await fetch(BASE_URL + '/auth/own', options);
-    const result = await response.json();
-    setUserInfos(result);
-    setLogged(true);
-    setBusy(() => false);
+    try {
+      const response = await fetch(BASE_URL + '/auth/own', options);
+      const result = await response.json();
+      setUserInfos(result);
+      setLogged(true);
+      setBusy(() => false);
+    } catch (error) {
+      setLogged(false);
+      setBusy(false);
+      setConnectionError(true);
+    }
   };
-  fetchData().catch(error => console.error(error));
+  fetchData();
 };
 
-// LOGIN THE USER
 export const loginUser = (
   email,
   password,
@@ -84,10 +82,9 @@ export const loginUser = (
     }
 
   };
-  fetchData().catch(error => console.error(error));
+  fetchData();
 };
 
-// SIGNUP THE USER
 export const signupUser = (
   email,
   nickname,
@@ -107,30 +104,34 @@ export const signupUser = (
       },
       body: JSON.stringify({ email, nickname, password }),
     };
-    const response = await fetch(BASE_URL + '/auth/signup', options);
-    const result = await response.json();
-    setEmailError(null);
-    setNicknameError(null);
-    setPasswordError(null);
-    if (result.errors) {
-      result.errors.forEach(error => {
-        switch (error.type) {
-          case 'email':
-            setEmailError(error.errorMessage);
-            break;
-          case 'nickname':
-            setNicknameError(error.errorMessage);
-            break;
-          case 'password':
-            setPasswordError(error.errorMessage);
-            break;
-        }
-      });
-      return;
+    try {
+      const response = await fetch(BASE_URL + '/auth/signup', options);
+      const result = await response.json();
+      setEmailError(null);
+      setNicknameError(null);
+      setPasswordError(null);
+      if (result.errors) {
+        result.errors.forEach(error => {
+          switch (error.type) {
+            case 'email':
+              setEmailError(error.errorMessage);
+              break;
+            case 'nickname':
+              setNicknameError(error.errorMessage);
+              break;
+            case 'password':
+              setPasswordError(error.errorMessage);
+              break;
+          }
+        });
+        return;
+      }
+      loginUser(email, password, setEmailError, setPasswordError, setUserInfos, setToken, setLogged);
+    } catch (error) {
+      console.log(error);
     }
-    loginUser(email, password, setEmailError, setPasswordError, setUserInfos, setToken, setLogged);
   };
-  fetchData().catch(error => console.error(error));
+  fetchData();
 };
 
 export const updateMotto = (userInfos, setUserInfos, currentMotto, token) => {
@@ -143,10 +144,14 @@ export const updateMotto = (userInfos, setUserInfos, currentMotto, token) => {
       },
       body: JSON.stringify({ motto: currentMotto }),
     };
-    await fetch(BASE_URL + `/auth/motto/${userInfos.id}`, options);
-    setUserInfos({ ...userInfos, motto: currentMotto });
+    try {
+      await fetch(BASE_URL + `/auth/motto/${userInfos.id}`, options);
+      setUserInfos({ ...userInfos, motto: currentMotto });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  fetchData().catch(error => console.error(error));
+  fetchData();
 };
 
 export const updatePicture = (userInfos, setUserInfos, token, file) => {
@@ -159,11 +164,15 @@ export const updatePicture = (userInfos, setUserInfos, token, file) => {
       },
       body: file,
     };
-    const response = await fetch(BASE_URL + `/auth/picture/${userInfos.id}`, options);
-    const result = await response.json();
-    setUserInfos({ ...userInfos, picture: result.url });
+    try {
+      const response = await fetch(BASE_URL + `/auth/picture/${userInfos.id}`, options);
+      const result = await response.json();
+      setUserInfos({ ...userInfos, picture: result.url });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  fetchData().catch(error => console.error(error));
+  fetchData();
 };
 
 export const getAllUsers = (setUsers, token) => {
@@ -174,11 +183,15 @@ export const getAllUsers = (setUsers, token) => {
         'authorization': `Bearer ${token}`,
       },
     };
-    const response = await fetch(BASE_URL + '/auth/', options);
-    const result = await response.json();
-    setUsers(result.users);
+    try {
+      const response = await fetch(BASE_URL + '/auth/', options);
+      const result = await response.json();
+      setUsers(result.users);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  fetchData().catch(error => console.error(error));
+  fetchData();
 };
 
 export const getPosts = (posts, setPosts, setBusy, token) => {
@@ -189,13 +202,17 @@ export const getPosts = (posts, setPosts, setBusy, token) => {
         'authorization': `Bearer ${token}`,
       },
     };
-    const response = await fetch(BASE_URL + '/posts/0', options);
-    const result = await response.json();
-    setPosts(() => result);
-    setBusy(false);
+    try {
+      const response = await fetch(BASE_URL + '/posts/0', options);
+      const result = await response.json();
+      setPosts(() => result);
+      setBusy(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  fetchData().catch(error => console.error(error));
-}
+  fetchData();
+};
 
 export const addPost = (post, setPost, userInfos, token) => {
   const fetchData = async () => {
@@ -207,9 +224,13 @@ export const addPost = (post, setPost, userInfos, token) => {
       },
       body: JSON.stringify(post),
     };
-    const response = await fetch(BASE_URL + '/posts', options);
-    const result = await response.json();
-    setPost(result);
+    try {
+      const response = await fetch(BASE_URL + '/posts', options);
+      const result = await response.json();
+      setPost(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  fetchData().catch(error => console.error(error));
-}
+  fetchData();
+};

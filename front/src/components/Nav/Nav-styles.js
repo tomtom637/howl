@@ -8,7 +8,7 @@ const NavStyled = styled.nav`
   position: fixed;
   top: 35px;
   bottom: 0;
-  width: 80%;
+  width: min(80%, 400px);
   right: 0%;
   overflow-y: auto;
   z-index: 1000;

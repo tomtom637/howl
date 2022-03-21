@@ -57,16 +57,27 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
                   </div>
                   <AnimatePresence>
                     {toggledProfile && (
-                      <motion.div
-                        initial={{ x: 100, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: 100, opacity: 0 }}
-                        transition={{ duration: 0.2, ease: 'easeInOut' }}
-                      >
+                      // <motion.div
+                      //   initial={{ y: -100, opacity: 0 }}
+                      //   animate={{ y: 0, opacity: 1 }}
+                      //   exit={{ y: -100, opacity: 0 }}
+                      //   transition={{ duration: 0.2, ease: 'easeInOut' }}
+                      // >
+                      <div>
                         <Profile />
-                      </motion.div>
+                      </div>
                     )}
                   </AnimatePresence>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className='nav-title'
+                    to="/Stats"
+                    onClick={() => setToggledMenu(false)}
+                  >
+                    <i className="icon-logo"></i>
+                    STATS
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <Link

@@ -33,19 +33,18 @@ const PostsStyled = styled.div`
     }
     &__body {
       display: grid;
+      position: relative;
       background: rgba(200, 200, 200, 0.5);
       justify-content: start;
       align-items: start;
       padding: 1rem;
       grid-template-areas:  "category category category"
                             "  picture message message "
-                            "  picture message message "
-                            "  picture message message "
-                            "  picture message message "
                             "  name  message  message  "
                             "  date    motto    motto  "
                             "  show    show    show    "
-                            "  replies replies replies ";
+                            "  replies replies replies "
+                            "add-post add-post add-post";
       grid-template-columns: 0.4fr 1fr 1fr;
       grid-gap: 0.1rem;
       border-radius: var(--border-radius);
@@ -101,6 +100,14 @@ const PostsStyled = styled.div`
       color: #555;
       cursor: pointer;
     }
+    &__unread {
+      color: var(--secondary);
+      font-size: 0.8rem;
+    }
+    &__add-post-container {
+      grid-area: add-post;
+      margin-top: 1rem;
+    }
   }
   .replies-container {
     grid-area: replies;
@@ -120,9 +127,6 @@ const PostsStyled = styled.div`
       justify-content: start;
       align-items: start;
       grid-template-areas:  "  reply-picture reply-message reply-message "
-                            "  reply-picture reply-message reply-message "
-                            "  reply-picture reply-message reply-message "
-                            "  reply-picture reply-message reply-message "
                             "  reply-name  reply-message  reply-message  "
                             "  reply-date  reply-motto  reply-motto      ";
       grid-template-columns: 0.9fr 1fr 1fr;

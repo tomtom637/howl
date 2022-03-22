@@ -212,6 +212,23 @@ export const getPosts = (posts, setPosts, setBusy, token) => {
   fetchData();
 };
 
+export const markPostAsRead = (postId, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    };
+    try {
+      await fetch(BASE_URL + `/posts/read/${postId}`, options);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  fetchData();
+}
+
 export const addPost = (post, setPost, userInfos, token) => {
   const fetchData = async () => {
     const options = {

@@ -67,16 +67,21 @@ const AddPost = ({ category, parentId }) => {
           value={post.gifAddress || ''}
           readOnly
         />
-        <button type="submit" className="add-post__submit"></button>
+        <button type="submit" className="add-post__submit">PUBLISH</button>
       </form>
       <form onSubmit={e => handleGifSearch} className="add-gif">
         <div className="add-gif__gif-container">
           <div className="add-gif__gif-search">
-            <label className="add-gif__label" htmlFor="search">Search for an emoji</label>
-            <input ref={searchInput} className="add-gif__input" type="search" name="search" id="search" />
+            <input
+              ref={searchInput}
+              placeholder="search for an Emoji"
+              className="add-gif__input"
+              type="search"
+              name="search" id="search"
+            />
           </div>
-          <button className="add-gif__button" type="button">search</button>
-          {post.gifsPreview !== []
+          <button className="add-gif__button" type="button">go</button>
+          {typeof gifsPreview !== undefined && gifsPreview.length > 0
             && !gifLoading
             && gifsPreview.map(gif => (
               <img
@@ -90,7 +95,7 @@ const AddPost = ({ category, parentId }) => {
                 }}
               />
             ))}
-          {!post.gifAddress && (
+          {post.gifAddress && (
             <div className="add-gif__gif-chosen">
               <img src={post.gifAddress} alt="gif" />
             </div>

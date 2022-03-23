@@ -1,4 +1,13 @@
 * [ ] remove the delete user route in the API
-* [ ] add a users link & page for the admin to change their roles
+* [ ] implement scores: number of original posts replies / original posts
+  * [ ] endpoint that return all users with their
+    * score of the month
+    * original posts this month
+    * replies this month
+    * original posts total
+    * replies total
+  * [ ] if a month was won, add a sticker to the user
 
+
+[ ] Add try catch to all api-calls
 

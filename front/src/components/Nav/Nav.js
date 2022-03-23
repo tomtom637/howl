@@ -42,7 +42,7 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
           <ul className="nav-list">
-            <li className="nav-item">
+            <li tabIndex={1} className="nav-item">
               <Link className='nav-title' onClick={() => setToggledMenu(false)} to="/about">
                 <i className='icon-logo'></i>
                 ABOUT
@@ -50,7 +50,7 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
             </li>
             {logged && (
               <>
-                <li className="nav-item">
+                <li tabIndex={1} className="nav-item">
                   <div className="nav-title" onClick={() => setToggledProfile(!toggledProfile)}>
                     <i className="icon-profile"></i>
                     PROFILE
@@ -69,7 +69,7 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
                     )}
                   </AnimatePresence>
                 </li>
-                <li className="nav-item">
+                <li tabIndex={1} className="nav-item">
                   <Link
                     className='nav-title'
                     to="/Stats"
@@ -79,7 +79,7 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
                     STATS
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li tabIndex={1} className="nav-item">
                   <Link
                     className='nav-title'
                     to="/"

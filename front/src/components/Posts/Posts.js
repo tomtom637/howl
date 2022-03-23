@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { userInfosAtom, tokenAtom, postsAtom } from "../../store";
 import { getPosts, markPostAsRead } from '../../api-calls';
@@ -42,6 +42,7 @@ const Post = (props) => {
   const [showReplies, setShowReplies] = useState(false);
   const [unreadAlert, setUnreadAlert] = useState(true);
   const [isRead, setIsRead] = useState(false);
+  const [toggleNewPost, setToggleNewPost] = useState(false);
 
   const markAsRead = (postId) => {
     markPostAsRead(postId, token);
@@ -139,15 +140,28 @@ const Post = (props) => {
               }}
             >
               replies &#10095;&#10095;
-              {unreadAlert && <span className="post__unread"> (new)</span>}
+              {unreadAlert && <span className="post__unread"> new replies</span>}
             </button>
           )
         )}
-        <div className="post__add-post-container">
-          <AddPost categoryId={category_id} parentId={id} setPostAdded={props.setPostAdded} index={props.index} />
-        </div>
+        <button
+          tabIndex={1 + props.index}
+          className="post__toggle-new-post"
+          onClick={() => {
+            setToggleNewPost(!toggleNewPost);
+            setShowReplies(true);
+          }}
+        >
+          <i className='icon-plus'></i>
+          <span>Write a reply</span>
+        </button>
+        {toggleNewPost && (
+          <div className="post__add-post-container">
+            <AddPost categoryId={category_id} parentId={id} setPostAdded={props.setPostAdded} index={props.index} />
+          </div>
+        )}
       </div>
-    </div >
+    </div>
   );
 };
 

@@ -47,6 +47,7 @@ const PostsStyled = styled.div`
                             "  gif      gif      gif   "
                             "  show     show    show   "
                             "  replies replies replies "
+                            "  tog-new  tog-new    .   "
                             "add-post add-post add-post";
       grid-template-columns: 0.3fr 1fr 1fr;
       grid-gap: 0.1rem;
@@ -105,6 +106,7 @@ const PostsStyled = styled.div`
       margin-top: 0.5rem;
     }
     &__show-replies {
+      position: relative;
       grid-area: show;
       text-align: center;
       padding: 0.7rem;
@@ -117,13 +119,13 @@ const PostsStyled = styled.div`
       cursor: pointer;
       border-radius: var(--border-radius);
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 0.5fr 1fr;
       align-items: center;
       border: none;
       
       &:focus {
         outline: none;
-        border: 2px solid #333;
+        color: var(--secondary);
       }
       &:hover {
         color: var(--secondary);
@@ -148,8 +150,30 @@ const PostsStyled = styled.div`
       }
     }
     &__unread {
+      position: absolute;
       color: var(--secondary);
       font-size: 0.8rem;
+      top: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &__toggle-new-post {
+      grid-area: tog-new;
+      display: flex;
+      width: 8rem;
+      font-size: 1.1rem;
+      justify-content: space-between;
+      align-items: center;
+      border: none;
+      color: #555;
+
+      &:focus {
+        outline: none;
+        color: var(--secondary);
+      }
+      &:hover {
+        color: var(--secondary);
+      }
     }
     &__add-post-container {
       grid-area: add-post;

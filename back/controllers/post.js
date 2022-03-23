@@ -16,7 +16,9 @@ exports.getTwentyPostsAndTheirReplies = async (req, res) => {
       u.picture AS picture,
       u.motto AS motto,
       p.content AS "message",
+      p.gif_address AS gif_address,
       c.name AS from_category,
+      c.id AS category_id,
       c.picture AS category_picture
       FROM users u
       JOIN posts p ON u.id = p.user_id
@@ -39,6 +41,7 @@ exports.getTwentyPostsAndTheirReplies = async (req, res) => {
         u.picture AS picture,
         u.motto AS motto,
         p.content AS "message",
+        p.gif_address AS gif_address,
         c.name AS from_category,
         c.picture AS category_picture,
         rp.user_id AS "read"        
@@ -84,19 +87,21 @@ exports.addToReadPosts = async (req, res) => {
 exports.addPost = async (req, res) => {
   const { userId } = getUserTokenInfos(req);
   const { categoryId, content, gifAddress, parentId } = req.body.post;
+
+  const cleanedContent = content.replace(/'/g, "''");
   try {
     await pool.query(/*sql*/`
       INSERT INTO posts (
         user_id,
-        category_id,
-        content
+        category_id
+        ${content ? ', content' : ''}
         ${gifAddress ? ', gif_address' : ''}
         ${parentId ? ', parent_id' : ''}
       )
       VALUES (
         ${userId},
-        ${categoryId},
-        '${content}'
+        ${categoryId}
+        ${content ? `, '${cleanedContent}'` : ''}
         ${gifAddress ? `, '${gifAddress}'` : ''}
         ${parentId ? `, '${parentId}'` : ''}
       );

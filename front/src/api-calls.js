@@ -229,7 +229,7 @@ export const markPostAsRead = (postId, token) => {
   fetchData();
 }
 
-export const addPost = (post, setPost, userInfos, token) => {
+export const addPost = (post, setPost, setPostAdded, token, userInfos) => {
   const fetchData = async () => {
     const options = {
       method: 'POST',
@@ -237,12 +237,13 @@ export const addPost = (post, setPost, userInfos, token) => {
         'Content-Type': 'application/json',
         'authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(post),
+      body: JSON.stringify({post}),
     };
     try {
       const response = await fetch(BASE_URL + '/posts', options);
       const result = await response.json();
-      setPost(result);
+      setPostAdded(prev => prev + 1);
+      setPost({...post, content: '', gifAddress: null});
     } catch (error) {
       console.log(error);
     }

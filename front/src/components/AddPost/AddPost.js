@@ -33,7 +33,6 @@ const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
 
   const handlePostSubmit = (e) => {
     e.preventDefault();
-    console.log(post);
     if (post.content.trim() === '' && !post.gifAddress) {
       return;
     }
@@ -97,7 +96,7 @@ const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
               className="add-gif__input"
               type="search"
               name="search" id="search"
-              autocomplete="off"
+              autoComplete="off"
             />
           </div>
           <button tabIndex={1 + index} className="add-gif__button" type="submit">go</button>

@@ -40,16 +40,17 @@ const PostsStyled = styled.div`
       align-items: start;
       padding: 1rem;
       grid-template-areas:  "category category category"
-                            "  picture message message "
-                            "  name   message  message "
-                            "  date   message  message "
-                            "  motto    motto    motto "
+                            "  picture    .       name "
+                            "  picture    .       date "
+                            "  message message message "
                             "  gif      gif      gif   "
+                            "  motto    motto    motto "
                             "  show     show    show   "
                             "  replies replies replies "
                             "  tog-new  tog-new    .   "
                             "add-post add-post add-post";
       grid-template-columns: 0.3fr 1fr 1fr;
+      grid-template-rows: auto 2.5rem auto;
       grid-gap: 0.1rem;
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
@@ -71,18 +72,19 @@ const PostsStyled = styled.div`
     }
     &__name {
       grid-area: name;
-      font-size: 1.1rem;
-      margin: 0.5rem 0;
+      font-size: 1.2rem;
+      text-align: right;
+      margin-top: 1rem;
     }
     &__date {
       grid-area: date;
       font-size: 0.8rem;
+      text-align: right;
     }
     &__message {
       grid-area: message;
       font-size: 1rem;
-      margin-top: 2rem;
-      margin-left: 1rem;
+      margin-top: 1rem;
       line-height: 1.6;
     }
     &__gif {
@@ -119,7 +121,7 @@ const PostsStyled = styled.div`
       cursor: pointer;
       border-radius: var(--border-radius);
       display: grid;
-      grid-template-columns: 1fr 0.5fr 1fr;
+      grid-template-columns: 1fr 160px 1fr;
       align-items: center;
       border: none;
       
@@ -166,6 +168,7 @@ const PostsStyled = styled.div`
       align-items: center;
       border: none;
       color: #555;
+      cursor: pointer;
 
       &:focus {
         outline: none;
@@ -185,27 +188,34 @@ const PostsStyled = styled.div`
     margin: 1.5rem 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    overflow-y: scroll;
+    height: 30rem;
+    background: #d7d9db;
+    border-radius: var(--border-radius);
   }
   .reply {
+    margin: auto;
     &__container {
       margin-bottom: 1rem;
       padding: 1rem 1rem 1rem 1rem;
       border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-      //background: rgba(0, 0, 0, 0.05);
       display: grid;
-      place-items: start;
+      //place-items: start;
       justify-content: start;
       align-items: start;
-      grid-template-areas:  "  reply-picture reply-message reply-message "
-                            "  reply-name  reply-message   reply-message "
-                            "  reply-date  reply-message   reply-message "
-                            "  reply-motto   reply-motto   reply-motto   "
-                            "  reply-gif      reply-gif      reply-gif   ";
+      grid-template-areas:  "  reply-picture        .         reply-name "
+                            "  reply-picture        .         reply-date "
+                            "  reply-message reply-message reply-message "
+                            "  reply-gif      reply-gif      reply-gif   "
+                            "  reply-motto    reply-motto    reply-motto ";
       grid-template-columns: 0.3fr 1fr 1fr;
+      grid-template-rows: 2.5rem auto;
       grid-gap: 0.1rem;
       border-radius: var(--border-radius);
-      //box-shadow: var(--box-shadow);
+
+      &:last-child {
+        border-bottom: none;
+      }
     }
     &__picture {
       grid-area: reply-picture;
@@ -213,33 +223,31 @@ const PostsStyled = styled.div`
     }
     &__name {
       grid-area: reply-name;
-      font-size: 1.1rem;
-      margin: 0.5rem 0;
+      font-size: 1.2rem;
+      text-align: right;
+      margin-top: 1rem;
     }
     &__date {
       grid-area: reply-date;
       font-size: 0.8rem;
+      text-align: right;
     }
     &__message {
       grid-area: reply-message;
       font-size: 1rem;
-      margin-top: 2rem;
-      margin-left: 1rem;
+      margin-top: 1rem;
       line-height: 1.6;
     }
     &__gif {
       margin-top: 1rem;
-      background: var(--dark-grey);
-      border: 10px ridge #606060;
+      /* border: 10px ridge #606060; */
       grid-area: reply-gif;
-      padding: 1rem;
-      border-radius: 3rem;
-      width: 300px;
+      /* border-radius: 1rem;
+      width: 200px; */
 
       img {
-        margin: 0 auto;
-        width: 200px;
-        border-radius: 1rem;
+        width: 270px;
+        border-radius: 0.4rem;
       }
     }
     &__motto {
@@ -248,8 +256,6 @@ const PostsStyled = styled.div`
       grid-area: reply-motto;
       margin-top: 0.5rem;
     }
-
-
   }
 
  @media ${device.tablet} {

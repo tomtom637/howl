@@ -43,6 +43,8 @@ const Post = (props) => {
   const [unreadAlert, setUnreadAlert] = useState(true);
   const [isRead, setIsRead] = useState(false);
   const [toggleNewPost, setToggleNewPost] = useState(false);
+  const addPostRef = useRef(null);
+  const repliesRef = useRef(null);
 
   const markAsRead = (postId) => {
     markPostAsRead(postId, token);
@@ -69,6 +71,22 @@ const Post = (props) => {
       setUnreadAlert(false);
     }
   }, [isRead]);
+
+  useEffect(() => {
+    if (toggleNewPost) {
+      addPostRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }, [toggleNewPost]);
+
+  useEffect(() => {
+    if(repliesRef.current) {
+      repliesRef.current.scrollTo({
+        top: repliesRef.current.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, [posts]);
 
 
   return (
@@ -100,11 +118,14 @@ const Post = (props) => {
               <button
                 tabIndex={1 + props.index}
                 className="post__show-replies"
-                onClick={() => setShowReplies(!showReplies)}
+                onClick={() => {
+                  setShowReplies(!showReplies);
+                  setToggleNewPost(false);
+                }}
               >
                 Hide replies &#10095;&#10095;
               </button>
-              <div className="replies-container">
+              <div ref={repliesRef} id="replies-container" className="replies-container">
                 {replies.map(({ id, user, date, message, picture, motto, gif_address, read }) => (
                   <div className="reply__container" key={id}>
                     <div className="reply__picture">
@@ -145,6 +166,7 @@ const Post = (props) => {
           )
         )}
         <button
+          ref={addPostRef}
           tabIndex={1 + props.index}
           className="post__toggle-new-post"
           onClick={() => {
@@ -157,7 +179,12 @@ const Post = (props) => {
         </button>
         {toggleNewPost && (
           <div className="post__add-post-container">
-            <AddPost categoryId={category_id} parentId={id} setPostAdded={props.setPostAdded} index={props.index} />
+            <AddPost
+              categoryId={category_id}
+              parentId={id}
+              setPostAdded={props.setPostAdded}
+              index={props.index}
+            />
           </div>
         )}
       </div>

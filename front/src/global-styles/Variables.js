@@ -3,6 +3,7 @@ const Variable = /*css*/`
     --primary-brightest: #dcf2ff;
     --primary-lighter: #b9d4e4;
     --primary-light: #547d95;
+    --primary-gray-light: #c7cdd1;
     --primary: #416f89;
     --primary-dark: #2a4758;
     --secondary: #ea5a47;

@@ -15,16 +15,16 @@ exports.getAllCategories = async (req, res) => {
   }
 }
 
-// GET THE 20 MOST RECENT POSTS FROM OFFSET
+// GET THE 5 MOST RECENT POSTS FROM OFFSET
 // ASSOCIATED WITH A CATEGORY
 // BRINGING ITS REPLIES IF ANY
 // ALSO CHECKING IF THE USER HAS READ THEM
-exports.getTwentyPostsAndTheirRepliesFromCategory = async (req, res) => {
+exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
   const userID = getUserTokenInfos(req).userId;
   const { categoryId, offset } = req.params;
   let result;
   try {
-    const twentyPosts = await pool.query(/*sql*/`
+    const fivePosts = await pool.query(/*sql*/`
 
       SELECT p.id AS id,
       to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
@@ -41,10 +41,10 @@ exports.getTwentyPostsAndTheirRepliesFromCategory = async (req, res) => {
       OFFSET ${offset};
     `);
 
-    const twentyPostsIds = twentyPosts.rows.map(post => post.id);
-    result = twentyPosts.rows;
+    const fivePostsIds = fivePosts.rows.map(post => post.id);
+    result = fivePosts.rows;
     
-    const repliesPromises = twentyPostsIds.map(async (post, i) => {
+    const repliesPromises = fivePostsIds.map(async (post, i) => {
       const replies = await pool.query(/*sql*/`
 
         SELECT p.id AS id,

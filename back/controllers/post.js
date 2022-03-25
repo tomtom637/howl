@@ -1,14 +1,14 @@
 const pool = require('../helpers/pool');
 const getUserTokenInfos = require('../helpers/getUserTokenInfos');
 
-// GET THE 20 MOST RECENT POSTS FROM OFFSET
+// GET THE 5 MOST RECENT POSTS FROM OFFSET
 // BRINGING ITS REPLIES IF ANY
 // ALSO CHECKING IF THE USER HAS READ THEM
-exports.getTwentyPostsAndTheirReplies = async (req, res) => {
+exports.getFivePostsAndTheirReplies = async (req, res) => {
   const userID = getUserTokenInfos(req).userId;
   let result;
   try {
-    const twentyPosts = await pool.query(/*sql*/`
+    const fivePosts = await pool.query(/*sql*/`
 
       SELECT p.id AS id,
       to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
@@ -25,14 +25,14 @@ exports.getTwentyPostsAndTheirReplies = async (req, res) => {
       JOIN categories c ON c.id = p.category_id
       WHERE p.parent_id IS NULL
       ORDER BY p.creation_date desc
-      LIMIT 20
+      LIMIT 5
       OFFSET ${req.params.offset};
     `);
 
-    const twentyPostsIds = twentyPosts.rows.map(post => post.id);
-    result = twentyPosts.rows;
+    const fivePostsIds = fivePosts.rows.map(post => post.id);
+    result = fivePosts.rows;
     
-    const repliesPromises = twentyPostsIds.map(async (post, i) => {
+    const repliesPromises = fivePostsIds.map(async (post, i) => {
       const replies = await pool.query(/*sql*/`
 
         SELECT p.id AS id,

@@ -4,8 +4,8 @@ const auth = require('../middleware/auth');
 
 const postCtrl = require('../controllers/post');
 
-// GET 20 POSTS
-router.get('/:offset', auth, postCtrl.getTwentyPostsAndTheirReplies);
+// GET 5 POSTS
+router.get('/:offset', auth, postCtrl.getFivePostsAndTheirReplies);
 
 // ADD TO READ-POSTS WHEN A POST IS READ
 router.post('/read/:postId', auth, postCtrl.addToReadPosts);

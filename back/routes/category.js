@@ -9,8 +9,8 @@ const userCtrl = require('../controllers/category');
 // GET ALL CATEGORIES
 router.get('/', auth, userCtrl.getAllCategories);
 
-// GET THE FIRST 20 POSTS FROM OFFSET AND ITS REPLIES ASSOCIATED WITH A CATEGORY
-router.get('/:categoryId/:offset', auth, userCtrl.getTwentyPostsAndTheirRepliesFromCategory);
+// GET THE FIRST 5 POSTS FROM OFFSET AND ITS REPLIES ASSOCIATED WITH A CATEGORY
+router.get('/:categoryId/:offset', auth, userCtrl.getFivePostsAndTheirRepliesFromCategory);
 
 // REGISTER A NEW CATEGORY
 router.post('/', admin, userCtrl.addCategory);

@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import AddPostStyled from "./AddPost-styles";
 import { atom, useAtom } from 'jotai';
 import { userInfosAtom, tokenAtom } from "../../store";
-import { addPost } from "../../api-calls";
+import { addPost, getAllCategories } from "../../api-calls";
 
-const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
+const AddPost = (props) => {
+  const { categoryId, parentId, setPostAdded } = props;
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [token, setToken] = useAtom(tokenAtom);
   const textArea = useRef(null);
@@ -17,6 +18,9 @@ const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
   });
   const [gifLoading, setGifLoading] = useState(false);
   const [gifsPreview, setGifsPreview] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [showCategories, setShowCategories] = useState(false);
+  const [categorySelected, setCategorySelected] = useState(null);
   const { nickname, email, motto, picture } = userInfos ?? {};
 
   const handleTextAreaSize = () => {
@@ -60,13 +64,58 @@ const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
 
   useEffect(() => {
     handleTextAreaSize();
+    getAllCategories(setCategories, token);
   }, []);
+
+  useEffect(() => {
+    textArea.current.focus();
+  }, [textArea.current])
 
   return (
     <AddPostStyled>
       <form className="add-post" onSubmit={e => handlePostSubmit(e)}>
+        {!categoryId && (
+          <div className="add-post__categories-wrapper">
+            <button
+              tabIndex={1}
+              className="add-post__categories-button"
+              type="button"
+              onClick={() => setShowCategories(!showCategories)}
+            >
+              {!post.categoryId
+                ? 'Select a category'
+                : `${categorySelected}`
+              }
+            </button>
+            {showCategories && (
+              <div className="add-post__categories-container">
+                {categories.map(category => (
+                  <div
+                    key={category.id}
+                    className="add-post__category-container"
+                    onClick={() => {
+                      setPost({ ...post, categoryId: category.id });
+                      setCategorySelected(category.name);
+                      setShowCategories(false);
+                    }}
+                  >
+                    {category.picture && (
+                      <img
+                        className="add-post__category-picture"
+                        src={category.picture}
+                        alt={category.name}
+                      />
+                    )}
+                    <h3 tabIndex={1} className="add-post__category-name">{category.name}</h3>
+                    <p className="add-post__category-description">{category.description}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
         <textarea
-          tabIndex={1 + index}
+          tabIndex={2 + props.index}
           className="add-post__textarea"
           ref={textArea}
           onFocus={e => handleTextAreaSize(e)}
@@ -84,13 +133,13 @@ const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
           value={post.gifAddress || ''}
           readOnly
         />
-        <button tabIndex={2 + index} type="submit" className="add-post__submit">PUBLISH</button>
+        <button tabIndex={3 + props.index} type="submit" className="add-post__submit">PUBLISH</button>
       </form>
       <form onSubmit={e => handleGifSearch(e)} className="add-gif">
         <div className="add-gif__gif-container">
           <div className="add-gif__gif-search">
             <input
-              tabIndex={1 + index}
+              tabIndex={2 + props.index}
               ref={searchInput}
               placeholder="search for an Emoji"
               className="add-gif__input"
@@ -99,7 +148,7 @@ const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
               autoComplete="off"
             />
           </div>
-          <button tabIndex={1 + index} className="add-gif__button" type="submit">go</button>
+          <button tabIndex={2 + props.index} className="add-gif__button" type="submit">go</button>
         </div>
         {typeof gifsPreview !== undefined && gifsPreview.length > 0
           && !gifLoading
@@ -114,6 +163,7 @@ const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
                   onClick={e => {
                     setPost({ ...post, gifAddress: gif.media[0].tinygif.url });
                     setGifsPreview([]);
+                    searchInput.current.value = '';
                   }}
                 />
               ))}
@@ -125,8 +175,6 @@ const AddPost = ({ categoryId, parentId, setPostAdded, index }) => {
           </div>
         )}
       </form>
-
-      {/* {mottoChanged && <button type="submit" className="edit-button profile__edit">UPDATE</button>} */}
     </AddPostStyled>
   );
 };

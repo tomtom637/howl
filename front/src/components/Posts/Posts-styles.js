@@ -10,6 +10,37 @@ const PostsStyled = styled.div`
   justify-content: center;
   color: var(--dark-grey);
 
+  .add-parent-post-container {
+    position: relative;
+    padding: 1rem;
+    background: rgba(225, 230, 234, 0.6);    
+  }
+  .toggle-new-post {
+    padding: 0.5rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    border: none;
+    background: none;
+
+    &:hover {
+      color: var(--secondary);
+    }
+    &:focus {
+      outline: none;
+      color: var(--secondary);
+    }
+
+    i {
+      margin-right: 0.5rem;
+      font-size: 1.1rem;
+    }
+    span {
+      font-size: 1.1rem;
+    }
+  }
   .post {
     &__container {
       margin: 1rem 0;
@@ -40,7 +71,7 @@ const PostsStyled = styled.div`
       align-items: start;
       padding: 1rem;
       grid-template-areas:  "category category category"
-                            "  picture    .       name "
+                            "  picture  name      name "
                             "  picture    .       date "
                             "  message message message "
                             "  gif      gif      gif   "
@@ -68,13 +99,14 @@ const PostsStyled = styled.div`
     }
     &__picture {
       grid-area: picture;
-      width: 120px;
+      width: 100px;
     }
     &__name {
       grid-area: name;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       text-align: right;
       margin-top: 1rem;
+      white-space: nowrap;
     }
     &__date {
       grid-area: date;
@@ -89,16 +121,12 @@ const PostsStyled = styled.div`
     }
     &__gif {
       margin-top: 1rem;
-      background: var(--dark-grey);
-      border: 10px dashed var(--secondary-light);
       grid-area: gif;
-      padding: 1rem;
-      border-radius: 3rem;
 
       img {
+        width: 270px;
+        border-radius: 0.4rem;
         margin: 0 auto;
-        width: 200px;
-        border-radius: 1rem;
       }
     }
     &__motto {
@@ -135,27 +163,27 @@ const PostsStyled = styled.div`
       &::before {
         content: '';
         display: block;
-        border-bottom: 3px solid var(--primary-gray-light);
+        border-bottom: 2px solid var(--primary-gray-light);
         grid-column: 1 / 2;
       }
       &:hover::before {
-        border-bottom: 3px solid var(--secondary-light);
+        border-bottom: 1px solid var(--secondary);
       }
       &::after {
         content: '';
         display: block;
-        border-bottom: 3px solid var(--primary-gray-light);
+        border-bottom: 2px solid var(--primary-gray-light);
         grid-column: 3 / 4;
       }
       &:hover::after {
-        border-bottom: 3px solid var(--secondary-light);
+        border-bottom: 1px solid var(--secondary);
       }
     }
     &__unread {
       position: absolute;
       color: var(--secondary);
-      font-size: 0.8rem;
-      top: 2rem;
+      font-size: 0.7rem;
+      top: 1.5rem;
       left: 50%;
       transform: translateX(-50%);
     }
@@ -196,14 +224,13 @@ const PostsStyled = styled.div`
   .reply {
     margin: auto;
     &__container {
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       padding: 1rem 1rem 1rem 1rem;
       border-bottom: 2px solid rgba(0, 0, 0, 0.2);
       display: grid;
-      //place-items: start;
       justify-content: start;
       align-items: start;
-      grid-template-areas:  "  reply-picture        .         reply-name "
+      grid-template-areas:  "  reply-picture    reply-name    reply-name "
                             "  reply-picture        .         reply-date "
                             "  reply-message reply-message reply-message "
                             "  reply-gif      reply-gif      reply-gif   "
@@ -219,13 +246,16 @@ const PostsStyled = styled.div`
     }
     &__picture {
       grid-area: reply-picture;
-      width: 120px;
+      width: 100px;
+      height: 100px;
+      overflow: hidden;
     }
     &__name {
       grid-area: reply-name;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       text-align: right;
       margin-top: 1rem;
+      white-space: nowrap;
     }
     &__date {
       grid-area: reply-date;
@@ -240,14 +270,12 @@ const PostsStyled = styled.div`
     }
     &__gif {
       margin-top: 1rem;
-      /* border: 10px ridge #606060; */
       grid-area: reply-gif;
-      /* border-radius: 1rem;
-      width: 200px; */
 
       img {
         width: 270px;
         border-radius: 0.4rem;
+        margin: 0 auto;
       }
     }
     &__motto {
@@ -258,9 +286,37 @@ const PostsStyled = styled.div`
     }
   }
 
- @media ${device.tablet} {
-   
- }
+  @media ${device.tablet} {
+    .post {
+
+      &__body {
+        grid-template-areas:  "category category category"
+                              "  picture     .      name "
+                              "  picture     .      date "
+                              "  message  message    gif "
+                              "  motto    motto    motto "
+                              "  show     show    show   "
+                              "  replies replies replies "
+                              "  tog-new  tog-new    .   "
+                              "add-post add-post add-post";
+      }
+      &__message {
+        margin-top: 2rem;
+      }
+    }
+    .reply {
+
+      &__container {
+        grid-template-areas:  "  reply-picture         .         reply-name "
+                              "  reply-picture         .         reply-date "
+                              "  reply-message  reply-message     reply-gif "
+                              "  reply-motto    reply-motto     reply-motto ";
+      }
+      &__message {
+        margin-top: 2rem;
+      }
+    }
+  }
 `;
 
 export default PostsStyled;

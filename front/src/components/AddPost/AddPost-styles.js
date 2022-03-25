@@ -4,8 +4,41 @@ import { device } from '../../device';
 const AddPostStyled = styled.div`
   display: flex;
   flex-direction: column;
+
   .add-post {
     
+    &__categories-wrapper {
+      margin-bottom: 1rem;
+    }
+    &__categories-button {
+      padding: 0.2rem 0.5rem;
+    }
+    &__categories-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.3rem;
+    }
+    &__category-container {
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    &__category-picture {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.6;
+      z-index: -1;
+      height: 100px;
+      width: 100%;
+      object-fit: cover;
+    }
+    &__category-name {
+      padding: 1rem 0 0.2rem 1.5rem;
+    }
+    &__category-description {
+      padding: 0 0 1rem 1.5rem;
+    }
     &__textarea {
       width: 100%;
       padding: 1rem;
@@ -15,7 +48,7 @@ const AddPostStyled = styled.div`
 
       &:focus {
         outline: none;
-        border: 3px solid var(--primary-gray-light);
+        border: 1px solid var(--dark-grey);
         border-radius: var(--border-radius);
       }
     }
@@ -38,7 +71,7 @@ const AddPostStyled = styled.div`
       border-radius: var(--border-radius);
 
       &:focus {
-        outline: 2px solid #333;
+        outline: 1px solid var(--dark-grey);
         border-right: none;
       }
       &:hover {
@@ -71,7 +104,7 @@ const AddPostStyled = styled.div`
 
       &:focus {
         outline: none;
-        border: 3px solid var(--primary-gray-light);
+        border: 1px solid var(--dark-grey);
         border-right: none;
         border-radius: var(--border-radius) 0 0 var(--border-radius);
       }
@@ -88,7 +121,7 @@ const AddPostStyled = styled.div`
       border-radius: 0 var(--border-radius) var(--border-radius) 0;
 
       &:focus {
-        outline: 2px solid #333;
+        outline: 1px solid var(--dark-grey);
       }
       &:hover {
         box-shadow: 0 0 0.2rem 0 rgba(0, 0, 0, 0.2);
@@ -99,7 +132,7 @@ const AddPostStyled = styled.div`
     &__gif-preview-container {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: masonery;
+      grid-template-rows: masonry;
       height: 20rem;
       overflow: scroll;
       border: 5px solid rgba(0, 0, 0, 0.5);
@@ -109,6 +142,7 @@ const AddPostStyled = styled.div`
     }
     &__gif-chosen {
       width: 250px;
+      margin: 1rem auto;
     }
   }
   @media ${device.tablet} {

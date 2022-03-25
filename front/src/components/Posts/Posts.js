@@ -12,6 +12,9 @@ const Posts = () => {
   const [token, setToken] = useAtom(tokenAtom);
   const [postAdded, setPostAdded] = useState(1);
   const [busy, setBusy] = useState(true);
+  const [toggleNewPost, setToggleNewPost] = useState(false);
+
+  const tabIndex = -1;
 
   useEffect(() => {
     getPosts(posts, setPosts, setBusy, token);
@@ -19,6 +22,26 @@ const Posts = () => {
 
   return (
     <PostsStyled className="posts-container">
+      <button
+        tabIndex={1}
+        className="toggle-new-post"
+        onClick={() => {
+          setToggleNewPost(!toggleNewPost);
+        }}
+      >
+        <i className='icon-plus'></i>
+        <span>Write a new post</span>
+      </button>
+      {toggleNewPost && (
+        <div className="add-parent-post-container">
+          <AddPost
+            categoryId={null}
+            parentId={null}
+            index={tabIndex}
+            setPostAdded={setPostAdded}
+          />
+        </div>
+      )}
       {!busy && posts.map((post, index) => {
         return (
           <Post
@@ -79,7 +102,7 @@ const Post = (props) => {
   }, [toggleNewPost]);
 
   useEffect(() => {
-    if(repliesRef.current) {
+    if (repliesRef.current) {
       repliesRef.current.scrollTo({
         top: repliesRef.current.scrollHeight,
         left: 0,
@@ -91,7 +114,9 @@ const Post = (props) => {
 
   return (
     <div className="post__container" key={id}>
-      {category_picture && <img src={category_picture} alt={from_category} className="post__category-picture" />}
+      {category_picture && (
+        <img src={category_picture} alt={from_category} className="post__category-picture" />
+      )}
       <div className="post__body">
         <div className='post__category'>{from_category}</div>
         <div className='post__picture'>
@@ -116,7 +141,7 @@ const Post = (props) => {
           showReplies ? (
             <>
               <button
-                tabIndex={1 + props.index}
+                tabIndex={2 + props.index}
                 className="post__show-replies"
                 onClick={() => {
                   setShowReplies(!showReplies);
@@ -152,7 +177,7 @@ const Post = (props) => {
             </>
           ) : (
             <button
-              tabIndex={1 + props.index}
+              tabIndex={2 + props.index}
               className="post__show-replies"
               onClick={() => {
                 setShowReplies(!showReplies);
@@ -167,7 +192,7 @@ const Post = (props) => {
         )}
         <button
           ref={addPostRef}
-          tabIndex={1 + props.index}
+          tabIndex={2 + props.index}
           className="post__toggle-new-post"
           onClick={() => {
             setToggleNewPost(!toggleNewPost);

@@ -250,3 +250,22 @@ export const addPost = (post, setPost, setPostAdded, token, userInfos) => {
   };
   fetchData();
 };
+
+export const getAllCategories = (setCategories, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await fetch(BASE_URL + '/categories', options);
+      const result = await response.json();
+      setCategories([...result.categories]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData();
+}

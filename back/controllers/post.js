@@ -17,6 +17,7 @@ exports.getFivePostsAndTheirReplies = async (req, res) => {
       u.motto AS motto,
       p.content AS "message",
       p.gif_address AS gif_address,
+      p.parent_id AS parent_id,
       c.name AS from_category,
       c.id AS category_id,
       c.picture AS category_picture
@@ -42,6 +43,7 @@ exports.getFivePostsAndTheirReplies = async (req, res) => {
         u.motto AS motto,
         p.content AS "message",
         p.gif_address AS gif_address,
+        p.parent_id AS parent_id,
         c.name AS from_category,
         c.picture AS category_picture,
         rp.user_id AS "read"        
@@ -56,6 +58,59 @@ exports.getFivePostsAndTheirReplies = async (req, res) => {
       result[i].replies = replies.rows;
     });
     await Promise.all(repliesPromises);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+}
+
+// GET A POST
+exports.getPost = async (req, res) => {
+  const { userId } = getUserTokenInfos(req);
+  const { postId } = req.params;
+  let result;
+  try {
+    const post = await pool.query(/*sql*/`
+      SELECT p.id AS id,
+      to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
+      u.nickname AS user,
+      u.picture AS picture,
+      u.motto AS motto,
+      p.content AS "message",
+      p.gif_address AS gif_address,
+      p.parent_id AS parent_id,
+      c.name AS from_category,
+      c.id AS category_id,
+      c.picture AS category_picture
+      FROM users u
+      JOIN posts p ON u.id = p.user_id
+      JOIN categories c ON c.id = p.category_id
+      WHERE p.id = ${postId};
+    `);
+
+    result = post.rows[0];
+
+    const repliesPromise = await pool.query(/*sql*/`
+      SELECT p.id AS id,
+      to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
+      u.nickname AS user,
+      u.picture AS picture,
+      u.motto AS motto,
+      p.content AS "message",
+      p.gif_address AS gif_address,
+      p.parent_id AS parent_id,
+      c.name AS from_category,
+      c.picture AS category_picture,
+      rp.user_id AS "read"        
+      FROM users u
+      JOIN posts p ON u.id = p.user_id
+      JOIN categories c ON c.id = p.category_id
+      LEFT JOIN read_posts rp ON rp.post_id = p.id AND rp.user_id = ${userId}
+      WHERE p.parent_id = ${postId}
+      ORDER BY p.creation_date ASC;
+    `);
+    result.replies = repliesPromise.rows;
+    await Promise.all([repliesPromise]);
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({ error });
@@ -90,7 +145,7 @@ exports.addPost = async (req, res) => {
 
   const cleanedContent = content.replace(/'/g, "''");
   try {
-    await pool.query(/*sql*/`
+    const postId = await pool.query(/*sql*/`
       INSERT INTO posts (
         user_id,
         category_id
@@ -104,9 +159,10 @@ exports.addPost = async (req, res) => {
         ${content ? `, '${cleanedContent}'` : ''}
         ${gifAddress ? `, '${gifAddress}'` : ''}
         ${parentId ? `, '${parentId}'` : ''}
-      );
+      )
+      RETURNING id;
     `);
-    res.status(201).json({ message: 'Post added successfully!' });
+    res.status(201).json({ message: 'Post added successfully!', postId: postId.rows[0].id });
   } catch (error) {
     res.status(400).json({ error });
   }

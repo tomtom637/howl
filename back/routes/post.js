@@ -7,6 +7,9 @@ const postCtrl = require('../controllers/post');
 // GET 5 POSTS
 router.get('/:offset', auth, postCtrl.getFivePostsAndTheirReplies);
 
+// GET A POST
+router.get('/single/:postId', auth, postCtrl.getPost);
+
 // ADD TO READ-POSTS WHEN A POST IS READ
 router.post('/read/:postId', auth, postCtrl.addToReadPosts);
 

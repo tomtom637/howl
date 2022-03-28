@@ -22,7 +22,7 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksInVzZX
 {
   "post": {
     "categoryId": 1,
-    "content": "It''s sad to think about being deleted soon. I hope you''re happy with your life."
+    "content": "I like rasberry pie"
   }
 }
 

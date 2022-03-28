@@ -192,7 +192,7 @@ export const getAllUsers = (setUsers, token) => {
   fetchData();
 };
 
-export const getPosts = (posts, setPosts, setBusy, token) => {
+export const getPosts = (posts, setPosts, fetchOffset, setFetchOffset, token) => {
   const fetchData = async () => {
     const options = {
       method: 'GET',
@@ -201,16 +201,36 @@ export const getPosts = (posts, setPosts, setBusy, token) => {
       },
     };
     try {
-      const response = await fetch(BASE_URL + '/posts/0', options);
+      const response = await fetch(BASE_URL + `/posts/${fetchOffset}`, options);
       const result = await response.json();
-      setPosts(() => result);
-      setBusy(false);
+      setPosts(() => [...posts, ...result]);
+      setFetchOffset(prevOffset => prevOffset + 5);
     } catch (error) {
       console.log(error);
     }
   };
   fetchData();
 };
+
+export const getPost = (setNewPost, postId, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await fetch(BASE_URL + `/posts/single/${postId}`, options);
+      const result = await response.json();
+      Promise.all([result]);
+      setNewPost(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData();
+}
 
 export const markPostAsRead = (postId, token) => {
   const fetchData = async () => {
@@ -229,7 +249,7 @@ export const markPostAsRead = (postId, token) => {
   fetchData();
 }
 
-export const addPost = (post, setPost, setPostAdded, token, userInfos) => {
+export const addPost = (setbusy, posts, setPosts, post, setPost, token, userInfos, newPost, setNewPost) => {
   const fetchData = async () => {
     const options = {
       method: 'POST',
@@ -242,13 +262,19 @@ export const addPost = (post, setPost, setPostAdded, token, userInfos) => {
     try {
       const response = await fetch(BASE_URL + '/posts', options);
       const result = await response.json();
-      setPostAdded(prev => prev + 1);
-      setPost({...post, content: '', gifAddress: null});
+      return result;
     } catch (error) {
       console.log(error);
     }
   };
-  fetchData();
+  let resultId = null;
+  fetchData()
+    .then(result => {
+      resultId = result.postId; 
+      getPost(setNewPost, resultId, token);  
+    })
+    .then(() => markPostAsRead(resultId, token))
+    .then(() => setPost({...post, content: '', gifAddress: null}));
 };
 
 export const getAllCategories = (setCategories, token) => {

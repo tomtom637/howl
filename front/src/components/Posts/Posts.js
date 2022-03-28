@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { userInfosAtom, tokenAtom, postsAtom } from "../../store";
+import { userInfosAtom, tokenAtom, postsAtom, offsetAtom } from "../../store";
 import { getPosts, markPostAsRead } from '../../api-calls';
 import PostsStyled from "./Posts-styles";
 import AddPost from "../AddPost/AddPost";
@@ -10,15 +10,30 @@ import defaultPicture from '../../images/avatar_default.jpg';
 const Posts = () => {
   const [posts, setPosts] = useAtom(postsAtom);
   const [token, setToken] = useAtom(tokenAtom);
-  const [postAdded, setPostAdded] = useState(1);
+  const [fetchOffset, setFetchOffset] = useAtom(offsetAtom);
   const [busy, setBusy] = useState(true);
   const [toggleNewPost, setToggleNewPost] = useState(false);
+  const [fetchMorePosts, setFectchMorePosts] = useState(false);
 
   const tabIndex = -1;
 
+  // fetch posts on mount if there are no posts
+  // or if the user has scrolled to the bottom of the page
   useEffect(() => {
-    getPosts(posts, setPosts, setBusy, token);
-  }, [postAdded]);
+    if (posts.length === 0) {
+      getPosts(posts, setPosts, fetchOffset, setFetchOffset, token);
+    }
+    if (fetchMorePosts) {
+      getPosts(posts, setPosts, fetchOffset, setFetchOffset, token);
+      setFectchMorePosts(false);
+    }
+  }, [fetchMorePosts]);
+
+  useEffect(() => {
+    if (posts.length > 0) {
+      setBusy(false);
+    }
+  }, [posts]);
 
   return (
     <PostsStyled className="posts-container">
@@ -38,16 +53,15 @@ const Posts = () => {
             categoryId={null}
             parentId={null}
             index={tabIndex}
-            setPostAdded={setPostAdded}
           />
         </div>
       )}
       {!busy && posts.map((post, index) => {
         return (
           <Post
+            setBusy={setBusy}
             post={post}
             index={index}
-            setPostAdded={setPostAdded}
             key={post.id}
           />
         );
@@ -62,46 +76,52 @@ const Post = (props) => {
   const { id, user, date, message, gif_address, picture, motto, replies, from_category, category_id, category_picture } = props.post;
   const [token, setToken] = useAtom(tokenAtom);
   const [posts, setPosts] = useAtom(postsAtom);
-  const [showReplies, setShowReplies] = useState(false);
-  const [unreadAlert, setUnreadAlert] = useState(true);
+  const [toggleShowReplies, setToggleShowReplies] = useState(false);
+  const [unreadAlert, setUnreadAlert] = useState(false);
   const [isRead, setIsRead] = useState(false);
   const [toggleNewPost, setToggleNewPost] = useState(false);
   const addPostRef = useRef(null);
   const repliesRef = useRef(null);
 
-  const markAsRead = (postId) => {
-    markPostAsRead(postId, token);
-  };
-
+  // if isRead state is activated on a reply,
+  // we mark all siblings as read in the states
+  // and if not marked as read in the db,
+  // we add it to the read_post table
   useEffect(() => {
-    for (let reply of replies) {
-      if (!reply.read) {
-        break;
-      }
-      setIsRead(true);
-    }
     if (isRead) {
-      const newPosts = [...posts];
-      newPosts[props.index] = { ...posts[props.index] };
-      newPosts[props.index].replies = [...posts[props.index].replies];
+      const updatedPosts = [...posts];
+      updatedPosts[props.index] = { ...posts[props.index] };
+      updatedPosts[props.index].replies = [...posts[props.index].replies];
       posts[props.index].replies.forEach((reply, i) => {
         if (!reply.read) {
-          newPosts[props.index].replies[i].read = true;
-          markAsRead(reply.id);
+          updatedPosts[props.index].replies[i].read = true;
+          markPostAsRead(reply.id, token);
         }
       });
-      setPosts(newPosts);
-      setUnreadAlert(false);
+      setPosts(updatedPosts);
     }
   }, [isRead]);
 
+  // toggles the form for adding posts
   useEffect(() => {
     if (toggleNewPost) {
       addPostRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
   }, [toggleNewPost]);
 
+  // upon posts state load and update
+  // we mark the post as unread if it is not read
+  // we also scroll to the last reply after it has been published
   useEffect(() => {
+    // if one of the replies hasn't been read in this post
+    // we set unreadAlert to true
+    posts[props.index].replies.forEach((reply, i) => {
+      if (!reply.read) {
+        setUnreadAlert(true);
+      }
+    });
+    // scroll to the bottom of the replies after the user has added a new reply
+    // listens for posts updates
     if (repliesRef.current) {
       repliesRef.current.scrollTo({
         top: repliesRef.current.scrollHeight,
@@ -138,13 +158,13 @@ const Post = (props) => {
         )}
         <div className='post__motto'>{motto}</div>
         {typeof replies !== undefined && replies.length > 0 && (
-          showReplies ? (
+          toggleShowReplies ? (
             <>
               <button
                 tabIndex={2 + props.index}
                 className="post__show-replies"
                 onClick={() => {
-                  setShowReplies(!showReplies);
+                  setToggleShowReplies(!toggleShowReplies);
                   setToggleNewPost(false);
                 }}
               >
@@ -180,7 +200,7 @@ const Post = (props) => {
               tabIndex={2 + props.index}
               className="post__show-replies"
               onClick={() => {
-                setShowReplies(!showReplies);
+                setToggleShowReplies(!toggleShowReplies);
                 setUnreadAlert(false);
                 setIsRead(true);
               }}
@@ -196,7 +216,8 @@ const Post = (props) => {
           className="post__toggle-new-post"
           onClick={() => {
             setToggleNewPost(!toggleNewPost);
-            setShowReplies(true);
+            setToggleShowReplies(true);
+            setIsRead(true);
           }}
         >
           <i className='icon-plus'></i>
@@ -205,9 +226,10 @@ const Post = (props) => {
         {toggleNewPost && (
           <div className="post__add-post-container">
             <AddPost
+              // setIsRead={setIsRead}
+              setBusy={props.setBusy}
               categoryId={category_id}
               parentId={id}
-              setPostAdded={props.setPostAdded}
               index={props.index}
             />
           </div>

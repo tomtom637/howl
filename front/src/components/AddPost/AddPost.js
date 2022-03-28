@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import AddPostStyled from "./AddPost-styles";
 import { atom, useAtom } from 'jotai';
-import { userInfosAtom, tokenAtom } from "../../store";
+import { postsAtom, userInfosAtom, tokenAtom, offsetAtom } from "../../store";
 import { addPost, getAllCategories } from "../../api-calls";
 
 const AddPost = (props) => {
-  const { categoryId, parentId, setPostAdded } = props;
+  const { categoryId, parentId, setBusy, setIsRead } = props;
+  const [posts, setPosts] = useAtom(postsAtom);
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [token, setToken] = useAtom(tokenAtom);
+  const [fetchOffset, setFetchOffset] = useAtom(offsetAtom);
   const textArea = useRef(null);
   const searchInput = useRef(null);
   const [post, setPost] = useState({
@@ -21,6 +23,7 @@ const AddPost = (props) => {
   const [categories, setCategories] = useState([]);
   const [showCategories, setShowCategories] = useState(false);
   const [categorySelected, setCategorySelected] = useState(null);
+  const [newPost, setNewPost] = useState(null);
   const { nickname, email, motto, picture } = userInfos ?? {};
 
   const handleTextAreaSize = () => {
@@ -35,15 +38,15 @@ const AddPost = (props) => {
     textArea.current.style.height = `${height}px`;
   };
 
-  const handlePostSubmit = (e) => {
+  const handlePostSubmit = e => {
     e.preventDefault();
     if (post.content.trim() === '' && !post.gifAddress) {
       return;
     }
-    addPost(post, setPost, setPostAdded, token, userInfos);
+    addPost(setBusy, posts, setPosts, post, setPost, token, userInfos, newPost, setNewPost);
   };
 
-  const handleGifSearch = (e) => {
+  const handleGifSearch = e => {
     e.preventDefault();
     setGifLoading(true);
     const fetchData = async () => {
@@ -62,14 +65,37 @@ const AddPost = (props) => {
     fetchData().then(setGifLoading(false));
   };
 
+  // when a new post is added to states
+  // if it is of type parent post, we increment the offset
+  // else, we add the reply to the parent post
+  // making sure to set that reply as read
+  useEffect(() => {
+    if (newPost === null) return;
+    if (newPost.parent_id === null) {
+      setPosts(() => [newPost, ...posts]);
+      setFetchOffset(() => fetchOffset + 1);
+    } else {
+      newPost.read = true;
+      const updatedPosts = [...posts];
+      console.log(updatedPosts.filter(thePost => thePost.id === newPost.parent_id));
+      updatedPosts
+        .filter(thePost => thePost.id === newPost.parent_id)[0]
+        .replies
+        .push(newPost);
+      setPosts(() => updatedPosts);
+    }
+  }, [newPost]);
+
+  // upon mounting, we set the textarea to the height of the text
   useEffect(() => {
     handleTextAreaSize();
     getAllCategories(setCategories, token);
   }, []);
 
+  // if the textarea is into view, we focus to it
   useEffect(() => {
     textArea.current.focus();
-  }, [textArea.current])
+  }, [textArea.current]);
 
   return (
     <AddPostStyled>

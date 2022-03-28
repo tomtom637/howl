@@ -14,3 +14,5 @@ export const loggedAtom = atom(false);
 export const toggledProfileAtom = atom(false);
 
 export const postsAtom = atom([]);
+
+export const offsetAtom = atom(0);

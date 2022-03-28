@@ -21,9 +21,10 @@ const AddPost = (props) => {
   const [gifLoading, setGifLoading] = useState(false);
   const [gifsPreview, setGifsPreview] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [showCategories, setShowCategories] = useState(false);
+  const [toggleShowCategories, setToggleShowCategories] = useState(false);
   const [categorySelected, setCategorySelected] = useState(null);
   const [newPost, setNewPost] = useState(null);
+  const [noCategoryError, setNoCategoryError] = useState(false);
   const { nickname, email, motto, picture } = userInfos ?? {};
 
   const handleTextAreaSize = () => {
@@ -43,6 +44,11 @@ const AddPost = (props) => {
     if (post.content.trim() === '' && !post.gifAddress) {
       return;
     }
+    if (!post.categoryId) {
+      setNoCategoryError(true);
+      return;
+    }
+    setNoCategoryError(false);
     addPost(setBusy, posts, setPosts, post, setPost, token, userInfos, newPost, setNewPost);
   };
 
@@ -87,6 +93,7 @@ const AddPost = (props) => {
   }, [newPost]);
 
   // upon mounting, we set the textarea to the height of the text
+  // and fetch the categories list
   useEffect(() => {
     handleTextAreaSize();
     getAllCategories(setCategories, token);
@@ -104,16 +111,16 @@ const AddPost = (props) => {
           <div className="add-post__categories-wrapper">
             <button
               tabIndex={1}
-              className="add-post__categories-button"
+              className={`add-post__categories-button ${noCategoryError && 'add-post__categories-button--error'}`}
               type="button"
-              onClick={() => setShowCategories(!showCategories)}
+              onClick={() => setToggleShowCategories(!toggleShowCategories)}
             >
               {!post.categoryId
                 ? 'Select a category'
                 : `${categorySelected}`
               }
             </button>
-            {showCategories && (
+            {toggleShowCategories && (
               <div className="add-post__categories-container">
                 {categories.map(category => (
                   <div
@@ -122,7 +129,8 @@ const AddPost = (props) => {
                     onClick={() => {
                       setPost({ ...post, categoryId: category.id });
                       setCategorySelected(category.name);
-                      setShowCategories(false);
+                      setToggleShowCategories(false);
+                      setNoCategoryError(false);
                     }}
                   >
                     {category.picture && (

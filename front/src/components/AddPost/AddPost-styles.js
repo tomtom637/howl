@@ -12,6 +12,10 @@ const AddPostStyled = styled.div`
     }
     &__categories-button {
       padding: 0.2rem 0.5rem;
+
+      &--error {
+        outline: 3px solid var(--red);
+      }
     }
     &__categories-container {
       display: grid;

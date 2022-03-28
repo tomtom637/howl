@@ -60,7 +60,7 @@ const AddPostStyled = styled.div`
       left: 0;
       right: 0;
       bottom: 0;
-      padding: 1rem;
+      padding: 0.5rem;
       margin: 0 1rem 1rem;
       font-size: 1rem;
       letter-spacing: 0.1rem;
@@ -98,7 +98,7 @@ const AddPostStyled = styled.div`
       margin-bottom: 0.5rem;
     }
     &__input {
-      padding: 1rem;
+      padding: 0.5rem;
       font-size: 1.1rem;
       border: none;
 

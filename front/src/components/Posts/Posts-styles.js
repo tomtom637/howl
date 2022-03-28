@@ -4,7 +4,7 @@ import topography from '../../images/topography.svg';
 
 const PostsStyled = styled.div`
   margin: 1rem auto;
-  max-width: min(750px, calc(100% - 2rem));
+  max-width: min(550px, calc(100% - 2rem));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,8 +22,9 @@ const PostsStyled = styled.div`
     align-items: center;
     border-radius: var(--border-radius);
     cursor: pointer;
-    border: none;
-    background: none;
+    border: 2px solid #8e8e8e;
+    background: #fff;
+    position: relative;
 
     &:hover {
       color: var(--secondary);
@@ -84,7 +85,7 @@ const PostsStyled = styled.div`
       grid-template-rows: auto 2.5rem auto;
       grid-gap: 0.1rem;
       border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
+      border: 2px solid #9e9e9e;
     }
     &__category {
       grid-area: category;
@@ -180,12 +181,13 @@ const PostsStyled = styled.div`
       }
     }
     &__unread {
+      font-family: 'poller one', cursive;
       position: absolute;
       color: var(--secondary);
       font-size: 0.7rem;
-      top: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 2rem;
+      left: 90%;
+      transform: translateX(-50%) rotate(-2deg);
     }
     &__toggle-new-post {
       grid-area: tog-new;
@@ -289,7 +291,7 @@ const PostsStyled = styled.div`
   @media ${device.tablet} {
     .post {
 
-      &__body {
+      /* &__body {
         grid-template-areas:  "category category category"
                               "  picture     .      name "
                               "  picture     .      date "
@@ -314,7 +316,7 @@ const PostsStyled = styled.div`
       }
       &__message {
         margin-top: 2rem;
-      }
+      } */
     }
   }
 `;

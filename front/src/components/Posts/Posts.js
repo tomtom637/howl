@@ -16,6 +16,9 @@ const Posts = () => {
   const [fetchMorePosts, setFectchMorePosts] = useState(false);
   const [morePostsToFetch, setMorePostsToFetch] = useState(true);
   const bottomOfList = useRef(null);
+  const newPostAnchor = useRef(null);
+  const newPostElement = useRef(null);
+  const postsContainer = useRef(null);
 
   const tabIndex = -1;
 
@@ -63,9 +66,41 @@ const Posts = () => {
     }
   }, [bottomOfList.current, morePostsToFetch]);
 
+  // sets the toggleNewPost button to fixed upon scroll
+  useEffect(() => {
+    function intersectionCallback(entries) {
+      if(!entries[0].isIntersecting) {
+        newPostElement.current.classList.add('toggle-new-post--fixed');
+        postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + 'px';
+      } else {
+        newPostElement.current.classList.remove('toggle-new-post--fixed');
+        postsContainer.current.style.paddingTop = '0';
+      }
+    }
+    const intersectionOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0
+    }
+    const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
+    if (newPostAnchor.current) {      
+      observer.observe(newPostAnchor.current);
+    }
+    return () => {
+      if (newPostAnchor.current) {
+        observer.unobserve(newPostAnchor.current);
+      }
+    }
+  }, [newPostAnchor.current]);
+
   return (
-    <PostsStyled className="posts-container">
+    <PostsStyled ref={postsContainer} className="posts-container">
+      <div
+        ref={newPostAnchor}
+        className="toggle-new-post__anchor"
+      ></div>
       <button
+        ref={newPostElement}
         tabIndex={1}
         className="toggle-new-post"
         onClick={() => {
@@ -78,6 +113,7 @@ const Posts = () => {
       {toggleNewPost && (
         <div className="add-parent-post-container">
           <AddPost
+            setToggleNewPost={setToggleNewPost}
             categoryId={null}
             parentId={null}
             index={tabIndex}

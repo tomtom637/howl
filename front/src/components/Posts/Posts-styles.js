@@ -3,6 +3,7 @@ import { device } from '../../device';
 import topography from '../../images/topography.svg';
 
 const PostsStyled = styled.div`
+  position: relative;
   margin: 1rem auto;
   max-width: min(550px, calc(100% - 2rem));
   display: flex;
@@ -33,6 +34,19 @@ const PostsStyled = styled.div`
       outline: none;
       color: var(--secondary);
     }
+    &--fixed {
+      position: fixed;
+      top: 40px;
+      left:10px;
+      right: 0;
+      background: #a7aeb3;
+      z-index: 10;
+      width: 50px;
+    }
+    &__anchor {
+      position: absolute;
+      top: 40px;
+    }
 
     i {
       margin-right: 0.5rem;
@@ -40,6 +54,12 @@ const PostsStyled = styled.div`
     }
     span {
       font-size: 1.1rem;
+    }
+    &--fixed span {
+      display: none;
+    }
+    &--fixed i {
+      color: #fff;
     }
   }
   .post {

@@ -192,7 +192,7 @@ export const getAllUsers = (setUsers, token) => {
   fetchData();
 };
 
-export const getPosts = (posts, setPosts, fetchOffset, setFetchOffset, token) => {
+export const getPosts = (posts, setPosts, fetchOffset, setFetchOffset, setMorePostsToFetch, token) => {
   const fetchData = async () => {
     const options = {
       method: 'GET',
@@ -204,7 +204,11 @@ export const getPosts = (posts, setPosts, fetchOffset, setFetchOffset, token) =>
       const response = await fetch(BASE_URL + `/posts/${fetchOffset}`, options);
       const result = await response.json();
       setPosts(() => [...posts, ...result]);
-      setFetchOffset(prevOffset => prevOffset + 5);
+      if(result.length < 5) {
+        setMorePostsToFetch(false);
+      } else {
+        setFetchOffset(prevOffset => prevOffset + 5);
+      }
     } catch (error) {
       console.log(error);
     }

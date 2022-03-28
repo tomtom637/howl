@@ -14,6 +14,8 @@ const Posts = () => {
   const [busy, setBusy] = useState(true);
   const [toggleNewPost, setToggleNewPost] = useState(false);
   const [fetchMorePosts, setFectchMorePosts] = useState(false);
+  const [morePostsToFetch, setMorePostsToFetch] = useState(true);
+  const bottomOfList = useRef(null);
 
   const tabIndex = -1;
 
@@ -21,19 +23,45 @@ const Posts = () => {
   // or if the user has scrolled to the bottom of the page
   useEffect(() => {
     if (posts.length === 0) {
-      getPosts(posts, setPosts, fetchOffset, setFetchOffset, token);
+      getPosts(posts, setPosts, fetchOffset, setFetchOffset, setMorePostsToFetch, token);
     }
     if (fetchMorePosts) {
-      getPosts(posts, setPosts, fetchOffset, setFetchOffset, token);
+      getPosts(posts, setPosts, fetchOffset, setFetchOffset, setMorePostsToFetch, token);
       setFectchMorePosts(false);
     }
   }, [fetchMorePosts]);
 
+  // when the posts are first loaded or updated,
+  // setbusy state is set to false
   useEffect(() => {
     if (posts.length > 0) {
       setBusy(false);
     }
   }, [posts]);
+
+  // when the user scrolls to the bottom of the page,
+  // fetch more posts
+  useEffect(() => {
+    function intersectionCallback(entries) {
+      if(entries[0].isIntersecting) {
+        setFectchMorePosts(true);
+      }
+    }
+    const intersectionOptions = {
+      root: null,
+      rootMargin: '300px',
+      threshold: 0
+    }
+    const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
+    if (bottomOfList.current && posts.length > 0 && morePostsToFetch) {      
+      observer.observe(bottomOfList.current);
+    }
+    return () => {
+      if (bottomOfList.current) {
+        observer.unobserve(bottomOfList.current);
+      }
+    }
+  }, [bottomOfList.current, morePostsToFetch]);
 
   return (
     <PostsStyled className="posts-container">
@@ -67,6 +95,7 @@ const Posts = () => {
         );
       })}
       {busy && <p>LOADING...</p>}
+      <div ref={bottomOfList} className="bottom-of-list"></div>
     </PostsStyled>
   );
 };

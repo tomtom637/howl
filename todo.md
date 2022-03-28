@@ -8,6 +8,3 @@
     * replies total
   * [ ] if a month was won, add a sticker to the user
 
-
-[ ] Add try catch to all api-calls
-

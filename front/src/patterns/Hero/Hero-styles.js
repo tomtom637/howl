@@ -5,7 +5,6 @@ const HeroStyled = styled.section`
   background: var(--primary);
   position: relative;
   padding: 55px;
-  overflow: hidden;
   &::after {
     display: block;
     content: '';
@@ -27,8 +26,9 @@ const HeroStyled = styled.section`
   svg {
     position: absolute;
     right: calc(50% + 65px);
-    top: 15px;
-    transform: translateX(50%);
+    top: 55%;
+    left: 25%;
+    transform: scale(2.1);
   }
   i {
     position: absolute;
@@ -37,6 +37,7 @@ const HeroStyled = styled.section`
     transform: translateX(50%);
     color: var(--primary-light);
     font-size: 400px;
+    display: none;
   }
   @media ${device.tablet} {
       padding: 80px;

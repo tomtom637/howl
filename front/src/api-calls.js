@@ -206,6 +206,7 @@ export const getPosts = (posts, setPosts, fetchOffset, setFetchOffset, setMorePo
       setPosts(() => [...posts, ...result]);
       if(result.length < 5) {
         setMorePostsToFetch(false);
+        setFetchOffset(prevOffset => prevOffset + result.length);
       } else {
         setFetchOffset(prevOffset => prevOffset + 5);
       }

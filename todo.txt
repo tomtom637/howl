@@ -26,3 +26,8 @@ UI:
   [ ] deleting a user (are you sure you want to proceed)
 [ ] polish the styles
 [ ] should look great on desktop
+
+INSTALLATION:
+[ ] a script should be added to start front and back together
+[ ] the database should be installed from the root directory
+[ ] instructions should be provided with an admin email and password

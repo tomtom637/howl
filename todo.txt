@@ -1,0 +1,28 @@
+CATEGORIES:
+[ ] we remove the query all posts
+[ ] choose first category by default
+[ ] replace the hero section by categories choice
+[ ] filter posts by categories
+[ ] the admin sees an edit button on the categories
+  [ ] to change the picture
+  [ ] to change the description
+[ ] the admin sees a '+' icon to add a category
+
+POSTS:
+[ ] add edit and delete button on all posts for the admin
+[ ] add edit button on own posts for the users
+
+USERS:
+[ ] replace the stats page by the users page (admin only)
+[ ] a deleted column is added to the users table (default to 0)
+[ ] the admin can soft delete a user (only deleting email and password)
+[ ] the deleted user isn't visible anymore in the users page
+[ ] we keep showing the deleted users posts but we add the flag (deleted user)
+
+UI:
+[ ] descriptive errors should be displayed to the users
+[ ] a modal should be displayed to confirm certain actions
+  [ ] deleting a post (all replies will be deleted along with it)
+  [ ] deleting a user (are you sure you want to proceed)
+[ ] polish the styles
+[ ] should look great on desktop

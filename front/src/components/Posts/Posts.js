@@ -69,6 +69,7 @@ const Posts = () => {
   // sets the toggleNewPost button to fixed upon scroll
   useEffect(() => {
     function intersectionCallback(entries) {
+      if (!newPostElement.current) return;
       if(!entries[0].isIntersecting) {
         newPostElement.current.classList.add('toggle-new-post--fixed');
         postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + 'px';
@@ -285,8 +286,7 @@ const Post = (props) => {
             setIsRead(true);
           }}
         >
-          <i className='icon-plus'></i>
-          <span>Write a reply</span>
+          <i aria-controls='add a reply' className='icon-plus'></i>
         </button>
         {toggleNewPost && (
           <div className="post__add-post-container">

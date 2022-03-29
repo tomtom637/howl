@@ -42,6 +42,10 @@ const PostsStyled = styled.div`
       background: #a7aeb3;
       z-index: 10;
       width: 50px;
+
+      &:hover i {
+        color: var(--secondary);
+      }
     }
     &__anchor {
       position: absolute;
@@ -99,7 +103,7 @@ const PostsStyled = styled.div`
                             "  motto    motto    motto "
                             "  show     show    show   "
                             "  replies replies replies "
-                            "  tog-new  tog-new    .   "
+                            "    .       .     tog-new "
                             "add-post add-post add-post";
       grid-template-columns: 0.3fr 1fr 1fr;
       grid-template-rows: auto 2.5rem auto;
@@ -120,7 +124,7 @@ const PostsStyled = styled.div`
     }
     &__picture {
       grid-area: picture;
-      width: 100px;
+      width: 65px;
     }
     &__name {
       grid-area: name;
@@ -141,7 +145,7 @@ const PostsStyled = styled.div`
       line-height: 1.6;
     }
     &__gif {
-      margin-top: 1rem;
+      margin: 0.5rem 0;
       grid-area: gif;
 
       img {
@@ -151,10 +155,13 @@ const PostsStyled = styled.div`
       }
     }
     &__motto {
+      font-size: 0.9rem;
       font-style: italic;
-      color: #888;
+      color: #999;
       grid-area: motto;
       margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding-top: 0.7rem;
     }
     &__show-replies {
       position: relative;
@@ -205,9 +212,10 @@ const PostsStyled = styled.div`
       position: absolute;
       color: var(--secondary);
       font-size: 0.7rem;
-      top: 2rem;
-      left: 90%;
-      transform: translateX(-50%) rotate(-2deg);
+      top: 1.8rem;
+      left: 15%;
+      width: 4rem;
+      transform: translateX(-50%) rotate(-2deg) scale(1.2);
     }
     &__toggle-new-post {
       grid-area: tog-new;
@@ -215,10 +223,15 @@ const PostsStyled = styled.div`
       width: 8rem;
       font-size: 1.1rem;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-end;
       border: none;
       color: #555;
       cursor: pointer;
+      margin-left: auto;
+
+      & i {
+        margin-left: auto;
+      }
 
       &:focus {
         outline: none;
@@ -268,8 +281,8 @@ const PostsStyled = styled.div`
     }
     &__picture {
       grid-area: reply-picture;
-      width: 100px;
-      height: 100px;
+      width: 65px;
+      //height: 100px;
       overflow: hidden;
     }
     &__name {
@@ -291,7 +304,7 @@ const PostsStyled = styled.div`
       line-height: 1.6;
     }
     &__gif {
-      margin-top: 1rem;
+      margin: 0.5rem 0;
       grid-area: reply-gif;
 
       img {
@@ -301,10 +314,13 @@ const PostsStyled = styled.div`
       }
     }
     &__motto {
+      font-size: 0.9rem;
       font-style: italic;
-      color: #888;
+      color: #999;
       grid-area: reply-motto;
       margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding-top: 0.7rem;
     }
   }
 

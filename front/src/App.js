@@ -8,8 +8,7 @@ import { getInfosFromToken } from './api-calls';
 
 import GlobalStyles from './global-styles/GlobalStyles';
 
-import Header from './patterns/Header/Header';
-import Hero from './patterns/Hero/Hero';
+import Header from './components/Header/Header';
 import Posts from './components/Posts/Posts';
 import About from './components/About/About';
 import Stats from './components/Stats/Stats';
@@ -43,7 +42,6 @@ const App = () => {
             <Switch>
               <Route exact path="/">
                 <>
-                  <Hero />
                   {connectionError && (
                     <div className="container">
                       <div className="error-message">

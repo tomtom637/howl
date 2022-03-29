@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Brand from '../../components/Brand/Brand';
-import Menu from '../Menu/Menu';
+import Brand from '../Brand/Brand';
+import Menu from '../../components/Menu/Menu';
 import HeaderStyled from './Header-styles';
 import { device, size } from '../../device';
 

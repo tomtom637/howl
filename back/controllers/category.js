@@ -29,15 +29,21 @@ exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
       SELECT p.id AS id,
       to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
       u.nickname AS user,
+      u.picture AS picture,
+      u.motto AS motto,
       p.content AS "message",
-      c.name AS from_category
+      p.gif_address AS gif_address,
+      p.parent_id AS parent_id,
+      c.name AS from_category,
+      c.id AS category_id,
+      c.picture AS category_picture
       FROM users u
       JOIN posts p ON u.id = p.user_id
       JOIN categories c ON c.id = p.category_id
       WHERE p.parent_id IS NULL
       AND p.category_id = ${categoryId}
       ORDER BY p.creation_date desc
-      LIMIT 20
+      LIMIT 5
       OFFSET ${offset};
     `);
 
@@ -50,8 +56,13 @@ exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
         SELECT p.id AS id,
         to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
         u.nickname AS user,
+        u.picture AS picture,
+        u.motto AS motto,
         p.content AS "message",
+        p.gif_address AS gif_address,
+        p.parent_id AS parent_id,
         c.name AS from_category,
+        c.picture AS category_picture,
         rp.user_id AS "read"        
         FROM users u
         JOIN posts p ON u.id = p.user_id

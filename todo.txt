@@ -1,8 +1,8 @@
 CATEGORIES:
 [ ] we remove the query all posts
-[ ] choose first category by default
-[ ] replace the hero section by categories choice
-[ ] filter posts by categories
+[x] choose first category by default
+[x] replace the hero section by categories choice
+[x] filter posts by categories
 [ ] the admin sees an edit button on the categories
   [ ] to change the picture
   [ ] to change the description

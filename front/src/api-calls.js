@@ -204,7 +204,7 @@ export const getPosts = (posts, setPosts, fetchOffset, setFetchOffset, setMorePo
       const response = await fetch(BASE_URL + `/posts/${fetchOffset}`, options);
       const result = await response.json();
       setPosts(() => [...posts, ...result]);
-      if(result.length < 5) {
+      if (result.length < 5) {
         setMorePostsToFetch(false);
         setFetchOffset(prevOffset => prevOffset + result.length);
       } else {
@@ -235,7 +235,7 @@ export const getPost = (setNewPost, postId, token) => {
     }
   };
   fetchData();
-}
+};
 
 export const markPostAsRead = (postId, token) => {
   const fetchData = async () => {
@@ -250,9 +250,9 @@ export const markPostAsRead = (postId, token) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   fetchData();
-}
+};
 
 export const addPost = (setbusy, posts, setPosts, post, setPost, token, userInfos, newPost, setNewPost) => {
   const fetchData = async () => {
@@ -262,7 +262,7 @@ export const addPost = (setbusy, posts, setPosts, post, setPost, token, userInfo
         'Content-Type': 'application/json',
         'authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({post}),
+      body: JSON.stringify({ post }),
     };
     try {
       const response = await fetch(BASE_URL + '/posts', options);
@@ -275,11 +275,11 @@ export const addPost = (setbusy, posts, setPosts, post, setPost, token, userInfo
   let resultId = null;
   fetchData()
     .then(result => {
-      resultId = result.postId; 
-      getPost(setNewPost, resultId, token);  
+      resultId = result.postId;
+      getPost(setNewPost, resultId, token);
     })
     .then(() => markPostAsRead(resultId, token))
-    .then(() => setPost({...post, content: '', gifAddress: null}));
+    .then(() => setPost({ ...post, content: '', gifAddress: null }));
 };
 
 export const getAllCategories = (setCategories, token) => {
@@ -299,4 +299,32 @@ export const getAllCategories = (setCategories, token) => {
     }
   };
   fetchData();
-}
+};
+
+export const getPostsFromCategory = (setPosts, categories, setCategories, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    };
+    try {
+      const activeCategory = categories.find(category => category.active);
+
+      const response = await fetch(BASE_URL + `/categories/${activeCategory.id}/${activeCategory.fetchOffset}`, options);
+      const result = await response.json();
+      setPosts(prevPosts => [...prevPosts, ...result]);   
+      setCategories(prevCategories => {
+        const newCategories = [...prevCategories];
+        const newActiveCategory = newCategories.find(category => category.id === activeCategory.id);
+        newActiveCategory.fetchOffset += result.length;      
+        if (result.length < 5)  newActiveCategory.morePostsToFetch = false;
+        return newCategories;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData();
+};

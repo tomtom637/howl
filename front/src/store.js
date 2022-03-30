@@ -16,3 +16,7 @@ export const toggledProfileAtom = atom(false);
 export const postsAtom = atom([]);
 
 export const offsetAtom = atom(0);
+
+export const categoryAtom = atom([]);
+
+export const busyAtom = atom(true);

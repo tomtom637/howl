@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { userInfosAtom, tokenAtom, postsAtom, offsetAtom } from "../../store";
-import { getPosts, markPostAsRead } from '../../api-calls';
+import { categoryAtom, tokenAtom, postsAtom, busyAtom } from "../../store";
+import { getPosts, markPostAsRead, getPostsFromCategory } from '../../api-calls';
 import PostsStyled from "./Posts-styles";
+import CategorySelection from "../CategorySelection/CategorySelection";
 import AddPost from "../AddPost/AddPost";
 
 import defaultPicture from '../../images/avatar_default.jpg';
@@ -10,11 +11,10 @@ import defaultPicture from '../../images/avatar_default.jpg';
 const Posts = () => {
   const [posts, setPosts] = useAtom(postsAtom);
   const [token, setToken] = useAtom(tokenAtom);
-  const [fetchOffset, setFetchOffset] = useAtom(offsetAtom);
-  const [busy, setBusy] = useState(true);
+  const [categories, setCategories] = useAtom(categoryAtom);
+  const [busy, setBusy] = useAtom(busyAtom);
   const [toggleNewPost, setToggleNewPost] = useState(false);
-  const [fetchMorePosts, setFectchMorePosts] = useState(false);
-  const [morePostsToFetch, setMorePostsToFetch] = useState(true);
+  const [fetchMorePosts, setFetchMorePosts] = useState(false);
   const bottomOfList = useRef(null);
   const newPostAnchor = useRef(null);
   const newPostElement = useRef(null);
@@ -22,57 +22,62 @@ const Posts = () => {
 
   const tabIndex = -1;
 
+  useEffect(() => {
+    if (!busy && posts.length === 0) {
+      const activeCategory = categories.find(category => category.active);
+      if (activeCategory.morePostsToFetch === true) {
+        getPostsFromCategory(setPosts, categories, setCategories, token);
+      }
+      setFetchMorePosts(false);
+    }
+  }, [busy]);
+
   // fetch posts on mount if there are no posts
   // or if the user has scrolled to the bottom of the page
   useEffect(() => {
-    if (posts.length === 0) {
-      getPosts(posts, setPosts, fetchOffset, setFetchOffset, setMorePostsToFetch, token);
+    if (!busy && fetchMorePosts) {
+      const activeCategory = categories.find(category => category.active);
+      if (activeCategory.morePostsToFetch) {
+        getPostsFromCategory(setPosts, categories, setCategories, token);
+      }
+      setFetchMorePosts(false);
     }
-    if (fetchMorePosts) {
-      getPosts(posts, setPosts, fetchOffset, setFetchOffset, setMorePostsToFetch, token);
-      setFectchMorePosts(false);
-    }
-  }, [fetchMorePosts]);
-
-  // when the posts are first loaded or updated,
-  // setbusy state is set to false
-  useEffect(() => {
-    if (posts.length > 0) {
-      setBusy(false);
-    }
-  }, [posts]);
+  }, [fetchMorePosts, categories]);
 
   // when the user scrolls to the bottom of the page,
   // fetch more posts
   useEffect(() => {
-    function intersectionCallback(entries) {
-      if(entries[0].isIntersecting) {
-        setFectchMorePosts(true);
+    if (!busy) {
+      const activeCategory = categories.find(category => category.active);
+      function intersectionCallback(entries) {
+        if (entries[0].isIntersecting && activeCategory.morePostsToFetch) {
+          setFetchMorePosts(true);
+        }
       }
-    }
-    const intersectionOptions = {
-      root: null,
-      rootMargin: '300px',
-      threshold: 0
-    }
-    const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
-    if (bottomOfList.current && posts.length > 0 && morePostsToFetch) {      
-      observer.observe(bottomOfList.current);
-    }
-    return () => {
-      if (bottomOfList.current) {
-        observer.unobserve(bottomOfList.current);
+      const intersectionOptions = {
+        root: null,
+        rootMargin: '300px',
+        threshold: 0
+      };
+      const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
+      if (bottomOfList.current && posts.length > 0) {
+        observer.observe(bottomOfList.current);
       }
+      return () => {
+        if (bottomOfList.current) {
+          observer.unobserve(bottomOfList.current);
+        }
+      };
     }
-  }, [bottomOfList.current, morePostsToFetch]);
+  }, [bottomOfList.current, categories]);
 
   // sets the toggleNewPost button to fixed upon scroll
   useEffect(() => {
     function intersectionCallback(entries) {
       if (!newPostElement.current) return;
-      if(!entries[0].isIntersecting) {
+      if (!entries[0].isIntersecting) {
         newPostElement.current.classList.add('toggle-new-post--fixed');
-        postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + 'px';
+        postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + 8 + 'px';
       } else {
         newPostElement.current.classList.remove('toggle-new-post--fixed');
         postsContainer.current.style.paddingTop = '0';
@@ -80,22 +85,23 @@ const Posts = () => {
     }
     const intersectionOptions = {
       root: null,
-      rootMargin: '0px',
+      rootMargin: '20px',
       threshold: 0
-    }
+    };
     const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
-    if (newPostAnchor.current) {      
+    if (newPostAnchor.current) {
       observer.observe(newPostAnchor.current);
     }
     return () => {
       if (newPostAnchor.current) {
         observer.unobserve(newPostAnchor.current);
       }
-    }
+    };
   }, [newPostAnchor.current]);
 
   return (
     <PostsStyled ref={postsContainer} className="posts-container">
+      <CategorySelection />
       <div
         ref={newPostAnchor}
         className="toggle-new-post__anchor"
@@ -121,16 +127,16 @@ const Posts = () => {
           />
         </div>
       )}
-      {!busy && posts.map((post, index) => {
-        return (
-          <Post
-            setBusy={setBusy}
-            post={post}
-            index={index}
-            key={post.id}
-          />
-        );
-      })}
+      {!busy && posts
+        .filter(post => post.category_id === categories.find(category => category.active).id)
+        .map((post, index) => (
+        <Post
+          setBusy={setBusy}
+          post={post}
+          index={index}
+          key={post.id}
+        />
+      ))}
       {busy && <p>LOADING...</p>}
       <div ref={bottomOfList} className="bottom-of-list"></div>
     </PostsStyled>

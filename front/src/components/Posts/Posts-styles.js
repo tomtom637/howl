@@ -145,13 +145,14 @@ const PostsStyled = styled.div`
       line-height: 1.6;
     }
     &__gif {
-      margin: 0.5rem 0;
       grid-area: gif;
+      margin-top: 0.5rem;
 
       img {
-        width: 270px;
+        height: 150px;
+        width: auto;
         border-radius: 0.4rem;
-        margin: 0 auto;
+        object-fit: contain;
       }
     }
     &__motto {
@@ -304,13 +305,14 @@ const PostsStyled = styled.div`
       line-height: 1.6;
     }
     &__gif {
-      margin: 0.5rem 0;
       grid-area: reply-gif;
+      margin-top: 0.5rem;
 
       img {
-        width: 270px;
+        height: 150px;
+        width: auto;
         border-radius: 0.4rem;
-        margin: 0 auto;
+        object-fit: contain;
       }
     }
     &__motto {

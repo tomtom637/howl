@@ -99,6 +99,13 @@ const Posts = () => {
     };
   }, [newPostAnchor.current]);
 
+  // when a post is added, toggleNewPost is set to false
+  useEffect(() => {
+    if (toggleNewPost) {
+      setToggleNewPost(false);
+    }
+  } , [posts]);
+
   return (
     <PostsStyled ref={postsContainer} className="posts-container">
       <CategorySelection />
@@ -174,7 +181,7 @@ const Post = (props) => {
     }
   }, [isRead]);
 
-  // toggles the form for adding posts
+  // scrolls automatically to the form to add a reply
   useEffect(() => {
     if (toggleNewPost) {
       addPostRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -184,6 +191,7 @@ const Post = (props) => {
   // upon posts state load and update
   // we mark the post as unread if it is not read
   // we also scroll to the last reply after it has been published
+  // and set toggleNewPost to false
   useEffect(() => {
     // if one of the replies hasn't been read in this post
     // we set unreadAlert to true
@@ -297,7 +305,7 @@ const Post = (props) => {
         {toggleNewPost && (
           <div className="post__add-post-container">
             <AddPost
-              // setIsRead={setIsRead}
+              setToggleNewPost={setToggleNewPost}
               setBusy={props.setBusy}
               categoryId={category_id}
               parentId={id}

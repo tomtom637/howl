@@ -254,7 +254,7 @@ export const markPostAsRead = (postId, token) => {
   fetchData();
 };
 
-export const addPost = (setbusy, posts, setPosts, post, setPost, token, userInfos, newPost, setNewPost) => {
+export const addPost = (post, setPost, token, setNewPost) => {
   const fetchData = async () => {
     const options = {
       method: 'POST',
@@ -314,12 +314,12 @@ export const getPostsFromCategory = (setPosts, categories, setCategories, token)
 
       const response = await fetch(BASE_URL + `/categories/${activeCategory.id}/${activeCategory.fetchOffset}`, options);
       const result = await response.json();
-      setPosts(prevPosts => [...prevPosts, ...result]);   
+      setPosts(prevPosts => [...prevPosts, ...result]);
       setCategories(prevCategories => {
         const newCategories = [...prevCategories];
         const newActiveCategory = newCategories.find(category => category.id === activeCategory.id);
-        newActiveCategory.fetchOffset += result.length;      
-        if (result.length < 5)  newActiveCategory.morePostsToFetch = false;
+        newActiveCategory.fetchOffset += result.length;
+        if (result.length < 5) newActiveCategory.morePostsToFetch = false;
         return newCategories;
       });
     } catch (error) {

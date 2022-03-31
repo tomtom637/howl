@@ -111,24 +111,13 @@ const PostsStyled = styled.div`
       border-radius: var(--border-radius);
       border: 2px solid #9e9e9e;
     }
-    &__category {
-      grid-area: category;
-      padding: 0.5rem;
-      font-family: 'poller one', cursive;
-      font-size: 0.9rem;
-      text-align: center;
-      color: #555;
-      letter-spacing: 0.05rem;
-      text-transform: uppercase;
-      border-radius: var(--border-radius);
-    }
     &__picture {
       grid-area: picture;
       width: 65px;
     }
     &__name {
       grid-area: name;
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       text-align: right;
       margin-top: 1rem;
       white-space: nowrap;
@@ -154,6 +143,32 @@ const PostsStyled = styled.div`
         border-radius: 0.4rem;
         object-fit: contain;
       }
+    }
+    &__edit {
+      position: absolute;
+      top: 5rem;
+      right: 5.2rem;
+      border: none;
+      padding: 0.3rem 0.5rem;
+      background: #ccc;
+      border-radius: 0.2rem;
+      font-size: 0.65rem;
+      font-weight: bold;
+      letter-spacing: 0.03rem;
+      color: #555;
+    }
+    &__delete {
+      position: absolute;
+      top: 5rem;
+      right: 1rem;
+      border: none;
+      padding: 0.3rem 0.5rem;
+      background: #bd5167;
+      color: #fff;
+      border-radius: 0.2rem;
+      font-size: 0.65rem;
+      font-weight: bold;
+      letter-spacing: 0.03rem;
     }
     &__motto {
       font-size: 0.9rem;
@@ -253,13 +268,14 @@ const PostsStyled = styled.div`
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    height: 30rem;
+    max-height: 30rem;
     background: #d7d9db;
     border-radius: var(--border-radius);
   }
   .reply {
     margin: auto;
     &__container {
+      position: relative;
       margin-bottom: 0.5rem;
       padding: 1rem 1rem 1rem 1rem;
       border-bottom: 2px solid rgba(0, 0, 0, 0.2);
@@ -315,6 +331,32 @@ const PostsStyled = styled.div`
         object-fit: contain;
       }
     }
+    &__edit {
+      position: absolute;
+      top: 5rem;
+      right: 5.2rem;
+      border: none;
+      padding: 0.3rem 0.5rem;
+      background: #ccc;
+      border-radius: 0.2rem;
+      font-size: 0.65rem;
+      font-weight: bold;
+      letter-spacing: 0.03rem;
+      color: #555;
+    }
+    &__delete {
+      position: absolute;
+      top: 5rem;
+      right: 1rem;
+      border: none;
+      padding: 0.3rem 0.5rem;
+      background: #bd5167;
+      color: #fff;
+      border-radius: 0.2rem;
+      font-size: 0.65rem;
+      font-weight: bold;
+      letter-spacing: 0.03rem;
+    }
     &__motto {
       font-size: 0.9rem;
       font-style: italic;
@@ -329,32 +371,6 @@ const PostsStyled = styled.div`
   @media ${device.tablet} {
     .post {
 
-      /* &__body {
-        grid-template-areas:  "category category category"
-                              "  picture     .      name "
-                              "  picture     .      date "
-                              "  message  message    gif "
-                              "  motto    motto    motto "
-                              "  show     show    show   "
-                              "  replies replies replies "
-                              "  tog-new  tog-new    .   "
-                              "add-post add-post add-post";
-      }
-      &__message {
-        margin-top: 2rem;
-      }
-    }
-    .reply {
-
-      &__container {
-        grid-template-areas:  "  reply-picture         .         reply-name "
-                              "  reply-picture         .         reply-date "
-                              "  reply-message  reply-message     reply-gif "
-                              "  reply-motto    reply-motto     reply-motto ";
-      }
-      &__message {
-        margin-top: 2rem;
-      } */
     }
   }
 `;

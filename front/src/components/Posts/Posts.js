@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { categoryAtom, tokenAtom, postsAtom, busyAtom } from "../../store";
+import { categoryAtom, tokenAtom, postsAtom, busyAtom, userInfosAtom } from "../../store";
 import { getPosts, markPostAsRead, getPostsFromCategory } from '../../api-calls';
 import PostsStyled from "./Posts-styles";
 import CategorySelection from "../CategorySelection/CategorySelection";
@@ -104,7 +104,7 @@ const Posts = () => {
     if (toggleNewPost) {
       setToggleNewPost(false);
     }
-  } , [posts]);
+  }, [posts]);
 
   return (
     <PostsStyled ref={postsContainer} className="posts-container">
@@ -137,13 +137,13 @@ const Posts = () => {
       {!busy && posts
         .filter(post => post.category_id === categories.find(category => category.active).id)
         .map((post, index) => (
-        <Post
-          setBusy={setBusy}
-          post={post}
-          index={index}
-          key={post.id}
-        />
-      ))}
+          <Post
+            setBusy={setBusy}
+            post={post}
+            index={index}
+            key={post.id}
+          />
+        ))}
       {busy && <p>LOADING...</p>}
       <div ref={bottomOfList} className="bottom-of-list"></div>
     </PostsStyled>
@@ -155,6 +155,7 @@ const Post = (props) => {
   const { id, user, date, message, gif_address, picture, motto, replies, from_category, category_id, category_picture } = props.post;
   const [token, setToken] = useAtom(tokenAtom);
   const [posts, setPosts] = useAtom(postsAtom);
+  const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [toggleShowReplies, setToggleShowReplies] = useState(false);
   const [unreadAlert, setUnreadAlert] = useState(false);
   const [isRead, setIsRead] = useState(false);
@@ -218,7 +219,6 @@ const Post = (props) => {
         <img src={category_picture} alt={from_category} className="post__category-picture" />
       )}
       <div className="post__body">
-        <div className='post__category'>{from_category}</div>
         <div className='post__picture'>
           {picture
             ? <img src={picture} alt="user" />
@@ -228,6 +228,10 @@ const Post = (props) => {
         <div className='post__name'>{user}</div>
         <div className='post__date'>{date}</div>
         <div className='post__message'>{message}</div>
+        {userInfos.nickname === user
+          && <button className="post__edit">EDIT</button>}
+        {(userInfos.nickname === user || userInfos.role === 'admin')
+          && <button className="post__delete">DELETE</button>}
         {gif_address && (
           <div className="post__gif">
             <img
@@ -262,6 +266,10 @@ const Post = (props) => {
                     <div className='reply__name'>{user}</div>
                     <div className='reply__date'>{date}</div>
                     <div className='reply__message'>{message}</div>
+                    {userInfos.nickname === user
+                      && <button className="reply__edit">EDIT</button>}
+                    {(userInfos.nickname === user || userInfos.role === 'admin')
+                      && <button className="reply__delete">DELETE</button>}
                     {gif_address && (
                       <div className='reply__gif'>
                         <img

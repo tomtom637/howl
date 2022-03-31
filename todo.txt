@@ -1,5 +1,5 @@
 CATEGORIES:
-[ ] we remove the query all posts
+[x] we remove the query all posts
 [x] choose first category by default
 [x] replace the hero section by categories choice
 [x] filter posts by categories
@@ -24,6 +24,7 @@ UI:
 [ ] a modal should be displayed to confirm certain actions
   [ ] deleting a post (all replies will be deleted along with it)
   [ ] deleting a user (are you sure you want to proceed)
+[ ] a gif should be clickable to appear bigger in a modal
 [ ] polish the styles
 [ ] should look great on desktop
 

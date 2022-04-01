@@ -21,6 +21,7 @@ USERS:
 
 UI:
 [ ] descriptive errors should be displayed to the users
+  [ ] when omiting to write a message in a post
 [ ] a modal should be displayed to confirm certain actions
   [ ] deleting a post (all replies will be deleted along with it)
   [ ] deleting a user (are you sure you want to proceed)

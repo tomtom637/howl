@@ -20,3 +20,7 @@ export const offsetAtom = atom(0);
 export const categoryAtom = atom([]);
 
 export const busyAtom = atom(true);
+
+export const modalOptionsAtom = atom({});
+
+export const displayModalAtom = atom(false);

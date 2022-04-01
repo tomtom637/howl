@@ -1,6 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { categoryAtom, tokenAtom, postsAtom, busyAtom, userInfosAtom } from "../../store";
+import {
+  categoryAtom,
+  tokenAtom,
+  postsAtom,
+  busyAtom,
+  userInfosAtom,
+  modalOptionsAtom,
+  displayModalAtom
+} from "../../store";
 import { getPosts, markPostAsRead, getPostsFromCategory } from '../../api-calls';
 import PostsStyled from "./Posts-styles";
 import CategorySelection from "../CategorySelection/CategorySelection";
@@ -155,6 +163,8 @@ const Post = (props) => {
   const { id, user, date, message, gif_address, picture, motto, replies, from_category, category_id, category_picture } = props.post;
   const [token, setToken] = useAtom(tokenAtom);
   const [posts, setPosts] = useAtom(postsAtom);
+  const [modalOptions, setModalOptions] = useAtom(modalOptionsAtom);
+  const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [toggleShowReplies, setToggleShowReplies] = useState(false);
   const [unreadAlert, setUnreadAlert] = useState(false);
@@ -162,6 +172,7 @@ const Post = (props) => {
   const [toggleNewPost, setToggleNewPost] = useState(false);
   const addPostRef = useRef(null);
   const repliesRef = useRef(null);
+  const newPostContainerRef = useRef(null);
 
   // if isRead state is activated on a reply,
   // we mark all siblings as read in the states
@@ -185,33 +196,25 @@ const Post = (props) => {
   // scrolls automatically to the form to add a reply
   useEffect(() => {
     if (toggleNewPost) {
-      addPostRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      setTimeout(() => {
+        newPostContainerRef.current.scrollIntoView({  block: 'center', behavior: 'smooth' });
+      }, 100);
     }
   }, [toggleNewPost]);
 
   // upon posts state load and update
   // we mark the post as unread if it is not read
-  // we also scroll to the last reply after it has been published
-  // and set toggleNewPost to false
   useEffect(() => {
-    // if one of the replies hasn't been read in this post
-    // we set unreadAlert to true
     posts[props.index].replies.forEach((reply, i) => {
       if (!reply.read) {
         setUnreadAlert(true);
       }
     });
-    // scroll to the bottom of the replies after the user has added a new reply
-    // listens for posts updates
-    if (repliesRef.current) {
-      repliesRef.current.scrollTo({
-        top: repliesRef.current.scrollHeight,
-        left: 0,
-        behavior: 'smooth'
-      });
-    }
   }, [posts]);
 
+  const handleDeletePost = () => {
+    console.log('deleted')
+  }
 
   return (
     <div className="post__container" key={id}>
@@ -228,10 +231,25 @@ const Post = (props) => {
         <div className='post__name'>{user}</div>
         <div className='post__date'>{date}</div>
         <div className='post__message'>{message}</div>
-        {userInfos.nickname === user
-          && <button className="post__edit">EDIT</button>}
-        {(userInfos.nickname === user || userInfos.role === 'admin')
-          && <button className="post__delete">DELETE</button>}
+        {userInfos.nickname === user && (
+          <button
+            className="post__edit"
+            onClick={() => {}}
+          >EDIT</button>
+        )}
+        {(userInfos.nickname === user || userInfos.role === 'admin') && (
+          <button
+            className="post__delete"
+            onClick={() => {
+              setModalOptions({
+                content: `Are you sure you want to delete this post? This action will also delete any reply this post may have.`,
+                actionType: 'DELETE',
+                action: () => {handleDeletePost()}
+              });
+              setDisplayModal(true);
+            }}
+          >DELETE</button>
+        )}
         {gif_address && (
           <div className="post__gif">
             <img
@@ -266,10 +284,18 @@ const Post = (props) => {
                     <div className='reply__name'>{user}</div>
                     <div className='reply__date'>{date}</div>
                     <div className='reply__message'>{message}</div>
-                    {userInfos.nickname === user
-                      && <button className="reply__edit">EDIT</button>}
-                    {(userInfos.nickname === user || userInfos.role === 'admin')
-                      && <button className="reply__delete">DELETE</button>}
+                    {userInfos.nickname === user && (
+                      <button
+                        className="reply__edit"
+                        onClick={() => setDisplayModal(true)}
+                      >EDIT</button>
+                    )}
+                    {(userInfos.nickname === user || userInfos.role === 'admin') && (
+                      <button
+                        className="reply__delete"
+                        onClick={() => setDisplayModal(true)}
+                      >DELETE</button>
+                    )}
                     {gif_address && (
                       <div className='reply__gif'>
                         <img
@@ -311,8 +337,9 @@ const Post = (props) => {
           <i aria-controls='add a reply' className='icon-plus'></i>
         </button>
         {toggleNewPost && (
-          <div className="post__add-post-container">
+          <div ref={newPostContainerRef} className="post__add-post-container">
             <AddPost
+              repliesRef={repliesRef}
               setToggleNewPost={setToggleNewPost}
               setBusy={props.setBusy}
               categoryId={category_id}

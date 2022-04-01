@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { atom, useAtom } from 'jotai';
-import { tokenAtom, userInfosAtom, formAtom, loggedAtom } from './store';
+import { tokenAtom, userInfosAtom, formAtom, loggedAtom, modalOptionsAtom, displayModalAtom } from './store';
 
 import { getInfosFromToken } from './api-calls';
 
 import GlobalStyles from './global-styles/GlobalStyles';
 
+import Modal from './components/Modal/Modal';
 import Header from './components/Header/Header';
 import Posts from './components/Posts/Posts';
 import About from './components/About/About';
@@ -20,6 +21,8 @@ const App = () => {
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [formType, setFormType] = useAtom(formAtom);
   const [logged, setLogged] = useAtom(loggedAtom);
+  const [modalOptions, setModalOptions] = useAtom(modalOptionsAtom);
+  const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
   const [busy, setBusy] = useState(true);
   const [connectionError, setConnectionError] = useState(false);
 
@@ -39,6 +42,14 @@ const App = () => {
         <div className="site-wrapper">
           <Header />
           <div className='main-content-wrapper'>
+            {displayModal && (
+              <Modal
+                setIsOpen={setDisplayModal}
+                content={modalOptions.content}
+                actionType={modalOptions.actionType}
+                action={modalOptions.action}
+              />
+            )}
             <Switch>
               <Route exact path="/">
                 <>
@@ -46,7 +57,6 @@ const App = () => {
                     <div className="container">
                       <div className="error-message">
                         <p>It seems we can't connect to the server at this time...</p>
-                        <small>You couldn't even start to comprehend how very sorry we are :(</small>
                       </div>
                     </div>
                   )}

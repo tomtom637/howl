@@ -23,7 +23,7 @@ const PostsStyled = styled.div`
     align-items: center;
     border-radius: var(--border-radius);
     cursor: pointer;
-    border: 2px solid #8e8e8e;
+    border: none;
     background: #fff;
     position: relative;
 
@@ -106,7 +106,7 @@ const PostsStyled = styled.div`
                             "    .       .     tog-new "
                             "add-post add-post add-post";
       grid-template-columns: 0.3fr 1fr 1fr;
-      grid-template-rows: auto 2.5rem auto;
+      grid-template-rows: 0 1.9rem 2.5rem auto;
       grid-gap: 0.1rem;
       border-radius: var(--border-radius);
       border: 2px solid #9e9e9e;
@@ -119,7 +119,6 @@ const PostsStyled = styled.div`
       grid-area: name;
       font-size: 1.3rem;
       text-align: right;
-      margin-top: 1rem;
       white-space: nowrap;
     }
     &__date {
@@ -149,26 +148,28 @@ const PostsStyled = styled.div`
       top: 5rem;
       right: 5.2rem;
       border: none;
-      padding: 0.3rem 0.5rem;
+      padding: 0.4rem 0.5rem;
       background: #ccc;
       border-radius: 0.2rem;
       font-size: 0.65rem;
       font-weight: bold;
       letter-spacing: 0.03rem;
       color: #555;
+      cursor: pointer;
     }
     &__delete {
       position: absolute;
       top: 5rem;
       right: 1rem;
       border: none;
-      padding: 0.3rem 0.5rem;
+      padding: 0.4rem 0.5rem;
       background: #bd5167;
       color: #fff;
       border-radius: 0.2rem;
       font-size: 0.65rem;
       font-weight: bold;
       letter-spacing: 0.03rem;
+      cursor: pointer;
     }
     &__motto {
       font-size: 0.9rem;
@@ -288,7 +289,7 @@ const PostsStyled = styled.div`
                             "  reply-gif      reply-gif      reply-gif   "
                             "  reply-motto    reply-motto    reply-motto ";
       grid-template-columns: 0.3fr 1fr 1fr;
-      grid-template-rows: 2.5rem auto;
+      grid-template-rows: 1.9rem 2.5rem auto;
       grid-gap: 0.1rem;
       border-radius: var(--border-radius);
 
@@ -306,7 +307,6 @@ const PostsStyled = styled.div`
       grid-area: reply-name;
       font-size: 1.1rem;
       text-align: right;
-      margin-top: 1rem;
       white-space: nowrap;
     }
     &__date {
@@ -336,26 +336,28 @@ const PostsStyled = styled.div`
       top: 5rem;
       right: 5.2rem;
       border: none;
-      padding: 0.3rem 0.5rem;
+      padding: 0.4rem 0.5rem;
       background: #ccc;
       border-radius: 0.2rem;
       font-size: 0.65rem;
       font-weight: bold;
       letter-spacing: 0.03rem;
       color: #555;
+      cursor: pointer;
     }
     &__delete {
       position: absolute;
       top: 5rem;
       right: 1rem;
       border: none;
-      padding: 0.3rem 0.5rem;
+      padding: 0.4rem 0.5rem;
       background: #bd5167;
       color: #fff;
       border-radius: 0.2rem;
       font-size: 0.65rem;
       font-weight: bold;
       letter-spacing: 0.03rem;
+      cursor: pointer;
     }
     &__motto {
       font-size: 0.9rem;

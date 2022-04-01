@@ -5,7 +5,7 @@ import { postsAtom, userInfosAtom, tokenAtom, categoryAtom } from "../../store";
 import { addPost, getAllCategories } from "../../api-calls";
 
 const AddPost = (props) => {
-  const { parentId, setToggleNewPost } = props;
+  const { parentId, setToggleNewPost, repliesRef } = props;
   const [posts, setPosts] = useAtom(postsAtom);
   const [categories, setCategories] = useAtom(categoryAtom);
   const [token, setToken] = useAtom(tokenAtom);
@@ -69,10 +69,12 @@ const AddPost = (props) => {
   // if it is of type parent post, we increment the offset
   // else, we add the reply to the parent post
   // making sure to set that reply as read
-  // we also toggle the post form
+  // we also toggle the post form.
+  // scroll to the bottom of the replies after a user added a new reply
+  // listens for posts updates
   useEffect(() => {
-    if (newPost === null) return;
-    if (newPost.parent_id === null) {
+    if (!newPost) return;
+    if (!newPost.parent_id) {
       setPosts(() => [newPost, ...posts]);
       const newCategories = [...categories];
       const newActiveCategory = newCategories.find(category => category.active);
@@ -88,6 +90,15 @@ const AddPost = (props) => {
       setPosts(() => updatedPosts);
     }
     setToggleNewPost(false);
+    if (repliesRef.current && newPost.parent_id !== null) {
+      setTimeout(() => {
+        repliesRef.current.scrollTo({
+          top: repliesRef.current.scrollHeight,
+          left: 0,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
   }, [newPost]);
 
   // upon mounting, we set the textarea to the height of the text

@@ -84,7 +84,6 @@ const ModalStyled = styled.div`
       cursor: pointer;
       padding: 0.1rem 0.6rem;
       font-weight: 500;
-      border-radius: var(--border-radius);
       border: none;
       font-size: 1.1rem;
       color: #2c3e50;

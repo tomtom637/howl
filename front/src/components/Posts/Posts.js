@@ -299,7 +299,6 @@ const Post = (props) => {
                       <button
                         className="post__edit"
                         onClick={() => {
-                          console.log(props.post.replies.find(reply => reply.id === id))
                           setModalContent(
                             <EditPostModal
                               post={

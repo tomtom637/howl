@@ -42,6 +42,7 @@ const ModalStyled = styled.div`
       z-index: 30;
       border-radius: var(--border-radius);
       margin: auto;
+      overflow: hidden;
     }
     &__header {
       height: 40px;
@@ -79,8 +80,9 @@ const ModalStyled = styled.div`
       }
     }
     &__close-btn {
+      background: var(--secondary-light);
       cursor: pointer;
-      padding: 0.3rem 0.8rem;
+      padding: 0.1rem 0.6rem;
       font-weight: 500;
       border-radius: var(--border-radius);
       border: none;

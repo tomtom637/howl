@@ -172,7 +172,13 @@ export const AddPost = (props) => {
             </div>
           )}
         {post.gifAddress && (
-          <div className="add-gif__gif-chosen">
+          <div
+            className="add-gif__gif-chosen"
+            onClick={() => {
+              setPost({ ...post, gifAddress: '' });
+            }}
+          >
+            <span className="add-gif__remove-gif">&#215;</span>
             <img src={post.gifAddress} alt="gif" />
           </div>
         )}

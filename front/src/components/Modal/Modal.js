@@ -25,7 +25,7 @@ const Modal = ({ children }) => {
       <div className="modal__dark-bg" onClick={() => setDisplayModal(false)} />
       <div className="modal__container">
         <button className="modal__close-btn" onClick={() => setDisplayModal(false)}>
-          <span style={{ marginBottom: "-3px" }}>&#215;</span>
+          <span>&#215;</span>
         </button>
         {children}
       </div>

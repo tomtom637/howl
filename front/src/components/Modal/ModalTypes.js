@@ -26,9 +26,6 @@ export const DeleteModal = ({ postType, postId }) => {
       <div className="modal__header">
         <h5 className="modal__heading">CONFIRMATION</h5>
       </div>
-      <button className="modal__close-btn" onClick={() => setDisplayModal(false)}>
-        <span style={{ marginBottom: "-3px" }}>&#215;</span>
-      </button>
       <div className="modal__content">
         {postType === 'post'
           ? 'This message is about be be deleted. This will also delete any reply it may have.'

@@ -243,6 +243,7 @@ exports.deletePost = async (req, res) => {
 exports.updatePost = async (req, res) => {
   const { postId } = req.params;
   const { content, gifAddress } = req.body.post;
+  const cleanedContent = content.replace(/'/g, "''");
   // if the user is neither the author nor an admin, he can't update the post
   const { userId, userRole } = getUserTokenInfos(req);
   try {
@@ -258,7 +259,7 @@ exports.updatePost = async (req, res) => {
     await pool.query(/*sql*/`
       UPDATE posts
       SET
-        content = '${content}'
+        content = '${cleanedContent}'
         ${gifAddress ? ', gif_address = ' + `'${gifAddress}'` : ''}
       WHERE id = ${postId};
     `);

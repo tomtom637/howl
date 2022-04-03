@@ -5,7 +5,7 @@ import { postsAtom, userInfosAtom, tokenAtom, categoryAtom, displayModalAtom } f
 import { addPost, getAllCategories } from "../../api-calls";
 
 export const AddPost = (props) => {
-  const { parentId, setToggleNewPost, repliesRef } = props;
+  const { parentId, setToggleNewPost, repliesRef, addPostRef } = props;
   const [posts, setPosts] = useAtom(postsAtom);
   const [categories, setCategories] = useAtom(categoryAtom);
   const [token, setToken] = useAtom(tokenAtom);
@@ -90,9 +90,7 @@ export const AddPost = (props) => {
         .push(newPost);
       setPosts(() => updatedPosts);
     }
-    setDisplayModal(false);
-    setToggleNewPost(false);
-    if (repliesRef && repliesRef.current && !newPost.parent_id) {
+    if (repliesRef && repliesRef.current) {
       setTimeout(() => {
         repliesRef.current.scrollTo({
           top: repliesRef.current.scrollHeight,
@@ -101,6 +99,13 @@ export const AddPost = (props) => {
         });
       }, 100);
     }
+    setTimeout(() => {
+      addPostRef.current.scrollIntoView(
+        { behaviour: 'smooth', block: 'end' }
+      );
+    }, 100);
+    setDisplayModal(false);
+    setToggleNewPost(false);
   }, [newPost]);
 
   // upon mounting, we set the textarea to the height of the text
@@ -183,7 +188,7 @@ export const AddPost = (props) => {
           </div>
         )}
       </form>
-      
+
     </PostActionsStyled>
   );
 };

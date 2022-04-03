@@ -57,7 +57,7 @@ export const DeleteModal = ({ postType, postId }) => {
   );
 };
 
-export const AddPostModal = ({ setToggleNewPost, categoryId, parentId, index }) => {
+export const AddPostModal = ({ setToggleNewPost, categoryId, parentId, repliesRef, addPostRef, index }) => {
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
   return (
     <div className="post-actions__container">
@@ -67,6 +67,8 @@ export const AddPostModal = ({ setToggleNewPost, categoryId, parentId, index }) 
         categoryId={categoryId}
         parentId={parentId}
         index={index}
+        repliesRef={repliesRef}
+        addPostRef={addPostRef}
       />
     </div>
   );

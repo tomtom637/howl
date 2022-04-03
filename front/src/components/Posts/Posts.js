@@ -183,6 +183,7 @@ const Post = (props) => {
   // we add it to the read_post table
   useEffect(() => {
     if (isRead) {
+      setUnreadAlert(false);
       const updatedPosts = [...posts];
       updatedPosts[props.index] = { ...posts[props.index] };
       updatedPosts[props.index].replies = [...posts[props.index].replies];
@@ -349,11 +350,13 @@ const Post = (props) => {
             setToggleShowReplies(true);
             setIsRead(true);
             setModalContent(() => (
-              <div className="add-parent-post-container">
+              <div className="add-child-post-container">
                 <AddPostModal
                   setToggleNewPost={setToggleNewPost}
                   categoryId={category_id}
                   parentId={id}
+                  repliesRef={repliesRef}
+                  addPostRef={addPostRef}
                 />
               </div>
             ));

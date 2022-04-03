@@ -237,7 +237,11 @@ const Post = (props) => {
           <button
             className="post__edit"
             onClick={() => {
-              setModalContent(<EditPostModal />);
+              setModalContent(
+                <EditPostModal
+                  post={posts.find(post => post.id === id)}
+                />
+              );
               setDisplayModal(true);
             }}
           >EDIT</button>
@@ -293,8 +297,16 @@ const Post = (props) => {
                     <div className='reply__message'>{message}</div>
                     {userInfos.nickname === user && (
                       <button
-                        className="reply__edit"
+                        className="post__edit"
                         onClick={() => {
+                          console.log(props.post.replies.find(reply => reply.id === id))
+                          setModalContent(
+                            <EditPostModal
+                              post={
+                                props.post.replies.find(reply => reply.id === id)
+                              }
+                            />
+                          );
                           setDisplayModal(true);
                         }}
                       >EDIT</button>

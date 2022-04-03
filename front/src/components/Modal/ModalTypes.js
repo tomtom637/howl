@@ -74,12 +74,20 @@ export const AddPostModal = ({ setToggleNewPost, categoryId, parentId, repliesRe
   );
 };
 
-export const EditPostModal = () => {
+export const EditPostModal = (post, setToggleNewPost, categoryId, parentId, repliesRef, addPostRef, index) => {
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
   return (
     <div className="post-actions__container">
       <h3 className="post-actions__title">EDIT YOUR POST</h3>
-      <EditPost />
+      <EditPost
+        post={post}
+        setToggleNewPost={setToggleNewPost}
+        categoryId={categoryId}
+        parentId={parentId}
+        index={index}
+        repliesRef={repliesRef}
+        addPostRef={addPostRef}
+      />
     </div>
   );
 };

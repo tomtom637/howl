@@ -364,3 +364,32 @@ export const deletePost = (posts, setPosts, categories, setCategories, postId, t
       setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
     });
 };
+
+export const updatePost = (posts, setPosts, post, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ post }),
+    };
+    try {
+      await fetch(BASE_URL + `/posts/${post.id}`, options);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData()
+    .then(() => {
+      const newPosts = [...posts];
+      let newPost = newPosts.find(p => p.id === post.id);
+      if (newPost === undefined) {
+        newPost = newPosts.find(p => p.id === post.parentId).replies.find(r => r.id === post.id);
+      }
+      newPost.message = post.content;
+      newPost.gif_address = post.gifAddress;
+      setPosts(newPosts);
+    });
+}

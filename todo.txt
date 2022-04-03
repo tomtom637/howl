@@ -9,8 +9,8 @@ CATEGORIES:
 [ ] the admin sees a '+' icon to add a category
 
 POSTS:
-[ ] add edit and delete button on all posts for the admin
-[ ] add edit button on own posts for the users
+[x] add edit and delete button on all posts for the admin
+[x] add edit button on own posts for the users
 
 USERS:
 [ ] replace the stats page by the users page (admin only)
@@ -23,9 +23,9 @@ UI:
 [ ] descriptive errors should be displayed to the users
   [ ] when omiting to write a message in a post
 [x] a modal should be displayed to confirm certain actions
-  [ ] deleting a post (all replies will be deleted along with it)
+  [x] deleting a post (all replies will be deleted along with it)
   [ ] deleting a user (are you sure you want to proceed)
-[ ] a gif should be clickable to appear bigger in a modal
+[x] a gif should be clickable to appear bigger in a modal
 [ ] polish the styles
 [ ] should look great on desktop
 [ ] should look great on Firefox

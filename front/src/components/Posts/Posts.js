@@ -12,9 +12,9 @@ import {
 import { getPosts, markPostAsRead, getPostsFromCategory } from '../../api-calls';
 import PostsStyled from "./Posts-styles";
 import CategorySelection from "../CategorySelection/CategorySelection";
-import { AddPost } from "../PostActions/PostActions";
 
 import defaultPicture from '../../images/avatar_default.jpg';
+import defaultCategoryPicture from '../../images/category_default.jpeg';
 import { DeleteModal, AddPostModal, EditPostModal } from '../Modal/ModalTypes';
 
 const Posts = () => {
@@ -96,7 +96,7 @@ const Posts = () => {
     }
     const intersectionOptions = {
       root: null,
-      rootMargin: '20px',
+      rootMargin: '125px',
       threshold: 0
     };
     const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
@@ -220,9 +220,7 @@ const Post = (props) => {
 
   return (
     <div className="post__container" key={id}>
-      {category_picture && (
-        <img src={category_picture} alt={from_category} className="post__category-picture" />
-      )}
+      <img src={category_picture || defaultCategoryPicture} alt={from_category} className="post__category-picture" />
       <div className="post__body">
         <div className='post__picture'>
           {picture

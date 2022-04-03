@@ -16,6 +16,7 @@ USERS:
 [ ] replace the stats page by the users page (admin only)
 [ ] a deleted column is added to the users table (default to 0)
 [ ] the admin can soft delete a user (only deleting email and password)
+[ ] the admin can't delete another admin (we will only make one user an admin)
 [ ] the deleted user isn't visible anymore in the users page
 [ ] we keep showing the deleted users posts but we add the flag (deleted user)
 

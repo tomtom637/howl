@@ -36,12 +36,13 @@ const PostsStyled = styled.div`
     }
     &--fixed {
       position: fixed;
-      top: 40px;
-      left:10px;
+      top: 34px;
+      left:5px;
       right: 0;
-      background: #a7aeb3;
+      background: #555;
       z-index: 10;
       width: 50px;
+      border-radius: 0 0 0 var(--border-radius);
 
       &:hover i {
         color: var(--secondary);
@@ -371,6 +372,15 @@ const PostsStyled = styled.div`
   }
 
   @media ${device.tablet} {
+    .toggle-new-post {
+
+      &--fixed {
+        height: 55px;
+        top: 49px;
+        left: calc(50% - 300px);
+        z-index: 1;
+      }
+    }
     .post {
 
     }

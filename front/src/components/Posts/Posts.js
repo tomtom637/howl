@@ -6,21 +6,24 @@ import {
   postsAtom,
   busyAtom,
   userInfosAtom,
-  modalOptionsAtom,
+  modalContentAtom,
   displayModalAtom
 } from "../../store";
 import { getPosts, markPostAsRead, getPostsFromCategory } from '../../api-calls';
 import PostsStyled from "./Posts-styles";
 import CategorySelection from "../CategorySelection/CategorySelection";
-import AddPost from "../AddPost/AddPost";
+import { AddPost } from "../PostActions/PostActions";
 
 import defaultPicture from '../../images/avatar_default.jpg';
+import { DeleteModal, AddPostModal, EditPostModal } from '../Modal/ModalTypes';
 
 const Posts = () => {
   const [posts, setPosts] = useAtom(postsAtom);
   const [token, setToken] = useAtom(tokenAtom);
   const [categories, setCategories] = useAtom(categoryAtom);
   const [busy, setBusy] = useAtom(busyAtom);
+  const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
+  const [modalContent, setModalContent] = useAtom(modalContentAtom);
   const [toggleNewPost, setToggleNewPost] = useState(false);
   const [fetchMorePosts, setFetchMorePosts] = useState(false);
   const bottomOfList = useRef(null);
@@ -123,25 +126,25 @@ const Posts = () => {
       ></div>
       <button
         ref={newPostElement}
-        tabIndex={1}
+        tabIndex={2}
         className="toggle-new-post"
         onClick={() => {
-          setToggleNewPost(!toggleNewPost);
+          setModalContent(() => (
+            <div className="add-parent-post-container">
+              <AddPostModal
+                setToggleNewPost={setToggleNewPost}
+                categoryId={null}
+                parentId={null}
+                index={tabIndex}
+              />
+            </div>
+          ));
+          setDisplayModal(true);
         }}
       >
         <i className='icon-plus'></i>
         <span>Write a new post</span>
       </button>
-      {toggleNewPost && (
-        <div className="add-parent-post-container">
-          <AddPost
-            setToggleNewPost={setToggleNewPost}
-            categoryId={null}
-            parentId={null}
-            index={tabIndex}
-          />
-        </div>
-      )}
       {!busy && posts
         .filter(post => post.category_id === categories.find(category => category.active).id)
         .map((post, index) => (
@@ -163,7 +166,7 @@ const Post = (props) => {
   const { id, user, date, message, gif_address, picture, motto, replies, from_category, category_id, category_picture } = props.post;
   const [token, setToken] = useAtom(tokenAtom);
   const [posts, setPosts] = useAtom(postsAtom);
-  const [modalOptions, setModalOptions] = useAtom(modalOptionsAtom);
+  const [modalContent, setModalContent] = useAtom(modalContentAtom);
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [toggleShowReplies, setToggleShowReplies] = useState(false);
@@ -197,7 +200,7 @@ const Post = (props) => {
   useEffect(() => {
     if (toggleNewPost) {
       setTimeout(() => {
-        newPostContainerRef.current.scrollIntoView({  block: 'center', behavior: 'smooth' });
+        newPostContainerRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
       }, 100);
     }
   }, [toggleNewPost]);
@@ -205,16 +208,14 @@ const Post = (props) => {
   // upon posts state load and update
   // we mark the post as unread if it is not read
   useEffect(() => {
-    posts[props.index].replies.forEach((reply, i) => {
-      if (!reply.read) {
-        setUnreadAlert(true);
-      }
-    });
+    if (posts[props.index] && posts[props.index].replies) {
+      posts[props.index].replies.forEach((reply, i) => {
+        if (!reply.read) {
+          setUnreadAlert(true);
+        }
+      });
+    }
   }, [posts]);
-
-  const handleDeletePost = () => {
-    console.log('deleted')
-  }
 
   return (
     <div className="post__container" key={id}>
@@ -234,24 +235,29 @@ const Post = (props) => {
         {userInfos.nickname === user && (
           <button
             className="post__edit"
-            onClick={() => {}}
+            onClick={() => {
+              setModalContent(<EditPostModal />);
+              setDisplayModal(true);
+            }}
           >EDIT</button>
         )}
         {(userInfos.nickname === user || userInfos.role === 'admin') && (
           <button
             className="post__delete"
             onClick={() => {
-              setModalOptions({
-                content: `Are you sure you want to delete this post? This action will also delete any reply this post may have.`,
-                actionType: 'DELETE',
-                action: () => {handleDeletePost()}
-              });
+              setModalContent(() => <DeleteModal postId={id} postType="post" />);
               setDisplayModal(true);
             }}
           >DELETE</button>
         )}
         {gif_address && (
-          <div className="post__gif">
+          <div
+            className="post__gif"
+            onClick={() => {
+              setModalContent(() => <img src={gif_address} alt="gif" />);
+              setDisplayModal(true);
+            }}
+          >
             <img
               src={gif_address}
               alt="gif"
@@ -263,7 +269,7 @@ const Post = (props) => {
           toggleShowReplies ? (
             <>
               <button
-                tabIndex={2 + props.index}
+                tabIndex={3 + props.index}
                 className="post__show-replies"
                 onClick={() => {
                   setToggleShowReplies(!toggleShowReplies);
@@ -287,17 +293,28 @@ const Post = (props) => {
                     {userInfos.nickname === user && (
                       <button
                         className="reply__edit"
-                        onClick={() => setDisplayModal(true)}
+                        onClick={() => {
+                          setDisplayModal(true);
+                        }}
                       >EDIT</button>
                     )}
                     {(userInfos.nickname === user || userInfos.role === 'admin') && (
                       <button
                         className="reply__delete"
-                        onClick={() => setDisplayModal(true)}
+                        onClick={() => {
+                          setModalContent(() => <DeleteModal postId={id} postType="reply" />);
+                          setDisplayModal(true);
+                        }}
                       >DELETE</button>
                     )}
                     {gif_address && (
-                      <div className='reply__gif'>
+                      <div
+                        className='reply__gif'
+                        onClick={() => {
+                          setModalContent(() => <img src={gif_address} alt="gif" />);
+                          setDisplayModal(true);
+                        }}
+                      >
                         <img
                           src={gif_address}
                           alt="gif"
@@ -311,7 +328,7 @@ const Post = (props) => {
             </>
           ) : (
             <button
-              tabIndex={2 + props.index}
+              tabIndex={3 + props.index}
               className="post__show-replies"
               onClick={() => {
                 setToggleShowReplies(!toggleShowReplies);
@@ -326,28 +343,25 @@ const Post = (props) => {
         )}
         <button
           ref={addPostRef}
-          tabIndex={2 + props.index}
+          tabIndex={3 + props.index}
           className="post__toggle-new-post"
           onClick={() => {
-            setToggleNewPost(!toggleNewPost);
             setToggleShowReplies(true);
             setIsRead(true);
+            setModalContent(() => (
+              <div className="add-parent-post-container">
+                <AddPostModal
+                  setToggleNewPost={setToggleNewPost}
+                  categoryId={category_id}
+                  parentId={id}
+                />
+              </div>
+            ));
+            setDisplayModal(true);
           }}
         >
           <i aria-controls='add a reply' className='icon-plus'></i>
         </button>
-        {toggleNewPost && (
-          <div ref={newPostContainerRef} className="post__add-post-container">
-            <AddPost
-              repliesRef={repliesRef}
-              setToggleNewPost={setToggleNewPost}
-              setBusy={props.setBusy}
-              categoryId={category_id}
-              parentId={id}
-              index={props.index}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

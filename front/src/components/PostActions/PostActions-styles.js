@@ -1,54 +1,19 @@
 import styled from 'styled-components';
 import { device } from '../../device';
 
-const AddPostStyled = styled.div`
+const PostActionsStyled = styled.div`
   display: flex;
   flex-direction: column;
 
   .add-post {
     
-    &__categories-wrapper {
-      margin-bottom: 1rem;
-    }
-    &__categories-button {
-      padding: 0.2rem 0.5rem;
-
-      &--error {
-        outline: 3px solid var(--red);
-      }
-    }
-    &__categories-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0.3rem;
-    }
-    &__category-container {
-      position: relative;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    &__category-picture {
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0.6;
-      z-index: -1;
-      height: 100px;
-      width: 100%;
-      object-fit: cover;
-    }
-    &__category-name {
-      padding: 1rem 0 0.2rem 1.5rem;
-    }
-    &__category-description {
-      padding: 0 0 1rem 1.5rem;
-    }
     &__textarea {
       width: 100%;
       padding: 1rem;
       font-size: 1.1rem;
       border: none;
       font-family: 'Roboto', sans-serif;
+      background: #fff;
 
       &:focus {
         outline: none;
@@ -65,7 +30,8 @@ const AddPostStyled = styled.div`
       right: 0;
       bottom: 0;
       padding: 0.5rem;
-      margin: 0 1rem 1rem;
+      margin: 0 auto 0.5rem;
+      width: 95%;
       font-size: 1rem;
       letter-spacing: 0.1rem;
       font-weight: bold;
@@ -114,7 +80,7 @@ const AddPostStyled = styled.div`
       }
     }
     &__button {
-      padding: 0.5rem 2rem;
+      padding: 0.5rem 0.8rem;
       font-size: 1rem;
       font-weight: bold;
       color: #606060;
@@ -169,4 +135,4 @@ const AddPostStyled = styled.div`
   }
 `;
 
-export default AddPostStyled;
+export default PostActionsStyled;

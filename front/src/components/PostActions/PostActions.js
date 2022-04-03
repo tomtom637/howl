@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import AddPostStyled from "./AddPost-styles";
+import PostActionsStyled from "./PostActions-styles";
 import { atom, useAtom } from 'jotai';
-import { postsAtom, userInfosAtom, tokenAtom, categoryAtom } from "../../store";
+import { postsAtom, userInfosAtom, tokenAtom, categoryAtom, displayModalAtom } from "../../store";
 import { addPost, getAllCategories } from "../../api-calls";
 
-const AddPost = (props) => {
+export const AddPost = (props) => {
   const { parentId, setToggleNewPost, repliesRef } = props;
   const [posts, setPosts] = useAtom(postsAtom);
   const [categories, setCategories] = useAtom(categoryAtom);
   const [token, setToken] = useAtom(tokenAtom);
+  const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
   const textArea = useRef(null);
   const searchInput = useRef(null);
   const [post, setPost] = useState({
@@ -89,8 +90,9 @@ const AddPost = (props) => {
         .push(newPost);
       setPosts(() => updatedPosts);
     }
+    setDisplayModal(false);
     setToggleNewPost(false);
-    if (repliesRef.current && newPost.parent_id !== null) {
+    if (repliesRef && repliesRef.current && !newPost.parent_id) {
       setTimeout(() => {
         repliesRef.current.scrollTo({
           top: repliesRef.current.scrollHeight,
@@ -112,10 +114,10 @@ const AddPost = (props) => {
   }, [textArea.current]);
 
   return (
-    <AddPostStyled>
+    <PostActionsStyled>
       <form className="add-post" onSubmit={e => handlePostSubmit(e)}>
         <textarea
-          tabIndex={2 + props.index}
+          tabIndex={1}
           className="add-post__textarea"
           ref={textArea}
           onFocus={e => handleTextAreaSize(e)}
@@ -133,13 +135,13 @@ const AddPost = (props) => {
           value={post.gifAddress || ''}
           readOnly
         />
-        <button tabIndex={3 + props.index} type="submit" className="add-post__submit">PUBLISH</button>
+        <button tabIndex={2} type="submit" className="add-post__submit">PUBLISH</button>
       </form>
       <form onSubmit={e => handleGifSearch(e)} className="add-gif">
         <div className="add-gif__gif-container">
           <div className="add-gif__gif-search">
             <input
-              tabIndex={2 + props.index}
+              tabIndex={1}
               ref={searchInput}
               placeholder="search for an Emoji"
               className="add-gif__input"
@@ -148,7 +150,7 @@ const AddPost = (props) => {
               autoComplete="off"
             />
           </div>
-          <button tabIndex={2 + props.index} className="add-gif__button" type="submit">go</button>
+          <button tabIndex={1} className="add-gif__button" type="submit">go</button>
         </div>
         {typeof gifsPreview !== undefined && gifsPreview.length > 0
           && !gifLoading
@@ -175,8 +177,15 @@ const AddPost = (props) => {
           </div>
         )}
       </form>
-    </AddPostStyled>
+      
+    </PostActionsStyled>
   );
 };
 
-export default AddPost;
+export const EditPost = props => {
+  return (
+    <PostActionsStyled>
+      <p>coucou</p>
+    </PostActionsStyled>
+  );
+};

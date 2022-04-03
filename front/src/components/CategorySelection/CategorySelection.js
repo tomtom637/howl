@@ -51,7 +51,7 @@ const CategorySelection = () => {
       {!busy && (
         <>
           <button
-            tabIndex={1}
+            tabIndex={2}
             className={`categories__button`}
             type="button"
             onClick={() => setToggleShowCategories(!toggleShowCategories)}
@@ -73,7 +73,7 @@ const CategorySelection = () => {
                       alt={category.name}
                     />
                   )}
-                  <h3 tabIndex={1} className="category__name">{category.name}</h3>
+                  <h3 tabIndex={2} className="category__name">{category.name}</h3>
                   <p className="category__description">{category.description}</p>
                 </div>
               ))}

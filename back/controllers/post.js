@@ -208,7 +208,7 @@ exports.deletePost = async (req, res) => {
       FROM posts p
       WHERE p.id = ${postId};
     `);
-    if (author.rows[0].user_id !== userId && userRole !== 'admin') {
+    if (author.rows[0]?.user_id !== userId && userRole !== 'admin') {
       res.status(401).json({ message: 'You are not authorized to delete this post!' });
     }
     // otherwise, delete the reply or post with its replies

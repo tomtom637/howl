@@ -2,6 +2,22 @@ import styled from 'styled-components';
 import { device } from '../../device';
 
 const ModalStyled = styled.div`
+
+  .post-actions {
+    
+    &__container {
+    padding: 0.5rem 1rem;
+    background: #ebebeb;
+    border-radius: 0.3rem;
+    }
+    &__title {
+      font-size: 1rem;
+      color: #666;
+      text-align: center;
+      padding-bottom: 0.5rem;
+      letter-spacing: 0.05rem;
+    }
+  }
   .modal {
     &__dark-bg {
       background-color: rgba(0, 0, 0, 0.5);
@@ -19,9 +35,9 @@ const ModalStyled = styled.div`
       left: 50%;
       transform: translate(-50%, -50%);
       width: min(50%, 350px);
-      min-width: 300px;
+      min-width: 20rem;
       min-height: 10rem;
-      background: white;
+      background: #fff;
       color: white;
       z-index: 30;
       border-radius: var(--border-radius);
@@ -56,6 +72,11 @@ const ModalStyled = styled.div`
       display: flex;
       justify-content: space-around;
       align-items: center;
+    }
+    &__btn {
+      &:focus {
+        outline: 2px solid #777;
+      }
     }
     &__close-btn {
       cursor: pointer;

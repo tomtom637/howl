@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { atom, useAtom } from 'jotai';
-import { tokenAtom, userInfosAtom, formAtom, loggedAtom, modalOptionsAtom, displayModalAtom } from './store';
+import { tokenAtom, userInfosAtom, formAtom, loggedAtom, modalContentAtom, displayModalAtom } from './store';
 
 import { getInfosFromToken } from './api-calls';
 
@@ -21,7 +21,7 @@ const App = () => {
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [formType, setFormType] = useAtom(formAtom);
   const [logged, setLogged] = useAtom(loggedAtom);
-  const [modalOptions, setModalOptions] = useAtom(modalOptionsAtom);
+  const [modalContent, setModalContent] = useAtom(modalContentAtom);
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
   const [busy, setBusy] = useState(true);
   const [connectionError, setConnectionError] = useState(false);
@@ -43,12 +43,7 @@ const App = () => {
           <Header />
           <div className='main-content-wrapper'>
             {displayModal && (
-              <Modal
-                setIsOpen={setDisplayModal}
-                content={modalOptions.content}
-                actionType={modalOptions.actionType}
-                action={modalOptions.action}
-              />
+              <Modal>{modalContent}</Modal>
             )}
             <Switch>
               <Route exact path="/">

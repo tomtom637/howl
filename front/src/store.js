@@ -21,6 +21,6 @@ export const categoryAtom = atom([]);
 
 export const busyAtom = atom(true);
 
-export const modalOptionsAtom = atom({});
+export const modalContentAtom = atom(null);
 
 export const displayModalAtom = atom(false);

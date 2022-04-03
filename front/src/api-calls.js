@@ -328,3 +328,39 @@ export const getPostsFromCategory = (setPosts, categories, setCategories, token)
   };
   fetchData();
 };
+
+export const deletePost = (posts, setPosts, categories, setCategories, postId, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    };
+    try {
+      await fetch(BASE_URL + `/posts/${postId}`, options);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData()
+    .then(() => {
+      const thePost = posts.find(post => post.id === postId);
+      if (thePost === undefined) {
+        setPosts(prevPosts => {
+          const newPosts = [];
+          prevPosts.forEach((post, i) => {
+            newPosts[i] = post;
+            newPosts[i].replies = post.replies.filter(reply => reply.id !== postId)
+          });
+          return newPosts;
+        });
+        return;
+      }
+      const newCategories = [...categories];
+      const newActiveCategory = newCategories.find(category => category.active);
+      newActiveCategory.fetchOffset -= 1;
+      setCategories(newCategories);
+      setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
+    });
+};

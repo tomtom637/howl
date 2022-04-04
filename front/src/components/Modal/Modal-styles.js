@@ -37,6 +37,7 @@ const ModalStyled = styled.div`
       width: min(50%, 350px);
       min-width: 20rem;
       min-height: 10rem;
+      max-height: 95vh;
       background: #fff;
       color: white;
       z-index: 30;

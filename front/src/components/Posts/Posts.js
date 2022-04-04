@@ -221,7 +221,7 @@ const Post = (props) => {
 
   return (
     <div className="post__container" key={id}>
-      <img src={categories[category_id].picture || defaultCategoryPicture} alt={categories[category_id].name} className="post__category-picture" />
+      <img src={(categories[category_id] && categories[category_id].picture) || defaultCategoryPicture} alt={categories[category_id].name} className="post__category-picture" />
       <div className="post__body">
         <div className='post__picture'>
           {picture

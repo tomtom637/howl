@@ -59,7 +59,7 @@ const CategorySelection = () => {
             <img
               src={categories.find(category => category.active).picture || defaultCategoryPicture}
               alt={categories.find(category => category.active).name}
-              className="categories-header__picture" 
+              className="categories-header__picture"
             />
             <h2 className="categories-header__heading">
               {categories.find(category => category.active).name}
@@ -69,7 +69,7 @@ const CategorySelection = () => {
               className='categories-header__button'
               type="button"
               onClick={e => {
-                setToggleShowCategories(!toggleShowCategories)
+                setToggleShowCategories(!toggleShowCategories);
               }}
             >
               change category
@@ -83,17 +83,19 @@ const CategorySelection = () => {
                   className="category__container"
                   onClick={e => {
                     if (e.target.id !== 'category-update') {
-                      handleCategoryClick(e, i)
+                      handleCategoryClick(e, i);
                     }
                   }}
                 >
                   <img
-                      className="category__picture"
-                      src={category.picture || defaultCategoryPicture}
-                      alt={category.name}
-                    />
-                  <h3 tabIndex={2} className="category__name">{category.name}</h3>
-                  <p className="category__description">{category.description}</p>
+                    className="category__picture"
+                    src={category.picture || defaultCategoryPicture}
+                    alt={category.name}
+                  />
+                  <div className="category__infos">
+                    <h3 tabIndex={2} className="category__name">{category.name}</h3>
+                    <p className="category__description">{category.description}</p>
+                  </div>
                   {userInfos.role === 'admin' && (
                     <button
                       id="category-update"
@@ -101,9 +103,9 @@ const CategorySelection = () => {
                       className="category__edit"
                       onClick={() => {
                         setModalContent(
-                          <CategoryModal categoryIndex={i}/>
+                          <CategoryModal categoryIndex={i} />
                         );
-                        setDisplayModal(true);  
+                        setDisplayModal(true);
                       }}
                     >EDIT</button>
                   )}

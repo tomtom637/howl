@@ -31,7 +31,11 @@ const CategorySelectionStyled = styled.div`
       position: absolute;
       bottom: 0;
       left: 0;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 0.65rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.03rem;
       border: none;
       cursor: pointer;
 
@@ -44,7 +48,7 @@ const CategorySelectionStyled = styled.div`
   .categories {
     &__container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 0.3rem;
       margin-top: 1rem;
     }
@@ -61,18 +65,23 @@ const CategorySelectionStyled = styled.div`
       left: 0;
       opacity: 0.4;
       z-index: -1;
-      height: 100px;
+      height: 250px;
       width: 100%;
       object-fit: cover;
+    }
+    &__infos {
+      padding: 1rem;
     }
     &__name {
       font-family: 'Poller one', cursive;
       font-size: 1rem;
-      padding: 1rem 0 0.2rem 1.5rem;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 0.2rem 0.5rem;
     }
     &__description {
       font-size: 0.8rem;
-      padding: 0 0 1rem 1.5rem;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 0.2rem 0.5rem;
     }
     &__edit {
       position: absolute;
@@ -81,7 +90,8 @@ const CategorySelectionStyled = styled.div`
       padding: 0.3rem 0.6rem;
       font-size: 0.7rem;
       font-weight: bold;
-      color: #555555;
+      color: #fff;
+      background: #555;
       border: none;
       cursor: pointer;
 
@@ -89,6 +99,9 @@ const CategorySelectionStyled = styled.div`
         color: var(--secondary);
       }
     }
+  }
+  .category__container:hover {
+    color: var(--secondary);
   }
 `;
 

@@ -122,6 +122,48 @@ const ModalStyled = styled.div`
       background: whitesmoke;
     }
   }
+  .category-modal {
+    &__list {
+      margin: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    &__item {
+      border-bottom: none;
+    }
+    &__name {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      width: 100%;
+      font-family: 'Poller One', cursive;
+    }
+    &__description {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      width: 100%;
+      font-family: 'Roboto', sans-serif;
+    }
+    &__picture {
+      width: 100%;
+      margin-top: 1rem;
+      object-fit: cover;
+    }
+    &__picture-label {
+    cursor: pointer;
+    }
+    &__picture-input {
+      display: none;
+    }
+    &__message {
+      font-size: 1rem;
+      color: #333333;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+  }
 
  @media ${device.tablet} {
    

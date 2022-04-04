@@ -39,6 +39,7 @@ const PostActionsStyled = styled.div`
       background: var(--primary-gray-light);
       border: none;
       border-radius: var(--border-radius);
+      z-index: 20;
 
       &:focus {
         outline: 1px solid var(--dark-grey);

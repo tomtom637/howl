@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAtom } from 'jotai';
 import {
   modalContentAtom,
@@ -8,7 +8,8 @@ import {
   tokenAtom
 } from "../../store";
 import { AddPost, EditPost } from '../PostActions/PostActions';
-import { deletePost } from '../../api-calls';
+import { deletePost, updateCategoryName, updateCategoryDescription, updateCategoryPicture } from '../../api-calls';
+import categoryDefaultPicture from '../../images/category_default.jpeg';
 
 export const DeleteModal = ({ postType, postId }) => {
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
@@ -89,5 +90,132 @@ export const EditPostModal = (post, setToggleNewPost, categoryId, parentId, repl
         addPostRef={addPostRef}
       />
     </div>
+  );
+};
+
+export const CategoryModal = ({ categoryIndex }) => {
+  // /*DEBUG*/ return <p style={{color:'black'}}>boubou</p>
+  const [token, setToken] = useAtom(tokenAtom);
+  const [categories, setCategories] = useAtom(categoryAtom);
+  const [pictureChanged, setPictureChanged] = useState(false);
+  const [nameChanged, setNameChanged] = useState(false);
+  const [descriptionChanged, setDescriptionChanged] = useState(false);
+  const [currentName, setCurrentName] = useState(categories[categoryIndex].name);
+  const [currentDescription, setCurrentDescription] = useState(categories[categoryIndex].description);
+  const preview = useRef(null);
+  const nameRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const inputFile = useRef(null);
+
+  const handleTextAreaSize = element => {
+    element.style.height = 'inherit';
+    const computed = window.getComputedStyle(element);
+    const height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+      + parseInt(computed.getPropertyValue('padding-top'), 10)
+      + element.scrollHeight
+      + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+      + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+
+    element.style.height = `${height}px`;
+  };
+
+  const handleNameSubmit = e => {
+    e.preventDefault();
+    setNameChanged(false);
+    updateCategoryName(categories, setCategories, currentName, categoryIndex, token);
+  };
+
+  const handleDescriptionSubmit = e => {
+    e.preventDefault();
+    setDescriptionChanged(false);
+    updateCategoryDescription(categories, setCategories, currentDescription, categoryIndex, token);
+  };
+
+  const handlePictureSubmit = e => {
+    e.preventDefault();
+    const file = inputFile.current.files[0];
+    let formData = new FormData();
+    formData.append('image', file, file.name);
+    updateCategoryPicture(categories, setCategories, categoryIndex, token, formData);
+    setPictureChanged(false);
+  };
+
+  const handlePictureChange = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = event => {
+      preview.current.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+    setPictureChanged(true);
+  };
+
+  // resize the textareas on load
+  useEffect(() => {
+    handleTextAreaSize(nameRef.current);
+    handleTextAreaSize(descriptionRef.current);
+  }, []);
+
+  return (
+    <>
+      <ul className="category-modal__list">
+        <li className="category-modal__item">
+          <form onSubmit={e => handleNameSubmit(e)}>
+            <textarea
+              ref={nameRef}
+              onFocus={() => handleTextAreaSize(nameRef.current)}
+              onKeyDown={() => handleTextAreaSize(nameRef.current)}
+              onBlur={() => handleTextAreaSize(nameRef.current)}
+              onChange={e => {
+                setNameChanged(true);
+                setCurrentName(e.target.value);
+              }}
+              className="category-modal__name scroll"
+              value={currentName || ''}
+              placeholder="write the category name here"
+            ></textarea>
+            {nameChanged && <button type="submit" className="edit-button category-modal__edit">UPDATE</button>}
+          </form>
+        </li>
+        <li className="category-modal__item">
+          <form onSubmit={e => handleDescriptionSubmit(e)}>
+            <textarea
+              ref={descriptionRef}
+              onFocus={() => handleTextAreaSize(descriptionRef.current)}
+              onKeyDown={() => handleTextAreaSize(descriptionRef.current)}
+              onBlur={() => handleTextAreaSize(descriptionRef.current)}
+              onChange={e => {
+                setDescriptionChanged(true);
+                setCurrentDescription(e.target.value);
+              }}
+              className="category-modal__description scroll"
+              value={currentDescription || ''}
+              placeholder="write a category description here"
+            ></textarea>
+            {descriptionChanged && <button type="submit" className="edit-button category-modal__edit">UPDATE</button>}
+          </form>
+        </li>
+        <li className="category-modal__picture category-modal__item">
+          <form onSubmit={e => handlePictureSubmit(e)}>
+            <label className="category-modal__picture-label" htmlFor="picture-input">
+              {categories[categoryIndex].picture
+                ? <img ref={preview} src={categories[categoryIndex].picture} alt={currentName}></img>
+                : <img ref={preview} src={categoryDefaultPicture} alt={currentName}></img>
+              }
+            </label>
+            <input
+              ref={inputFile}
+              id="picture-input"
+              type="file"
+              onChange={e => handlePictureChange(e)}
+              className="category-modal__picture-input"
+              accept="image/png, image/jpeg, image/jpg, image/gif"
+            />
+            {pictureChanged && <button type="submit" className="edit-button category-modal__edit">UPDATE</button>}
+          </form>
+        </li>
+      </ul>
+      <div className="category-modal__message">Click on what needs change</div>
+    </>
   );
 };

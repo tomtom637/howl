@@ -15,8 +15,11 @@ router.get('/:categoryId/:offset', auth, userCtrl.getFivePostsAndTheirRepliesFro
 // REGISTER A NEW CATEGORY
 router.post('/', admin, userCtrl.addCategory);
 
-// UPDATE A CATEGORY NAME AND DESCRIPTION
-router.put('/name/:categoryId', admin, userCtrl.updateCategoryNameAndDesc);
+// UPDATE A CATEGORY NAME
+router.put('/name/:categoryId', admin, userCtrl.updateCategoryName);
+
+// UPDATE A CATEGORY DESCRIPTION
+router.put('/description/:categoryId', admin, userCtrl.updateCategoryDescription);
 
 // UPDATE A CATEGORY'S PICTURE
 router.put('/picture/:categoryId', admin, multer, userCtrl.updateCategoryPicture);

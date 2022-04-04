@@ -393,3 +393,73 @@ export const updatePost = (posts, setPosts, post, token) => {
       setPosts(newPosts);
     });
 }
+
+export const updateCategoryName = (categories, setCategories, currentName, categoryIndex, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ name: currentName }),
+    };
+    try {
+      await fetch(BASE_URL + `/categories/name/${categories[categoryIndex].id}`, options);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData()
+    .then(() => {
+      const newCategories = [...categories];
+      newCategories[categoryIndex].name = currentName;
+      setCategories(newCategories);
+    });
+}
+
+export const updateCategoryDescription = (categories, setCategories, currentDescription, categoryIndex, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ description: currentDescription }),
+    };
+    try {
+      await fetch(BASE_URL + `/categories/description/${categories[categoryIndex].id}`, options);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData()
+    .then(() => {
+      const newCategories = [...categories];
+      newCategories[categoryIndex].description = currentDescription;
+      setCategories(newCategories);
+    });
+}
+
+export const updateCategoryPicture = (categories, setCategories, categoryIndex, token, file) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+      body: file,
+    };
+    try {
+      const response = await fetch(BASE_URL + `/categories/picture/${categories[categoryIndex].id}`, options);
+      const result = await response.json();
+      const newCategories = [...categories];
+      newCategories[categoryIndex].picture = result.url;
+      setCategories(newCategories);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData();
+}

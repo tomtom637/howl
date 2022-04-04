@@ -95,17 +95,35 @@ exports.addCategory = async (req, res) => {
   }
 }
 
-// UPDATE A CATEGORY NAME AND DESCRIPTION
-exports.updateCategoryNameAndDesc = async (req, res) => {
+// UPDATE A CATEGORY NAME
+exports.updateCategoryName = async (req, res) => {
   const { categoryId } = req.params;
-  const { name, description } = req.body;
+  const { name } = req.body;
+  const cleanedName = name.replace(/'/g, "''");
   try {
     await pool.query(/*sql*/`
       UPDATE categories
-      SET "name" = '${name}', "description" = '${description}'
+      SET "name" = '${cleanedName}'
       WHERE id = ${categoryId};
     `);
-    res.status(200).json({ message: 'Category updated successfully' });
+    res.status(200).json({ message: 'Category name updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}
+
+// UPDATE A CATEGORY DESCRIPTION
+exports.updateCategoryDescription = async (req, res) => {
+  const { categoryId } = req.params;
+  const { description } = req.body;
+  const cleanedDescription = description.replace(/'/g, "''");
+  try {
+    await pool.query(/*sql*/`
+      UPDATE categories
+      SET "description" = '${cleanedDescription}'
+      WHERE id = ${categoryId};
+    `);
+    res.status(200).json({ message: 'Category description updated successfully' });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -132,7 +150,10 @@ exports.updateCategoryPicture = async (req, res) => {
       SET picture = '${picture}'
       WHERE id = ${categoryId};
     `);
-    res.status(200).json({ message: 'Category picture updated successfully' });
+    res.status(200).json({
+      message: 'Category picture updated successfully',
+      url: picture
+    });
   } catch (error) {
     res.status(500).json({ error });
   }

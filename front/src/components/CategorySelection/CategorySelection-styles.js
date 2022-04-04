@@ -74,6 +74,21 @@ const CategorySelectionStyled = styled.div`
       font-size: 0.8rem;
       padding: 0 0 1rem 1.5rem;
     }
+    &__edit {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #555555;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--secondary);
+      }
+    }
   }
 `;
 

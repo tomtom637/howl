@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { atom, useAtom } from 'jotai';
-import { tokenAtom, categoryAtom, busyAtom, displayModalAtom, modalContentAtom } from "../../store";
+import { tokenAtom, categoryAtom, busyAtom, userInfosAtom, displayModalAtom, modalContentAtom } from "../../store";
 import { getAllCategories } from "../../api-calls";
 import CategorySelectionStyled from "./CategorySelection-styles";
+import { CategoryModal } from '../Modal/ModalTypes';
 import defaultCategoryPicture from '../../images/category_default.jpeg';
 
 const CategorySelection = () => {
@@ -10,6 +11,9 @@ const CategorySelection = () => {
   const [categories, setCategories] = useAtom(categoryAtom);
   const [toggleShowCategories, setToggleShowCategories] = useState(false);
   const [busy, setBusy] = useAtom(busyAtom);
+  const [userInfos, setUserInfos] = useAtom(userInfosAtom);
+  const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
+  const [modalContent, setModalContent] = useAtom(modalContentAtom);
 
   const handleCategoryClick = (e, index) => {
     const newCategories = [...categories];
@@ -64,10 +68,11 @@ const CategorySelection = () => {
               tabIndex={2}
               className='categories-header__button'
               type="button"
-              onClick={() => setToggleShowCategories(!toggleShowCategories)}
+              onClick={e => {
+                setToggleShowCategories(!toggleShowCategories)
+              }}
             >
               change category
-              {/* {categories.find(category => category.active).name} */}
             </button>
           </div>
           {toggleShowCategories && (
@@ -76,7 +81,11 @@ const CategorySelection = () => {
                 <div
                   key={category.id}
                   className="category__container"
-                  onClick={e => handleCategoryClick(e, i)}
+                  onClick={e => {
+                    if (e.target.id !== 'category-update') {
+                      handleCategoryClick(e, i)
+                    }
+                  }}
                 >
                   <img
                       className="category__picture"
@@ -85,6 +94,19 @@ const CategorySelection = () => {
                     />
                   <h3 tabIndex={2} className="category__name">{category.name}</h3>
                   <p className="category__description">{category.description}</p>
+                  {userInfos.role === 'admin' && (
+                    <button
+                      id="category-update"
+                      type="button"
+                      className="category__edit"
+                      onClick={() => {
+                        setModalContent(
+                          <CategoryModal categoryIndex={i}/>
+                        );
+                        setDisplayModal(true);  
+                      }}
+                    >EDIT</button>
+                  )}
                 </div>
               ))}
             </div>

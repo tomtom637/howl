@@ -163,9 +163,10 @@ const Posts = () => {
 
 
 const Post = (props) => {
-  const { id, user, date, message, gif_address, picture, motto, replies, from_category, category_id, category_picture } = props.post;
+  const { id, user, date, message, gif_address, picture, motto, replies, category_id } = props.post;
   const [token, setToken] = useAtom(tokenAtom);
   const [posts, setPosts] = useAtom(postsAtom);
+  const [categories, setCategories] = useAtom(categoryAtom);
   const [modalContent, setModalContent] = useAtom(modalContentAtom);
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
@@ -220,7 +221,7 @@ const Post = (props) => {
 
   return (
     <div className="post__container" key={id}>
-      <img src={category_picture || defaultCategoryPicture} alt={from_category} className="post__category-picture" />
+      <img src={categories[category_id].picture || defaultCategoryPicture} alt={categories[category_id].name} className="post__category-picture" />
       <div className="post__body">
         <div className='post__picture'>
           {picture

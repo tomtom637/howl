@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { tokenAtom, userInfosAtom, loggedAtom, toggledProfileAtom } from '../../store';
+import { tokenAtom, userInfosAtom, loggedAtom, toggledProfileAtom, postsAtom, categoryAtom, busyAtom } from '../../store';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Profile from '../Profile/Profile';
@@ -14,6 +14,9 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [logged, setLogged] = useAtom(loggedAtom);
   const [toggledProfile, setToggledProfile] = useAtom(toggledProfileAtom);
+  const [posts, setPosts] = useAtom(postsAtom);
+  const [category, setCategory] = useAtom(categoryAtom);
+  const [busy, setBusy] = useAtom(busyAtom);
 
   useEffect(() => {
     function handleClick(e) {
@@ -88,6 +91,9 @@ export default function Nav({ toggledMenu, setToggledMenu }) {
                       setUserInfos(null);
                       setLogged(false);
                       setToggledMenu(false);
+                      setPosts([]);
+                      setCategory([]);
+                      setBusy(true);
                     }}
                   >
                     <i className="icon-logout"></i>

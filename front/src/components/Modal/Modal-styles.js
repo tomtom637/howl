@@ -11,10 +11,11 @@ const ModalStyled = styled.div`
     border-radius: 0.3rem;
     }
     &__title {
+      font-family: 'Poller One', cursive;
       font-size: 1rem;
       color: #666;
       text-align: center;
-      padding-bottom: 0.5rem;
+      padding: 1rem 0 2rem;
       letter-spacing: 0.05rem;
     }
   }

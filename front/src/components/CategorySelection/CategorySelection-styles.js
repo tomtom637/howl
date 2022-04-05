@@ -5,7 +5,7 @@ const CategorySelectionStyled = styled.div`
   margin-bottom: 1rem;
 
   .categories-header {
-    height: 10rem;
+    height: 13rem;
     position: relative;
     overflow: hidden;
 
@@ -17,21 +17,20 @@ const CategorySelectionStyled = styled.div`
     }
     &__heading {
       position: absolute;
-      top: 2rem;
+      bottom: 0;
       left: 0;
       right: 0;
       font-family: 'Poller One', cursive;
-      text-align: center;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.8);
+      padding: 1rem 1rem 2.5rem 1rem;
+      background: var(--dark-grey);
       color: #fff;
     }
     &__button {
       padding: 0.5rem 0.9rem;
       position: absolute;
       bottom: 0;
-      left: 0;
-      background: rgba(255, 255, 255, 0.9);
+      right: 0;
+      background: #f1e0de;
       font-size: 0.65rem;
       font-weight: bold;
       text-transform: uppercase;
@@ -48,9 +47,10 @@ const CategorySelectionStyled = styled.div`
   .categories {
     &__container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 0.3rem;
-      margin-top: 1rem;
+      gap: 0.5rem;
+      background: rgba(170, 171, 178, 0.4);
+      padding: 1rem;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
     }
   }
   .category {
@@ -63,24 +63,23 @@ const CategorySelectionStyled = styled.div`
       position: absolute;
       top: 0;
       left: 0;
-      opacity: 0.4;
       z-index: -1;
       height: 250px;
       width: 100%;
       object-fit: cover;
     }
     &__infos {
-      padding: 1rem;
+      padding: 3rem 1rem 0 1rem;
     }
     &__name {
       font-family: 'Poller one', cursive;
       font-size: 1rem;
-      background: rgba(255, 255, 255, 0.8);
+      background: #fff;
       padding: 0.2rem 0.5rem;
     }
     &__description {
-      font-size: 0.8rem;
-      background: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      background: #fff;
       padding: 0.2rem 0.5rem;
     }
     &__edit {
@@ -100,7 +99,7 @@ const CategorySelectionStyled = styled.div`
       }
     }
   }
-  .category__container:hover {
+  .category__container:hover .category__name {
     color: var(--secondary);
   }
 `;

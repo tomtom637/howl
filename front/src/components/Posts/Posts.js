@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
+import { size } from '../../device';
 import {
   categoryAtom,
   tokenAtom,
@@ -84,11 +85,17 @@ const Posts = () => {
 
   // sets the toggleNewPost button to fixed upon scroll
   useEffect(() => {
+    const marginCorrection = () => {
+      if (window.innerWidth < size.tablet) {
+        return 8;
+      }
+      return -10;
+    }
     function intersectionCallback(entries) {
       if (!newPostElement.current) return;
       if (!entries[0].isIntersecting) {
         newPostElement.current.classList.add('toggle-new-post--fixed');
-        postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + 8 + 'px';
+        postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + marginCorrection() + 'px';
       } else {
         newPostElement.current.classList.remove('toggle-new-post--fixed');
         postsContainer.current.style.paddingTop = '0';
@@ -96,7 +103,7 @@ const Posts = () => {
     }
     const intersectionOptions = {
       root: null,
-      rootMargin: '125px',
+      rootMargin: '0px',
       threshold: 0
     };
     const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
@@ -120,10 +127,6 @@ const Posts = () => {
   return (
     <PostsStyled ref={postsContainer} className="posts-container">
       <CategorySelection />
-      <div
-        ref={newPostAnchor}
-        className="toggle-new-post__anchor"
-      ></div>
       <button
         ref={newPostElement}
         tabIndex={2}
@@ -145,6 +148,10 @@ const Posts = () => {
         <i className='icon-plus'></i>
         <span>Write a new post</span>
       </button>
+      <div
+        ref={newPostAnchor}
+        className="toggle-new-post__anchor"
+      ></div>
       {!busy && posts
         .filter(post => post.category_id === categories.find(category => category.active).id)
         .map((post, index) => (

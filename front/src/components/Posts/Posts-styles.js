@@ -48,11 +48,6 @@ const PostsStyled = styled.div`
         color: var(--secondary);
       }
     }
-    &__anchor {
-      position: absolute;
-      top: 40px;
-    }
-
     i {
       margin-right: 0.5rem;
       font-size: 1.1rem;
@@ -78,14 +73,15 @@ const PostsStyled = styled.div`
     }
     &__category-picture {
       height: 5rem;
-      width: 100%;
+      width: 70%;
       position: absolute;
       top: 0;
-      right: 0;
+      left: 0;
       border-radius: var(--border-radius) var(--border-radius) 0 0;
+      -webkit-mask-image:-webkit-gradient(linear, left, right, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+      mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
       object-fit: cover;
       object-position: center;
-      z-index: -10;
       transform: translateY(-1rem) scale(1.15) rotate(-2deg);
 
     }
@@ -118,7 +114,7 @@ const PostsStyled = styled.div`
     }
     &__name {
       grid-area: name;
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       text-align: right;
       white-space: nowrap;
     }
@@ -229,11 +225,12 @@ const PostsStyled = styled.div`
       font-family: 'poller one', cursive;
       position: absolute;
       color: var(--secondary);
-      font-size: 0.7rem;
-      top: 1.8rem;
+      font-size: 5rem;
+      top: 0;
       left: 15%;
       width: 4rem;
-      transform: translateX(-50%) rotate(-2deg) scale(1.2);
+      opacity: 0.19;
+      transform: translateX(-50%) rotate(-10deg) scale(1.2);
     }
     &__toggle-new-post {
       grid-area: tog-new;

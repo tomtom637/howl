@@ -85,45 +85,45 @@ const Posts = () => {
   }, [bottomOfList.current, categories]);
 
   // sets the toggleNewPost button to fixed upon scroll
-  useEffect(() => {
-    const marginCorrection = () => {
-      if (window.innerWidth < size.tablet) {
-        return 8;
-      }
-      return -10;
-    }
-    function intersectionCallback(entries) {
-      if (!newPostElement.current) return;
-      if (!entries[0].isIntersecting) {
-        newPostElement.current.classList.add('toggle-new-post--fixed');
-        postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + marginCorrection() + 'px';
-      } else {
-        newPostElement.current.classList.remove('toggle-new-post--fixed');
-        postsContainer.current.style.paddingTop = '0';
-      }
-    }
-    const intersectionOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0
-    };
-    const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
-    if (newPostAnchor.current) {
-      observer.observe(newPostAnchor.current);
-    }
-    return () => {
-      if (newPostAnchor.current) {
-        observer.unobserve(newPostAnchor.current);
-      }
-    };
-  }, [newPostAnchor.current]);
+  // useEffect(() => {
+  //   const marginCorrection = () => {
+  //     if (window.innerWidth < size.tablet) {
+  //       return 8;
+  //     }
+  //     return -10;
+  //   }
+  //   function intersectionCallback(entries) {
+  //     if (!newPostElement.current) return;
+  //     if (!entries[0].isIntersecting) {
+  //       newPostElement.current.classList.add('toggle-new-post--fixed');
+  //       postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + marginCorrection() + 'px';
+  //     } else {
+  //       newPostElement.current.classList.remove('toggle-new-post--fixed');
+  //       postsContainer.current.style.paddingTop = '0';
+  //     }
+  //   }
+  //   const intersectionOptions = {
+  //     root: null,
+  //     rootMargin: '0px',
+  //     threshold: 0
+  //   };
+  //   const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
+  //   if (newPostAnchor.current) {
+  //     observer.observe(newPostAnchor.current);
+  //   }
+  //   return () => {
+  //     if (newPostAnchor.current) {
+  //       observer.unobserve(newPostAnchor.current);
+  //     }
+  //   };
+  // }, [newPostAnchor.current]);
 
-  // when a post is added, toggleNewPost is set to false
-  useEffect(() => {
-    if (toggleNewPost) {
-      setToggleNewPost(false);
-    }
-  }, [posts]);
+  // // when a post is added, toggleNewPost is set to false
+  // useEffect(() => {
+  //   if (toggleNewPost) {
+  //     setToggleNewPost(false);
+  //   }
+  // }, [posts]);
 
   return (
     <PostsStyled ref={postsContainer} className="posts-container">
@@ -148,7 +148,6 @@ const Posts = () => {
         }}
       >
         <i className='icon-plus'></i>
-        <span>Write a new post</span>
       </button>
       <div
         ref={newPostAnchor}
@@ -234,8 +233,8 @@ const Post = (props) => {
       <div className="post__body">
         <div className='post__picture'>
           {picture
-            ? <img src={picture} alt="user" />
-            : <img src={defaultPicture} alt="user" />
+            ? <img src={picture} alt={user} />
+            : <img src={defaultPicture} alt={user} />
           }
         </div>
         <div className='post__name'>{user}</div>

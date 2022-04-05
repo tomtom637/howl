@@ -17,6 +17,12 @@ const PostsStyled = styled.div`
     background: rgba(225, 230, 234, 0.6);    
   }
   .toggle-new-post {
+    position: fixed;
+    top: 34px;
+    left: 5px;
+    right: 0%;
+    z-index: 10;
+    width: 50px;
     padding: 0.5rem;
     color: #555;
     display: flex;
@@ -24,8 +30,9 @@ const PostsStyled = styled.div`
     border-radius: var(--border-radius);
     cursor: pointer;
     border: none;
-    background: #fff;
-    position: relative;
+    background: #555;
+    border-radius: 0 0 0 var(--border-radius);
+    border-bottom: 3px solid var(--secondary-light);
 
     &:hover {
       color: var(--secondary);
@@ -34,31 +41,13 @@ const PostsStyled = styled.div`
       outline: none;
       color: var(--secondary);
     }
-    &--fixed {
-      position: fixed;
-      top: 34px;
-      left:5px;
-      right: 0;
-      background: #555;
-      z-index: 10;
-      width: 50px;
-      border-radius: 0 0 0 var(--border-radius);
-
-      &:hover i {
-        color: var(--secondary);
-      }
-    }
     i {
       margin-right: 0.5rem;
-      font-size: 1.1rem;
+      font-size: 1.5rem;
+      color: #fff;
     }
     span {
-      font-size: 1.1rem;
-    }
-    &--fixed span {
-      display: none;
-    }
-    &--fixed i {
+      font-size: 0.8rem;
       color: #fff;
     }
   }
@@ -110,7 +99,15 @@ const PostsStyled = styled.div`
     }
     &__picture {
       grid-area: picture;
-      width: 65px;
+      width: 75px;
+      height: 75px;
+      overflow: hidden;
+
+      & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
     &__name {
       grid-area: name;
@@ -236,7 +233,6 @@ const PostsStyled = styled.div`
     &__toggle-new-post {
       grid-area: tog-new;
       display: flex;
-      width: 8rem;
       font-size: 1.1rem;
       justify-content: space-between;
       align-items: flex-end;
@@ -371,14 +367,11 @@ const PostsStyled = styled.div`
   }
 
   @media ${device.tablet} {
-    .toggle-new-post {
-
-      &--fixed {
-        height: 55px;
-        top: 49px;
-        left: calc(50% - 300px);
-        z-index: 1;
-      }
+    .toggle-new-post {     
+      height: 55px;
+      top: 49px;
+      left: calc(50% - 300px);
+      z-index: 1;
     }
     .post {
 

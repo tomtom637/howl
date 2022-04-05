@@ -28,6 +28,7 @@ exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
 
       SELECT p.id AS id,
       to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
+      u.id AS user_id,
       u.nickname AS user,
       u.picture AS picture,
       u.motto AS motto,
@@ -55,6 +56,7 @@ exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
 
         SELECT p.id AS id,
         to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
+        u.id AS user_id,
         u.nickname AS user,
         u.picture AS picture,
         u.motto AS motto,

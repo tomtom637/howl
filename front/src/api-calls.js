@@ -152,7 +152,7 @@ export const updateMotto = (userInfos, setUserInfos, currentMotto, token) => {
   fetchData();
 };
 
-export const updatePicture = (userInfos, setUserInfos, token, file) => {
+export const updatePicture = (userInfos, setUserInfos, posts, setPosts, token, file) => {
   const fetchData = async () => {
     const options = {
       method: 'PUT',
@@ -166,6 +166,15 @@ export const updatePicture = (userInfos, setUserInfos, token, file) => {
       const response = await fetch(BASE_URL + `/auth/picture/${userInfos.id}`, options);
       const result = await response.json();
       setUserInfos({ ...userInfos, picture: result.url });
+
+      const newPosts = [...posts];
+      newPosts.forEach(post => {
+        if (post.user_id === userInfos.id) {
+          post.picture = result.url;
+        }
+      });
+      setPosts(newPosts);
+
     } catch (error) {
       console.log(error);
     }

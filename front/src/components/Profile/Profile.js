@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import ProfileStyled from "./Profile-styles";
 import { atom, useAtom } from 'jotai';
-import { userInfosAtom, tokenAtom } from "../../store";
+import { userInfosAtom, tokenAtom, postsAtom } from "../../store";
 import { updateMotto, updatePicture } from "../../api-calls";
 
 import defaultPicture from '../../images/avatar_default.jpg';
@@ -9,6 +9,7 @@ import defaultPicture from '../../images/avatar_default.jpg';
 const Profile = () => {
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [token, setToken] = useAtom(tokenAtom);
+  const [posts, setPosts] = useAtom(postsAtom);
   const [pictureChanged, setPictureChanged] = useState(false);
   const [mottoChanged, setMottoChanged] = useState(false);
   const [currentMotto, setCurrentMotto] = useState(userInfos.motto);
@@ -40,7 +41,7 @@ const Profile = () => {
     const file = inputFile.current.files[0];
     let formData = new FormData();
     formData.append('image', file, file.name);
-    updatePicture(userInfos, setUserInfos, token, formData);
+    updatePicture(userInfos, setUserInfos, posts, setPosts, token, formData);
     setPictureChanged(false);
   };
 

@@ -22,8 +22,6 @@ USERS:
 [ ] we keep showing the deleted users posts but we add the flag (deleted user)
 
 UI:
-[ ] categories container should be position absolute
-[ ] clicking outside of the menu should close this one
 [ ] descriptive errors should be displayed to the users
   [ ] when omiting to write a message in a post
 [x] a modal should be displayed to confirm certain actions
@@ -40,4 +38,4 @@ INSTALLATION:
 [ ] instructions should be provided with an admin email and password
 
 BUGS:
-[ ] when updating a user's picture, it doesn't update the posts user picture right away
+[x] when updating a user's picture, it doesn't update the posts user picture right away

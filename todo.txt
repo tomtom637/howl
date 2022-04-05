@@ -38,3 +38,6 @@ INSTALLATION:
 [ ] a script should be added to start front and back together
 [ ] the database should be installed from the root directory
 [ ] instructions should be provided with an admin email and password
+
+BUGS:
+[ ] when updating a user's picture, it doesn't update the posts user picture right away

@@ -4,7 +4,7 @@ const URLS = {
   wrong: 'http://error.com/abracadabroo'
 };
 
-const BASE_URL = URLS.local;
+const BASE_URL = URLS.home;
 
 export const getInfosFromToken = (userInfos, setUserInfos, token, setLogged, setBusy, setConnectionError) => {
   const fetchData = async () => {

@@ -37,6 +37,7 @@ const CategorySelectionStyled = styled.div`
       letter-spacing: 0.03rem;
       border: none;
       cursor: pointer;
+      color: var(--dark-grey);
 
       &:hover {
         color: var(--secondary);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { atom, useAtom } from 'jotai';
@@ -8,7 +8,6 @@ import { getInfosFromToken } from './api-calls';
 
 import GlobalStyles from './global-styles/GlobalStyles';
 
-import ScrollButton from './components/ScrollButton/ScrollButton';
 import Modal from './components/Modal/Modal';
 import Header from './components/Header/Header';
 import Posts from './components/Posts/Posts';
@@ -40,7 +39,6 @@ const App = () => {
     <Router>
       <>
         <GlobalStyles />
-        <ScrollButton />
         <div className="site-wrapper">
           <Header />
           <div className='main-content-wrapper'>

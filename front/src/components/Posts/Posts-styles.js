@@ -194,6 +194,7 @@ const PostsStyled = styled.div`
       grid-template-columns: 1fr 160px 1fr;
       align-items: center;
       border: none;
+      background: none;
       
       &:focus {
         outline: none;
@@ -229,7 +230,7 @@ const PostsStyled = styled.div`
       top: 0;
       left: 15%;
       width: 4rem;
-      opacity: 0.19;
+      opacity: 0.15;
       transform: translateX(-50%) rotate(-10deg) scale(1.2);
     }
     &__toggle-new-post {
@@ -243,6 +244,7 @@ const PostsStyled = styled.div`
       color: #555;
       cursor: pointer;
       margin-left: auto;
+      background: none;
 
       & i {
         margin-left: auto;

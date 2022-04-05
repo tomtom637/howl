@@ -13,6 +13,7 @@ import {
 import { getPosts, markPostAsRead, getPostsFromCategory } from '../../api-calls';
 import PostsStyled from "./Posts-styles";
 import CategorySelection from "../CategorySelection/CategorySelection";
+import ScrollButton from '../ScrollButton/ScrollButton';
 
 import defaultPicture from '../../images/avatar_default.jpg';
 import defaultCategoryPicture from '../../images/category_default.jpeg';
@@ -126,6 +127,7 @@ const Posts = () => {
 
   return (
     <PostsStyled ref={postsContainer} className="posts-container">
+      <ScrollButton newPostAnchor={newPostAnchor}/>
       <CategorySelection />
       <button
         ref={newPostElement}

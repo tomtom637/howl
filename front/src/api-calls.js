@@ -132,7 +132,7 @@ export const signupUser = (
   fetchData();
 };
 
-export const updateMotto = (userInfos, setUserInfos, currentMotto, token) => {
+export const updateMotto = (userInfos, setUserInfos, currentMotto, posts, setPosts, token) => {
   const fetchData = async () => {
     const options = {
       method: 'PUT',
@@ -145,6 +145,13 @@ export const updateMotto = (userInfos, setUserInfos, currentMotto, token) => {
     try {
       await fetch(BASE_URL + `/auth/motto/${userInfos.id}`, options);
       setUserInfos({ ...userInfos, motto: currentMotto });
+      const newPosts = [...posts];
+      newPosts.forEach(post => {
+        if (post.user_id === userInfos.id) {
+          post.motto = currentMotto;
+        }
+      });
+      setPosts(newPosts);
     } catch (error) {
       console.log(error);
     }

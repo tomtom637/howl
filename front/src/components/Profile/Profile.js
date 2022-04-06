@@ -33,7 +33,7 @@ const Profile = () => {
   const handleMottoSubmit = e => {
     e.preventDefault();
     setMottoChanged(false);
-    updateMotto(userInfos, setUserInfos, currentMotto, token);
+    updateMotto(userInfos, setUserInfos, currentMotto, posts, setPosts, token);
   };
 
   const handlePictureSubmit = e => {

@@ -12,9 +12,10 @@ import Modal from './components/Modal/Modal';
 import Header from './components/Header/Header';
 import Posts from './components/Posts/Posts';
 import About from './components/About/About';
-import Stats from './components/Stats/Stats';
+import Users from './components/Users/Users';
 import { LoginForm, SignupForm } from './components/Forms/Forms';
 import Footer from './components/Footer/Footer';
+import NotFound from './components/NotFound/NotFound';
 
 const App = () => {
   const [token, setToken] = useAtom(tokenAtom);
@@ -68,10 +69,15 @@ const App = () => {
               <Route path="/about">
                 <About />
               </Route>
-              <Route path="/stats">
-                {logged && !busy && (
-                  <Stats />
-                )}
+              {logged && userInfos.role === 'admin' && (
+                <Route path="/users">
+                  {logged && !busy && (
+                    <Users />
+                  )}
+                </Route>
+              )}
+              <Route path="/*">
+                <NotFound />
               </Route>
             </Switch>
           </div>

@@ -3,11 +3,6 @@
 
 
 ###
-# LIST EMAILS AND NICKNAMES
-GET http://localhost:3000/api/auth/emails-and-nicknames HTTP/1.1
-
-
-###
 # GET A USER
 GET http://localhost:3000/api/auth/1 HTTP/1.1
 
@@ -58,5 +53,11 @@ content-type: application/json
 
 ###
 # DELETE USER
-DELETE http://localhost:3000/api/auth/1 HTTP/1.1
+DELETE http://localhost:3000/api/auth/82 HTTP/1.1
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDcwMDMwNDl9.gq8GuWjR3oK1UVZJCRrFW8-RgwWOL1i5OtrsRWVh_3s
+
+
+###
+# GET ALL USERS AND STATS
+GET http://localhost:3000/api/auth/
 Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDcwMDMwNDl9.gq8GuWjR3oK1UVZJCRrFW8-RgwWOL1i5OtrsRWVh_3s

@@ -7,7 +7,7 @@ const multer = require('../middleware/multer-config');
 
 const userCtrl = require('../controllers/user');
 
-// GET ALL USERS
+// GET ALL USERS AND THEIR STATS
 router.get('/', auth, userCtrl.getAllUsers);
 
 // GET A USER
@@ -31,7 +31,7 @@ router.put('/picture/:userId', oneself, multer, userCtrl.updateUserPicture);
 // UPDATE USER'S ROLE
 router.put('/role/:userId', admin, userCtrl.updateUserRole);
 
-// DELETE A USER
-router.delete('/:userId', admin, userCtrl.deleteUser);
+// SOFT DELETE A USER
+router.delete('/:userId', admin, userCtrl.softDeleteUser);
 
 module.exports = router;

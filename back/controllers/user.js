@@ -36,12 +36,12 @@ exports.getAllUsers = async (req, res) => {
       COUNT(p.id) AS posts_total,
       COUNT(p.id) FILTER (WHERE p.parent_id IS NULL) AS original_posts_total,
       COUNT(p.id) FILTER (WHERE p.parent_id IS NOT NULL) AS posts_replies_total
-      FROM users u
+    FROM users u
     LEFT JOIN posts p ON p.user_id = u.id
-      JOIN roles r ON u.role_id = r.id
+    JOIN roles r ON u.role_id = r.id
     GROUP BY u.id, r.name
-      ORDER BY u.nickname;
-    `);
+    ORDER BY u.nickname;
+  `);
     res.status(200).json({ users: users.rows });
   } catch (error) {
     res.status(500).json({ error });
@@ -286,3 +286,29 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ error });
   }
 };
+
+// ADMIN CAN SOFT DELETE A USER
+exports.softDeleteUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const currentPicture = await pool.query(/*sql*/`
+      SELECT picture
+      FROM users
+      WHERE id = ${userId};
+    `);
+    const thePicture = currentPicture.rows[0].picture;
+    if (thePicture) {
+      const filename = thePicture.split('/images/')[1];
+      fs.unlink('back/images/' + filename, () => true);
+    }
+    // we soft delete the user
+    await pool.query(/*sql*/`
+      UPDATE users
+      SET motto = NULL, picture = NULL, email = NULL, password_hash = NULL, deleted = TRUE 
+      WHERE id = ${userId};
+    `);
+    res.status(200).json({ message: 'User soft deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}

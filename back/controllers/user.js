@@ -11,13 +11,35 @@ const errorMessages = {
   NicknameAlreadyExists: 'Nickname already exists'
 };
 
-// GET ALL THE USERS
+// GET ALL THE USERS AND THEIR STATS
 exports.getAllUsers = async (req, res) => {
   try {
+
     const users = await pool.query(/*sql*/`
-      SELECT u.id, u.nickname, u.email, u.motto, u.picture, r."name" AS role
+    SELECT
+      u.id,
+      u.nickname,
+      u.email,
+      u.motto,
+      u.picture,
+      r."name" AS "role",
+      u.deleted,
+      COUNT(p.id) FILTER (
+        WHERE p.creation_date > now() - interval '1 week'
+      ) AS posts_of_week,
+      COUNT(p.id) FILTER (
+        WHERE p.parent_id IS NULL AND p.creation_date > now() - interval '1 week'
+      ) AS original_posts_of_week,
+      COUNT(p.id) FILTER (
+        WHERE p.parent_id IS NOT NULL AND p.creation_date > now() - interval '1 week'
+      ) AS posts_replies_of_week,
+      COUNT(p.id) AS posts_total,
+      COUNT(p.id) FILTER (WHERE p.parent_id IS NULL) AS original_posts_total,
+      COUNT(p.id) FILTER (WHERE p.parent_id IS NOT NULL) AS posts_replies_total
       FROM users u
+    LEFT JOIN posts p ON p.user_id = u.id
       JOIN roles r ON u.role_id = r.id
+    GROUP BY u.id, r.name
       ORDER BY u.nickname;
     `);
     res.status(200).json({ users: users.rows });

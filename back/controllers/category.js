@@ -26,12 +26,14 @@ exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
   try {
     const fivePosts = await pool.query(/*sql*/`
 
-      SELECT p.id AS id,
+      SELECT
+      p.id AS id,
       to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
       u.id AS user_id,
       u.nickname AS user,
       u.picture AS picture,
       u.motto AS motto,
+      u.deleted AS deleted,
       p.content AS "message",
       p.gif_address AS gif_address,
       p.parent_id AS parent_id,
@@ -54,12 +56,14 @@ exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
     const repliesPromises = fivePostsIds.map(async (post, i) => {
       const replies = await pool.query(/*sql*/`
 
-        SELECT p.id AS id,
+        SELECT
+        p.id AS id,
         to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
         u.id AS user_id,
         u.nickname AS user,
         u.picture AS picture,
         u.motto AS motto,
+        u.deleted AS deleted,
         p.content AS "message",
         p.gif_address AS gif_address,
         p.parent_id AS parent_id,

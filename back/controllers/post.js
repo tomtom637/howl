@@ -1,69 +1,6 @@
 const pool = require('../helpers/pool');
 const getUserTokenInfos = require('../helpers/getUserTokenInfos');
 
-// GET THE 5 MOST RECENT POSTS FROM OFFSET
-// BRINGING ITS REPLIES IF ANY
-// ALSO CHECKING IF THE USER HAS READ THEM
-exports.getFivePostsAndTheirReplies = async (req, res) => {
-  const userID = getUserTokenInfos(req).userId;
-  let result;
-  try {
-    const fivePosts = await pool.query(/*sql*/`
-
-      SELECT p.id AS id,
-      to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
-      u.nickname AS user,
-      u.picture AS picture,
-      u.motto AS motto,
-      p.content AS "message",
-      p.gif_address AS gif_address,
-      p.parent_id AS parent_id,
-      c.name AS from_category,
-      c.id AS category_id,
-      c.picture AS category_picture
-      FROM users u
-      JOIN posts p ON u.id = p.user_id
-      JOIN categories c ON c.id = p.category_id
-      WHERE p.parent_id IS NULL
-      ORDER BY p.creation_date desc
-      LIMIT 5
-      OFFSET ${req.params.offset};
-    `);
-
-    const fivePostsIds = fivePosts.rows.map(post => post.id);
-    result = fivePosts.rows;
-    
-    const repliesPromises = fivePostsIds.map(async (post, i) => {
-      const replies = await pool.query(/*sql*/`
-
-        SELECT p.id AS id,
-        to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
-        u.nickname AS user,
-        u.picture AS picture,
-        u.motto AS motto,
-        p.content AS "message",
-        p.gif_address AS gif_address,
-        p.parent_id AS parent_id,
-        c.name AS from_category,
-        c.picture AS category_picture,
-        rp.user_id AS "read"        
-        FROM users u
-        JOIN posts p ON u.id = p.user_id
-        JOIN categories c ON c.id = p.category_id
-        LEFT JOIN read_posts rp ON rp.post_id = p.id AND rp.user_id = ${userID}
-        WHERE p.parent_id = ${post}
-        ORDER BY p.creation_date ASC;
-      `);
-
-      result[i].replies = replies.rows;
-    });
-    await Promise.all(repliesPromises);
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(400).json({ error });
-  }
-}
-
 // GET A POST
 exports.getPost = async (req, res) => {
   const { userId } = getUserTokenInfos(req);
@@ -71,11 +8,13 @@ exports.getPost = async (req, res) => {
   let result;
   try {
     const post = await pool.query(/*sql*/`
-      SELECT p.id AS id,
+      SELECT
+      p.id AS id,
       to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
       u.nickname AS user,
       u.picture AS picture,
       u.motto AS motto,
+      u.deleted AS deleted,
       p.content AS "message",
       p.gif_address AS gif_address,
       p.parent_id AS parent_id,
@@ -91,11 +30,13 @@ exports.getPost = async (req, res) => {
     result = post.rows[0];
 
     const repliesPromise = await pool.query(/*sql*/`
-      SELECT p.id AS id,
+      SELECT
+      p.id AS id,
       to_char(p.creation_date, 'MM.DD.yyyy') AS "date",
       u.nickname AS user,
       u.picture AS picture,
       u.motto AS motto,
+      u.deleted AS deleted,
       p.content AS "message",
       p.gif_address AS gif_address,
       p.parent_id AS parent_id,

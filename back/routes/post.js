@@ -4,9 +4,6 @@ const auth = require('../middleware/auth');
 
 const postCtrl = require('../controllers/post');
 
-// GET 5 POSTS
-router.get('/:offset', auth, postCtrl.getFivePostsAndTheirReplies);
-
 // GET A POST
 router.get('/single/:postId', auth, postCtrl.getPost);
 

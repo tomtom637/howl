@@ -84,50 +84,9 @@ const Posts = () => {
     }
   }, [bottomOfList.current, categories]);
 
-  // sets the toggleNewPost button to fixed upon scroll
-  // useEffect(() => {
-  //   const marginCorrection = () => {
-  //     if (window.innerWidth < size.tablet) {
-  //       return 8;
-  //     }
-  //     return -10;
-  //   }
-  //   function intersectionCallback(entries) {
-  //     if (!newPostElement.current) return;
-  //     if (!entries[0].isIntersecting) {
-  //       newPostElement.current.classList.add('toggle-new-post--fixed');
-  //       postsContainer.current.style.paddingTop = newPostElement.current.offsetHeight + marginCorrection() + 'px';
-  //     } else {
-  //       newPostElement.current.classList.remove('toggle-new-post--fixed');
-  //       postsContainer.current.style.paddingTop = '0';
-  //     }
-  //   }
-  //   const intersectionOptions = {
-  //     root: null,
-  //     rootMargin: '0px',
-  //     threshold: 0
-  //   };
-  //   const observer = new IntersectionObserver(intersectionCallback, intersectionOptions);
-  //   if (newPostAnchor.current) {
-  //     observer.observe(newPostAnchor.current);
-  //   }
-  //   return () => {
-  //     if (newPostAnchor.current) {
-  //       observer.unobserve(newPostAnchor.current);
-  //     }
-  //   };
-  // }, [newPostAnchor.current]);
-
-  // // when a post is added, toggleNewPost is set to false
-  // useEffect(() => {
-  //   if (toggleNewPost) {
-  //     setToggleNewPost(false);
-  //   }
-  // }, [posts]);
-
   return (
     <PostsStyled ref={postsContainer} className="posts-container">
-      <ScrollButton newPostAnchor={newPostAnchor}/>
+      <ScrollButton newPostAnchor={newPostAnchor} />
       <CategorySelection />
       <button
         ref={newPostElement}
@@ -171,7 +130,7 @@ const Posts = () => {
 
 
 const Post = (props) => {
-  const { id, user, date, message, gif_address, picture, motto, replies, category_id } = props.post;
+  const { id, user, deleted, date, message, gif_address, picture, motto, replies, category_id } = props.post;
   const [token, setToken] = useAtom(tokenAtom);
   const [posts, setPosts] = useAtom(postsAtom);
   const [categories, setCategories] = useAtom(categoryAtom);
@@ -276,7 +235,10 @@ const Post = (props) => {
             />
           </div>
         )}
-        <div className='post__motto'>{motto}</div>
+        {deleted
+          ? <div className="post__motto post__user-deleted">This user has been deleted</div>
+          : <div className='post__motto'>{motto}</div>
+        }
         {typeof replies !== undefined && replies.length > 0 && (
           toggleShowReplies ? (
             <>
@@ -291,7 +253,7 @@ const Post = (props) => {
                 Hide replies &#10095;&#10095;
               </button>
               <div ref={repliesRef} id="replies-container" className="replies-container">
-                {replies.map(({ id, user, date, message, picture, motto, gif_address, read }) => (
+                {replies.map(({ id, user, deleted, date, message, picture, motto, gif_address, read }) => (
                   <div className="reply__container" key={id}>
                     <div className="reply__picture">
                       {picture
@@ -340,7 +302,10 @@ const Post = (props) => {
                         />
                       </div>
                     )}
-                    <div className='reply__motto'>{motto}</div>
+                    {deleted
+                      ? <div className="reply__motto reply__user-deleted">This user has been deleted</div>
+                      : <div className='reply__motto'>{motto}</div>
+                    }
                   </div>
                 ))}
               </div>

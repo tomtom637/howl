@@ -174,6 +174,9 @@ const PostsStyled = styled.div`
       margin-bottom: 0.5rem;
       padding-top: 0.7rem;
     }
+    &__user-deleted {
+      color: var(--secondary);
+    }
     &__show-replies {
       position: relative;
       grid-area: show;
@@ -363,6 +366,9 @@ const PostsStyled = styled.div`
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
       padding-top: 0.7rem;
+    }
+    &__user-deleted {
+      color: var(--secondary);
     }
   }
 

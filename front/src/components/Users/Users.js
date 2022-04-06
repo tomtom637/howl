@@ -5,10 +5,10 @@ import { getAllUsers } from '../../api-calls';
 import { useAtom } from 'jotai';
 import { tokenAtom, userInfosAtom } from '../../store';
 import { Link } from 'react-router-dom';
-import UsersStyled from "./Stats-styles";
+import UsersStyled from "./Users-styles";
 import defaultPicture from '../../images/avatar_default.jpg';
 
-const Stats = () => {
+const Users = () => {
   const [token, setToken] = useAtom(tokenAtom);
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [users, setUsers] = useState([]);
@@ -20,8 +20,7 @@ const Stats = () => {
   return (
     <UsersStyled className="container">
       <div className="stats-title">
-        <h1 className='page-title'>Stats</h1>
-        <Link to="/about">What are scores again?</Link>
+        <h1 className='page-title'>Users</h1>
       </div>
       <div className="users">
         {users.map(user => (
@@ -48,4 +47,4 @@ const Stats = () => {
   );
 };
 
-export default Stats;
+export default Users;

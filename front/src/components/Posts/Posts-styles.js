@@ -18,7 +18,7 @@ const PostsStyled = styled.div`
   }
   .toggle-new-post {
     position: fixed;
-    top: 34px;
+    top: 40px;
     left: 5px;
     right: 0%;
     z-index: 10;

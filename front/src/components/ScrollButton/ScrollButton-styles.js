@@ -5,7 +5,7 @@ const ScrollButtonStyled = styled.button`
   position: fixed;
   right: 1.67rem;
   bottom: 50px;
-  height: 40px;
+  height: 35px;
   z-index: 20;
   cursor: pointer;
   color: #666;
@@ -20,8 +20,8 @@ const ScrollButtonStyled = styled.button`
   background: url(${topArrow});
   background-size: contain;
   background-repeat: no-repeat;
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
   }
    /* svg {
      fill: #555;

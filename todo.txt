@@ -7,21 +7,22 @@ CATEGORIES:
   [x] to change the picture
   [x] to change the description
   [x] to change the name
-[ ] the admin sees a '+' icon to add a category
 
 POSTS:
 [x] add edit and delete button on all posts for the admin
 [x] add edit button on own posts for the users
 
 USERS:
-[ ] replace the stats page by the users page (admin only)
-[ ] a deleted column is added to the users table (default to 0)
+[x] replace the stats page by the users page (admin only)
+[x] a deleted column is added to the users table (default to FALSE)
 [ ] the admin can soft delete a user (only deleting email and password)
 [ ] the admin can't delete another admin (we will only make one user an admin)
 [ ] the deleted user isn't visible anymore in the users page
 [ ] we keep showing the deleted users posts but we add the flag (deleted user)
 
 UI:
+[x] add a 404 page
+[ ] add content to the about us page
 [ ] descriptive errors should be displayed to the users
   [ ] when omiting to write a message in a post
 [x] a modal should be displayed to confirm certain actions

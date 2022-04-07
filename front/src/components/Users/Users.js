@@ -25,11 +25,18 @@ const Users = () => {
       <div className="users">
         {users.map(user => (
           <div className="user-card" key={user.id}>
+            {!user.deleted && user.role !== 'admin' && (
+              <button className="user-card__delete">SOFT DELETE</button>
+            )}
             <div className="user-card__header">
               <div className="user-card__name">{user.nickname}</div>
               <div className="user-card__picture">
                 <img src={user.picture || defaultPicture} alt={user.name} />
               </div>
+              <div
+                className="user-card__role"
+                style={{ background: user.role === 'admin' ? '#dfaaa4' : '#73d988' }}
+              >{user.role}</div>
               <div className="user-card__email">{user.email}</div>
               {user.deleted
                 ? <div className="user-card__motto user-card__deleted">Deleted</div>

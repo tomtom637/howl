@@ -15,10 +15,11 @@ const UsersStyled = styled.div`
   .users {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 1.5rem 2rem;
+    gap: 2rem;
     margin-bottom: 3rem;
   }
   .user-card {
+    position: relative;
     padding: 1rem;
     background: var(--grey);
     border-radius: var(--border-radius);
@@ -27,6 +28,22 @@ const UsersStyled = styled.div`
     align-items: baseline;
     grid-template-columns: 170px 1fr;
     color: var(--dark-grey);
+
+    &__delete {
+      position: absolute;
+      margin-top: -0.5rem;
+      top: 0;
+      right: 1rem;
+      border: none;
+      padding: 0.4rem 0.5rem;
+      background: #bd5167;
+      color: #fff;
+      border-radius: 0.2rem;
+      font-size: 0.65rem;
+      font-weight: bold;
+      letter-spacing: 0.03rem;
+      cursor: pointer;
+    }
 
     &__header {
       padding-right: 0.1rem;
@@ -37,9 +54,20 @@ const UsersStyled = styled.div`
       font-size: 1.3rem;
       margin-bottom: 0.5rem;
     }
+    &__role {
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+      margin: 0.5rem 0;
+      //background: var(--secondary-light);
+      width: 75px;
+      padding: 0.1rem 0.3rem;
+    }
     &__email {
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
+      text-decoration: underline;
     }
     &__picture {
       width: 75px;

@@ -24,6 +24,7 @@ const UsersStyled = styled.div`
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     display: grid;
+    align-items: baseline;
     grid-template-columns: 170px 1fr;
     color: var(--dark-grey);
 
@@ -38,36 +39,40 @@ const UsersStyled = styled.div`
     }
     &__email {
       font-size: 0.9rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
     }
     &__picture {
-      width: 150px;
+      width: 75px;
+      height: 75px;
+      object-fit: cover;
       align-self: center;
       justify-self: top;
       margin-bottom: 0.5rem;
+      overflow: hidden;
     }
     &__body {
       display: flex;
       flex-direction: column;
-      margin-top: 2rem;
     }
-    &__stats-of-month {
+    &__stats-container {
       margin-bottom: 1rem;
     }
-    &__score-title {
+    &__stats-title {
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.1rem;
       padding-bottom: 0.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
       border-bottom: 1px solid #bbb;
     }
-    &__score {
-      font-size: 1rem;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      color: var(--secondary);
+    &__stats-infos {
+      display: flex;
     }
+    &__labels {
+      margin-right: 0.5rem;
+    }
+    &__values {}
     &__stats {
       font-size: 0.8rem;
       margin-bottom: 0.8rem;

@@ -27,21 +27,39 @@ const Users = () => {
           <div className="user-card" key={user.id}>
             <div className="user-card__header">
               <div className="user-card__name">{user.nickname}</div>
-              <div className="user-card__email">{user.email}</div>
               <div className="user-card__picture">
                 <img src={user.picture || defaultPicture} alt={user.name} />
               </div>
+              <div className="user-card__email">{user.email}</div>
               {user.deleted
                 ? <div className="user-card__motto user-card__deleted">Deleted</div>
                 : <div className="user-card__motto">{user.motto}</div>
               }
             </div>
             <div className="user-card__body">
-              <div className="user-card__stats-of-month">
-                <div className="user-card__score-title">This month: </div>
-                <div className="user-card__score">Score: </div>
-                <div className="user-card__stats">Original posts: </div>
-                <div className="user-card__stats">Posts replies: </div>
+              <div className="user-card__stats-container">
+                <h3 className="user-card__stats-title">This week: </h3>
+                <div className="user-card__stats-infos">
+                  <div className="user-card__labels">
+                    <div className="user-card__stats">Original posts: </div>
+                    <div className="user-card__stats">Posts replies: </div>
+                  </div>
+                  <div className="user-card__values">
+                    <div className="user-card__stats">{user.original_posts_of_week}</div>
+                    <div className="user-card__stats">{user.posts_replies_of_week}</div>
+                  </div>
+                </div>
+                <h3 className="user-card__stats-title">Total: </h3>
+                <div className="user-card__stats-infos">
+                  <div className="user-card__labels">
+                    <div className="user-card__stats">Original posts: </div>
+                    <div className="user-card__stats">Posts replies: </div>
+                  </div>
+                  <div className="user-card__values">
+                    <div className="user-card__stats">{user.original_posts_total}</div>
+                    <div className="user-card__stats">{user.posts_replies_total}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

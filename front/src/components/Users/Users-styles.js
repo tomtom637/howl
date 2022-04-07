@@ -12,9 +12,13 @@ const UsersStyled = styled.div`
   a {
     color: var(--secondary);
   }
+  .users__wrapper {
+    width: min(calc(100% - 2rem), 900px, 900px);
+    margin: auto;
+  }
   .users {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
   }
@@ -28,6 +32,7 @@ const UsersStyled = styled.div`
     align-items: baseline;
     grid-template-columns: 170px 1fr;
     color: var(--dark-grey);
+    max-width: 450px;
 
     &__delete {
       position: absolute;
@@ -47,11 +52,11 @@ const UsersStyled = styled.div`
 
     &__header {
       padding-right: 0.1rem;
-      margin-right: 1rem;
+      margin-right: 0.8rem;
       width: 100%;
     }
     &__name {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       margin-bottom: 0.5rem;
     }
     &__role {
@@ -95,6 +100,7 @@ const UsersStyled = styled.div`
     }
     &__stats-infos {
       display: flex;
+      justify-content: space-between;
     }
     &__labels {
       margin-right: 0.5rem;

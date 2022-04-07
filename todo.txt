@@ -15,10 +15,9 @@ POSTS:
 USERS:
 [x] replace the stats page by the users page (admin only)
 [x] a deleted column is added to the users table (default to FALSE)
-[ ] the admin can soft delete a user (only deleting email and password)
-[ ] the admin can't delete another admin (we will only make one user an admin)
-[ ] the deleted user isn't visible anymore in the users page
-[ ] we keep showing the deleted users posts but we add the flag (deleted user)
+[x] the admin can soft delete a user (only deleting email, password, motto and picture)
+[x] the admin can't delete another admin (we will only make one user an admin)
+[x] we keep showing the deleted users posts but we add the flag (deleted user)
 
 UI:
 [x] add a 404 page
@@ -27,7 +26,7 @@ UI:
   [ ] when omiting to write a message in a post
 [x] a modal should be displayed to confirm certain actions
   [x] deleting a post (all replies will be deleted along with it)
-  [ ] deleting a user (are you sure you want to proceed)
+  [x] deleting a user (are you sure you want to proceed)
 [x] a gif should be clickable to appear bigger in a modal
 [ ] polish the styles
 [ ] should look great on desktop

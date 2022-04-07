@@ -36,6 +36,10 @@ const UsersStyled = styled.div`
       font-size: 1.3rem;
       margin-bottom: 0.5rem;
     }
+    &__email {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
     &__picture {
       width: 150px;
       align-self: center;
@@ -71,6 +75,9 @@ const UsersStyled = styled.div`
     &__motto {
       font-style: italic;
       color: #777;
+    }
+    &__deleted {
+      color: var(--secondary);
     }
   }
 `;

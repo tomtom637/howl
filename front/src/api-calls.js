@@ -132,7 +132,7 @@ export const signupUser = (
   fetchData();
 };
 
-export const updateMotto = (userInfos, setUserInfos, currentMotto, posts, setPosts, token) => {
+export const updateMotto = (userInfos, setUserInfos, currentMotto, posts, setPosts, users, setUsers, token) => {
   const fetchData = async () => {
     const options = {
       method: 'PUT',
@@ -152,6 +152,13 @@ export const updateMotto = (userInfos, setUserInfos, currentMotto, posts, setPos
         }
       });
       setPosts(newPosts);
+      const newUsers = [...users];    
+      newUsers.forEach(user => {
+        if (user.id === userInfos.id) {
+          user.motto = currentMotto;
+        }
+      });
+      setUsers(newUsers);
     } catch (error) {
       console.log(error);
     }
@@ -159,7 +166,7 @@ export const updateMotto = (userInfos, setUserInfos, currentMotto, posts, setPos
   fetchData();
 };
 
-export const updatePicture = (userInfos, setUserInfos, posts, setPosts, token, file) => {
+export const updatePicture = (userInfos, setUserInfos, posts, setPosts, users, setUsers, token, file) => {
   const fetchData = async () => {
     const options = {
       method: 'PUT',
@@ -181,7 +188,13 @@ export const updatePicture = (userInfos, setUserInfos, posts, setPosts, token, f
         }
       });
       setPosts(newPosts);
-
+      const newUsers = [...users];
+      newUsers.forEach(user => {
+        if (user.id === userInfos.id) {
+          user.picture = result.url;
+        }
+      });
+      setUsers(newUsers);
     } catch (error) {
       console.log(error);
     }

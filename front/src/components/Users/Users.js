@@ -3,7 +3,7 @@ import { device } from '../../device';
 import { useEffect, useState } from 'react';
 import { getAllUsers } from '../../api-calls';
 import { useAtom } from 'jotai';
-import { tokenAtom, userInfosAtom } from '../../store';
+import { tokenAtom, userInfosAtom, usersAtom } from '../../store';
 import { Link } from 'react-router-dom';
 import UsersStyled from "./Users-styles";
 import defaultPicture from '../../images/avatar_default.jpg';
@@ -11,7 +11,7 @@ import defaultPicture from '../../images/avatar_default.jpg';
 const Users = () => {
   const [token, setToken] = useAtom(tokenAtom);
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useAtom(usersAtom);
 
   useEffect(() => {
     getAllUsers(setUsers, token);
@@ -27,10 +27,14 @@ const Users = () => {
           <div className="user-card" key={user.id}>
             <div className="user-card__header">
               <div className="user-card__name">{user.nickname}</div>
+              <div className="user-card__email">{user.email}</div>
               <div className="user-card__picture">
                 <img src={user.picture || defaultPicture} alt={user.name} />
               </div>
-              <div className="user-card__motto">{user.motto}</div>
+              {user.deleted
+                ? <div className="user-card__motto user-card__deleted">Deleted</div>
+                : <div className="user-card__motto">{user.motto}</div>
+              }
             </div>
             <div className="user-card__body">
               <div className="user-card__stats-of-month">

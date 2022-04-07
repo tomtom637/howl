@@ -7,6 +7,8 @@ export const tokenAtom = atomWithStorage('token', null);
 // GLOBAL STATE
 export const userInfosAtom = atom(null);
 
+export const usersAtom = atom([]);
+
 export const formAtom = atom('login');
 
 export const loggedAtom = atom(false);

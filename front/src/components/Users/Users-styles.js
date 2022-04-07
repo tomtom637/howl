@@ -60,7 +60,6 @@ const UsersStyled = styled.div`
       font-weight: bold;
       letter-spacing: 0.05rem;
       margin: 0.5rem 0;
-      //background: var(--secondary-light);
       width: 75px;
       padding: 0.1rem 0.3rem;
     }
@@ -90,7 +89,7 @@ const UsersStyled = styled.div`
       text-transform: uppercase;
       letter-spacing: 0.1rem;
       padding-bottom: 0.5rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
       margin-top: 1rem;
       border-bottom: 1px solid #bbb;
     }
@@ -111,6 +110,11 @@ const UsersStyled = styled.div`
     }
     &__deleted {
       color: var(--secondary);
+      text-transform: uppercase;
+      font-style: normal;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+      font-size: 0.8rem;
     }
   }
 `;

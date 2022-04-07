@@ -5,10 +5,17 @@ import {
   displayModalAtom,
   postsAtom,
   categoryAtom,
-  tokenAtom
+  tokenAtom,
+  usersAtom
 } from "../../store";
 import { AddPost, EditPost } from '../PostActions/PostActions';
-import { deletePost, updateCategoryName, updateCategoryDescription, updateCategoryPicture } from '../../api-calls';
+import {
+  deletePost,
+  updateCategoryName,
+  updateCategoryDescription,
+  updateCategoryPicture,
+  softDeleteUser
+} from '../../api-calls';
 import categoryDefaultPicture from '../../images/category_default.jpeg';
 
 export const DeleteModal = ({ postType, postId }) => {
@@ -57,6 +64,51 @@ export const DeleteModal = ({ postType, postId }) => {
     </>
   );
 };
+
+export const DeleteUserModal = ({ userId }) => {
+  const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
+  const [token, setToken] = useAtom(tokenAtom);
+  const [users, setUsers] = useAtom(usersAtom);
+  const [posts, setPosts] = useAtom(postsAtom);
+  const actionRef = useRef(null);
+
+  useEffect(() => {
+    actionRef.current.focus();
+  });
+
+  return (
+    <>
+      <div className="modal__header">
+        <h5 className="modal__heading">CONFIRMATION</h5>
+      </div>
+      <div className="modal__content">
+        This user is about to be soft deleted. This will delete all of his/her infos but preserve his/her posts.
+      </div>
+      <div className="modal__actions">
+        <div className="modal__actions-container">
+          <button
+            ref={actionRef}
+            tabIndex={0}
+            className="modal__btn modal__action-btn"
+            onClick={() => {
+              setDisplayModal(false);
+              softDeleteUser(userId, users, setUsers, posts, setPosts, token);
+            }}
+          >
+            DELETE
+          </button>
+          <button
+            tabIndex={0}
+            className="modal__btn modal__cancel-btn"
+            onClick={() => setDisplayModal(false)}
+          >
+            CANCEL
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
 
 export const AddPostModal = ({ setToggleNewPost, categoryId, parentId, repliesRef, addPostRef, index }) => {
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);

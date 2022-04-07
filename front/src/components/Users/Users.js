@@ -3,15 +3,18 @@ import { device } from '../../device';
 import { useEffect, useState } from 'react';
 import { getAllUsers } from '../../api-calls';
 import { useAtom } from 'jotai';
-import { tokenAtom, userInfosAtom, usersAtom } from '../../store';
+import { tokenAtom, userInfosAtom, usersAtom, displayModalAtom, modalContentAtom } from '../../store';
 import { Link } from 'react-router-dom';
 import UsersStyled from "./Users-styles";
+import { DeleteUserModal } from '../Modal/ModalTypes';
 import defaultPicture from '../../images/avatar_default.jpg';
 
 const Users = () => {
   const [token, setToken] = useAtom(tokenAtom);
   const [userInfos, setUserInfos] = useAtom(userInfosAtom);
   const [users, setUsers] = useAtom(usersAtom);
+  const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
+  const [modalContent, setModalContent] = useAtom(modalContentAtom);
 
   useEffect(() => {
     getAllUsers(setUsers, token);
@@ -26,7 +29,13 @@ const Users = () => {
         {users.map(user => (
           <div className="user-card" key={user.id}>
             {!user.deleted && user.role !== 'admin' && (
-              <button className="user-card__delete">SOFT DELETE</button>
+              <button
+                className="user-card__delete"
+                onClick={() => {
+                  setModalContent(<DeleteUserModal userId={user.id} />)
+                  setDisplayModal(true);
+                }}
+              >SOFT DELETE</button>
             )}
             <div className="user-card__header">
               <div className="user-card__name">{user.nickname}</div>

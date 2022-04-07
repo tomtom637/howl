@@ -492,3 +492,39 @@ export const updateCategoryPicture = (categories, setCategories, categoryIndex, 
   };
   fetchData();
 }
+
+export const softDeleteUser = (userId, users, setUsers, posts, setPosts, token) => {
+  const fetchData = async () => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    };
+    try {
+      await fetch(BASE_URL + `/auth/${userId}`, options);
+      const newUsers = [...users];
+      newUsers.forEach(u => {
+        if (u.id === userId) {
+          u.deleted = true;
+          u.motto = null;
+          u.email = null;
+          u.picture = null;
+        }
+      });
+      setUsers(newUsers);
+      const newPosts = [...posts];
+      newPosts.forEach(p => {
+        if (p.userId === userId) {
+          p.deleted = true;
+          p.motto = null;
+          p.picture = null;
+        }
+      });
+      setPosts(newPosts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchData();
+}

@@ -103,7 +103,7 @@ const ModalStyled = styled.div`
       font-size: 0.8rem;
       border: none;
       color: #fff;
-      background: #bd5167;
+      background: var(--red);
       transition: all 0.25s ease;
     }
     &__cancel-btn {

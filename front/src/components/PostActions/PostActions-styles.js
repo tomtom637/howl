@@ -7,7 +7,7 @@ const PostActionsStyled = styled.div`
 
   .add-post {
     &__error {
-      color: #bd5167;
+      color: var(--red);
       margin-bottom: 0.5rem;
     }
     &__textarea {

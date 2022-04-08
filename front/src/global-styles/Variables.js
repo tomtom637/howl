@@ -3,6 +3,7 @@ const Variable = /*css*/`
     --primary-brightest: #dcf2ff;
     --primary-lighter: #b9d4e4;
     --primary-light: #547d95;
+    --red: #bd5167;
     --primary-gray-light: #c7cdd1;
     --primary: #416f89;
     --primary-dark: #2a4758;
@@ -12,7 +13,6 @@ const Variable = /*css*/`
     --light-grey: #f5f5f5;
     --grey: #e4e4e4;
     --dark-grey: #2e2e2e;
-    --red: #d35;
     --box-shadow: 3px 6px 5px rgba(0, 0, 0, 0.25);
     --border-radius: 5px;
   }

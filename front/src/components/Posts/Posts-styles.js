@@ -157,7 +157,7 @@ const PostsStyled = styled.div`
       right: 1rem;
       border: none;
       padding: 0.4rem 0.5rem;
-      background: #bd5167;
+      background: var(--red);
       color: #fff;
       border-radius: 0.2rem;
       font-size: 0.65rem;
@@ -350,7 +350,7 @@ const PostsStyled = styled.div`
       right: 1rem;
       border: none;
       padding: 0.4rem 0.5rem;
-      background: #bd5167;
+      background: var(--red);
       color: #fff;
       border-radius: 0.2rem;
       font-size: 0.65rem;

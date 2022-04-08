@@ -64,7 +64,6 @@ const UsersStyled = styled.div`
     }
     &__name {
       font-size: 1.2rem;
-      margin-bottom: 0.5rem;
     }
     &__role {
       text-transform: uppercase;
@@ -75,6 +74,9 @@ const UsersStyled = styled.div`
       width: 3.1rem;
       padding: 0.1rem 0.3rem;
       text-align: center;
+    }
+    &__date {
+      font-size: 0.8rem;
     }
     &__email {
       font-size: 0.9rem;

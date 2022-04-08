@@ -22,6 +22,7 @@ exports.getAllUsers = async (req, res) => {
       u.email,
       u.motto,
       u.picture,
+      to_char(u.register_date, 'MM.DD.yyyy') AS register_date,
       r."name" AS "role",
       u.deleted,
       COUNT(p.id) FILTER (

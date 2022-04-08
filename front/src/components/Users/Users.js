@@ -50,6 +50,9 @@ const Users = () => {
                       className="user-card__role"
                       style={{ background: user.role === 'admin' ? '#dfaaa4' : '#73d988' }}
                     >{user.role}</div>
+                    <div className="user-card__date">
+                      {user.register_date}
+                    </div>
                   </div>
                 </div>
                 <div className="user-card__email">{user.email}</div>

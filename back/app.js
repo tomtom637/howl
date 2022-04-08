@@ -12,10 +12,14 @@ const postRoutes = require('./routes/post');
 const authRoutes = require('./routes/auth');
 
 // HIDES CERTAIN INFORMATIONS IN THE RESPONSE HEADERS
-app.use(helmet());
+// WE DISABLE CSP SO EXPRESS CAN SERVE OUR BUILT REACT APP
+app.use(helmet({
+  contentSecurityPolicy: false
+}));
 
 // CORS
-const whitelist = ['http://localhost:3001', 'http://127.0.0.1:3001', 'http://localhost:3002', 'http://127.0.0.1:3002'];
+const whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001'];
+
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -34,14 +38,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 // PUBLIC IMG PATH
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-//ROUTES
+// ROUTES
 app.use('/api/categories', categoryRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/auth', authRoutes);
 
-app.use((req, res) => {
-  res.status(404).json({ message: 'it seems you hit a wrong path...' });
-});
+// app.use(express.static(path.join(__dirname, 'build')));
+// app.get('/*', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 
 app.listen(port, () => console.log(`server started on port ${port}`));

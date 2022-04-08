@@ -227,11 +227,11 @@ const PostsStyled = styled.div`
       position: absolute;
       color: var(--secondary);
       font-size: 5rem;
-      top: 0;
-      left: 15%;
+      top: -37px;
+      left: 26%;
       width: 4rem;
       opacity: 0.15;
-      transform: translateX(-50%) rotate(-10deg) scale(1.2);
+      transform: translateX(-50%) rotate(5deg) scale(1.2);
     }
     &__toggle-new-post {
       grid-area: tog-new;

@@ -49,8 +49,9 @@ const FormStyled = styled.div`
     border: 1px solid var(--primary-light);
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    background: var(--primary);
+    background: var(--dark-grey);
     color: var(--primary-brightest);
+    font-weight: bold;
   }
   .error {
     color: var(--red);

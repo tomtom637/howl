@@ -99,6 +99,7 @@ const Posts = () => {
       </ScrollToTop>
       <CategorySelection />
       <button
+        aria-label="add a new post to this category"
         ref={newPostElement}
         tabIndex={2}
         className="toggle-new-post"
@@ -122,6 +123,17 @@ const Posts = () => {
         ref={newPostAnchor}
         className="toggle-new-post__anchor"
       ></div>
+      {!busy && posts
+        .filter(post => post.category_id === categories.find(category => category.active).id)
+        .length === 0 && (
+          <>
+            <p>There are no posts here yet... Add one by clicking the 
+              <span style={{fontSize: '1.2rem', padding: '0.5rem'}}>top left ⨁ sign</span>
+            </p>
+            <img style={{maxWidth: '350px', margin: '0 auto'}} src="https://c.tenor.com/mBJCnIrHef0AAAAi/fun-funny.gif" al="Carlton danse" />
+          </>
+        )
+      }
       {!busy && posts
         .filter(post => post.category_id === categories.find(category => category.active).id)
         .map((post, index) => (
@@ -211,6 +223,7 @@ const Post = (props) => {
         <div className='post__message'>{message}</div>
         {userInfos.nickname === user && (
           <button
+            aria-label="edit this post"
             className="post__edit"
             onClick={() => {
               setModalContent(
@@ -224,6 +237,7 @@ const Post = (props) => {
         )}
         {(userInfos.nickname === user || userInfos.role === 'admin') && (
           <button
+            aria-label="delete this post"
             className="post__delete"
             onClick={() => {
               setModalContent(() => <DeleteModal postId={id} postType="post" />);
@@ -253,6 +267,7 @@ const Post = (props) => {
           toggleShowReplies ? (
             <>
               <button
+                aria-label="show or hide the post replies"
                 tabIndex={3 + props.index}
                 className="post__show-replies"
                 onClick={() => {
@@ -276,6 +291,7 @@ const Post = (props) => {
                     <div className='reply__message'>{message}</div>
                     {userInfos.nickname === user && (
                       <button
+                        aria-label="edit this reply"
                         className="post__edit"
                         onClick={() => {
                           setModalContent(
@@ -291,6 +307,7 @@ const Post = (props) => {
                     )}
                     {(userInfos.nickname === user || userInfos.role === 'admin') && (
                       <button
+                        aria-label="delete this reply"
                         className="reply__delete"
                         onClick={() => {
                           setModalContent(() => <DeleteModal postId={id} postType="reply" />);
@@ -322,6 +339,7 @@ const Post = (props) => {
             </>
           ) : (
             <button
+              aria-label="show or hide the post replies"
               tabIndex={3 + props.index}
               className="post__show-replies"
               onClick={() => {
@@ -331,11 +349,12 @@ const Post = (props) => {
               }}
             >
               replies &#10095;&#10095;
-              {unreadAlert && <span className="post__unread"> new replies</span>}
+              {unreadAlert && <span className="post__unread">new</span>}
             </button>
           )
         )}
         <button
+          aria-label="add a reply"
           ref={addPostRef}
           tabIndex={3 + props.index}
           className="post__toggle-new-post"
@@ -356,7 +375,7 @@ const Post = (props) => {
             setDisplayModal(true);
           }}
         >
-          <i aria-controls='add a reply' className='icon-plus'></i>
+          <i className='icon-plus'></i>
         </button>
       </div>
     </div>

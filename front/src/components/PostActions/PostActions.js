@@ -10,6 +10,7 @@ export const AddPost = (props) => {
   const [categories, setCategories] = useAtom(categoryAtom);
   const [token, setToken] = useAtom(tokenAtom);
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
+  const [emptyMessageError, setEmptyMessageError] = useState(false);
   const textArea = useRef(null);
   const searchInput = useRef(null);
   const [post, setPost] = useState({
@@ -36,9 +37,11 @@ export const AddPost = (props) => {
 
   const handlePostSubmit = e => {
     e.preventDefault();
-    if (post.content.trim() === '' && !post.gifAddress) {
+    if (post.content.trim() === '') {
+      setEmptyMessageError(true);
       return;
     }
+    setEmptyMessageError(false);
     addPost(post, setPost, token, setNewPost);
   };
 
@@ -123,6 +126,11 @@ export const AddPost = (props) => {
   return (
     <PostActionsStyled>
       <form className="add-post" onSubmit={e => handlePostSubmit(e)}>
+        {emptyMessageError && (
+          <div className="add-post__error">
+            You need to provide a message to post.
+          </div>
+        )}
         <textarea
           tabIndex={1}
           className="add-post__textarea"
@@ -201,6 +209,7 @@ export const EditPost = props => {
   const [categories, setCategories] = useAtom(categoryAtom);
   const [token, setToken] = useAtom(tokenAtom);
   const [displayModal, setDisplayModal] = useAtom(displayModalAtom);
+  const [emptyMessageError, setEmptyMessageError] = useState(false);
   const textArea = useRef(null);
   const searchInput = useRef(null);
   const [post, setPost] = useState({
@@ -227,7 +236,11 @@ export const EditPost = props => {
 
   const handlePostSubmit = e => {
     e.preventDefault();
-    if (post.content.trim() === '' && !post.gifAddress) return;
+    if (post.content.trim() === '') {
+      setEmptyMessageError(true);
+      return;
+    };
+    setEmptyMessageError(false);
     updatePost(posts, setPosts, post, token);
     setDisplayModal(false);
   };
@@ -264,6 +277,11 @@ export const EditPost = props => {
   return (
     <PostActionsStyled>
       <form className="add-post" onSubmit={e => handlePostSubmit(e)}>
+        {emptyMessageError && (
+          <div className="add-post__error">
+            You need to provide a message to post.
+          </div>
+        )}
         <textarea
           tabIndex={1}
           className="add-post__textarea"

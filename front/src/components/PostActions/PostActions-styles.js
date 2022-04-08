@@ -6,7 +6,10 @@ const PostActionsStyled = styled.div`
   flex-direction: column;
 
   .add-post {
-    
+    &__error {
+      color: #bd5167;
+      margin-bottom: 0.5rem;
+    }
     &__textarea {
       width: 100%;
       padding: 1rem;

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { size } from '../../device';
 import {
   categoryAtom,
   tokenAtom,
@@ -10,10 +9,10 @@ import {
   modalContentAtom,
   displayModalAtom
 } from "../../store";
-import { getPosts, markPostAsRead, getPostsFromCategory } from '../../api-calls';
+import { markPostAsRead, getPostsFromCategory } from '../../api-calls';
 import PostsStyled from "./Posts-styles";
 import CategorySelection from "../CategorySelection/CategorySelection";
-import ScrollButton from '../ScrollButton/ScrollButton';
+import ScrollToTop from 'react-scroll-up';
 
 import defaultPicture from '../../images/avatar_default.jpg';
 import defaultCategoryPicture from '../../images/category_default.jpeg';
@@ -86,7 +85,18 @@ const Posts = () => {
 
   return (
     <PostsStyled ref={postsContainer} className="posts-container">
-      <ScrollButton newPostAnchor={newPostAnchor} />
+      <ScrollToTop
+        showUnder={160}
+        style={{
+          color: '#fff',
+          zIndex: '30',
+          background: '#555',
+          borderRadius: '50px',
+          padding: '10px',
+        }}
+      >
+        TOP
+      </ScrollToTop>
       <CategorySelection />
       <button
         ref={newPostElement}

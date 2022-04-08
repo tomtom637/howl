@@ -41,8 +41,8 @@ export const AddPost = (props) => {
       setEmptyMessageError(true);
       return;
     }
-    setEmptyMessageError(false);
     addPost(post, setPost, token, setNewPost);
+    setEmptyMessageError(false);
   };
 
   const handleGifSearch = e => {
@@ -111,6 +111,7 @@ export const AddPost = (props) => {
       setDisplayModal(false);
       setToggleNewPost(false);
     }
+    setDisplayModal(false);
   }, [newPost]);
 
   // upon mounting, we set the textarea to the height of the text

@@ -17,6 +17,8 @@ const PostActionsStyled = styled.div`
       border: none;
       font-family: 'Roboto', sans-serif;
       background: #fff;
+      max-height: 15rem;
+      overflow-y: scroll;
 
       &:focus {
         outline: none;

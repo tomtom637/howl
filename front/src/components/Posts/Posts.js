@@ -35,8 +35,8 @@ const Posts = () => {
   const tabIndex = -1;
 
   useEffect(() => {
+    const activeCategory = categories.find(category => category.active);
     if (!busy && posts.length === 0) {
-      const activeCategory = categories.find(category => category.active);
       if (activeCategory.morePostsToFetch === true) {
         getPostsFromCategory(setPosts, categories, setCategories, token);
       }
@@ -133,20 +133,18 @@ const Posts = () => {
             key={post.id}
           />
         ))}
+      {!busy 
+        && !categories.find(category => category.active).morePostsToFetch
+        && categories.find(category => category.active).fetchOffset === 0
+        && (
+          <>
+            <p>There are no posts here yet... Add one by clicking the
+              <span style={{ fontSize: '1.2rem', padding: '0.5rem' }}>top left ⨁ sign</span>
+            </p>
+            <img style={{ maxWidth: '350px', margin: '0 auto' }} src="https://c.tenor.com/mBJCnIrHef0AAAAi/fun-funny.gif" al="Carlton danse" />
+          </>
+        )}
       {busy && <p>LOADING...</p>}
-      {!busy && posts
-        .filter(post => post.category_id === categories.find(category => category.active).id)
-        .length === 0 && setTimeout(() => {
-          return (
-            <>
-              <p>There are no posts here yet... Add one by clicking the
-                <span style={{ fontSize: '1.2rem', padding: '0.5rem' }}>top left ⨁ sign</span>
-              </p>
-              <img style={{ maxWidth: '350px', margin: '0 auto' }} src="https://c.tenor.com/mBJCnIrHef0AAAAi/fun-funny.gif" al="Carlton danse" />
-            </>
-          );
-        }, 200)
-      }
       <div ref={bottomOfList} className="bottom-of-list"></div>
     </PostsStyled>
   );

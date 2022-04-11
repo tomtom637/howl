@@ -8,7 +8,9 @@ const errorMessages = {
   EmailNotFound: 'Email not found',
   WrongPassword: 'Wrong Password',
   EmailAlreadyExists: 'Email already exists',
-  NicknameAlreadyExists: 'Nickname already exists'
+  NicknameAlreadyExists: 'Nickname already exists',
+  passwordToShort: 'At least 8 char long with number, lower & uppercase',
+  notAnEmail: 'This doesn\'t look like an email',
 };
 
 // GET ALL THE USERS AND THEIR STATS
@@ -106,6 +108,12 @@ exports.signup = async (req, res) => {
         errors.push({ type: 'nickname', errorMessage: errorMessages.NicknameAlreadyExists });
       }
     });
+    if (req.body.password.length < 8 || !/\d/.test(req.body.password) || !/[A-Z]/.test(req.body.password) || !/[a-z]/.test(req.body.password)) {
+      errors.push({ type: 'password', errorMessage: errorMessages.passwordToShort });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.push({ type: 'email', errorMessage: errorMessages.notAnEmail });
+    }
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }

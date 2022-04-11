@@ -139,7 +139,7 @@ const Posts = () => {
         && (
           <>
             <p>There are no posts here yet... Add one by clicking the
-              <span style={{ fontSize: '1.2rem', padding: '0.5rem' }}>top left ⨁ sign</span>
+              <span style={{ fontSize: '1.2rem', padding: '0.5rem', color: 'var(--secondary' }}>top left ⨁ sign</span>
             </p>
             <img style={{ maxWidth: '350px', margin: '0 auto' }} src="https://c.tenor.com/mBJCnIrHef0AAAAi/fun-funny.gif" al="Carlton danse" />
           </>

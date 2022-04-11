@@ -38,7 +38,7 @@ and visit the following URL in our favourite web browser:
 
 ## Usage
 
-In this project, users can create accounts, post original messages or replies, edit or delete their own messages using [the Tenor gif Api](https://tenor.com/).
+In this project, users can create accounts, post original messages or replies, edit or delete their own messages and add animated gifs using [the Tenor gif Api](https://tenor.com/).
 
 However, we might want to try this application as an admin, as it will allow the deletion of any post as well as the access to a users page, to get some stats on the users as well as permiting their *"soft deletion"*.
 

@@ -42,6 +42,8 @@ In this project, users can create accounts, post original messages or replies, e
 
 However, we might want to try this application as an admin, as it will allow the deletion of any post as well as the access to a users page, to get some stats on the users as well as permiting their *"soft deletion"*.
 
+An admin can also edit the categories.
+
 On the login page, enter the following credentials
 
 ```

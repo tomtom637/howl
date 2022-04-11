@@ -2,11 +2,11 @@
 
 This is the last project in the **Openclassrooms** web developer path.
 
-## Instructions on building the project
+## Installation
 
 This project uses a **Postgresql** database and a **node express** server that will serve the api and a built **react app**.
 
-A postgresql client and nodejs need to be installed first of all.
+A postgresql client and nodejs need to be installed.
 
 Then we need to install the required packages to have our server running:
 
@@ -24,7 +24,7 @@ It will generate a database called Howl with user postgres and password howl on 
 
 The .env file is supplied in the repository to make things easier.
 
-That's about it, all that remains to be done now is to start the web server:
+That's about it, all that remains to do is start the web server:
 
 ```
 npm run startback
@@ -44,7 +44,7 @@ However, we might want to try this application as an admin, as it will allow the
 
 An admin can also edit the categories.
 
-On the login page, enter the following credentials
+On the login page, let's enter the following credentials
 
 ```
 email:    admin@admin.com

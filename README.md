@@ -8,7 +8,9 @@ This project uses a **Postgresql** database and a **node express** server that w
 
 A postgresql client and nodejs need to be installed.
 
-Then we need to install the required packages to have our server running:
+Then we need to install the required packages to have our server running.
+
+From the root directory (only) we need to execute this command
 
 ```
 npm i

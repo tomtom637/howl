@@ -1,32 +1,71 @@
 const pgtools = require('pgtools');
 const Pool = require('pg').Pool;
 const fs = require('fs');
+const path = require('path');
+const { exec } = require('child_process');
 
-/* 
-TO EDIT IN THE DUMP FILE
-  CREATE SCHEMA IF NOT EXISTS public;
-  CREATE EXTENSION citext WITH SCHEMA public;
-*/
+function execShellCommand(command) {
+  return new Promise((resolve, reject) => {
+    exec(command, (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(stdout);
+      resolve();
+    });
+  });
+}
 
-const sql = fs.readFileSync(__dirname + '/dump-howl.sql').toString();
+function makeUser() {
+  return new Promise((resolve, reject) => {
+    resolve(
+      execShellCommand(`sudo -u postgres createuser -s -i -d -r -l -w howl`)
+        .then(() => execShellCommand(`sudo -u postgres psql -c "ALTER ROLE howl WITH PASSWORD 'howl';"`))
+        .then(() => execShellCommand(`sudo -u postgres psql -c "ALTER user howl createdb;"`))
+        .then(() => execShellCommand(`sudo -u postgres psql -c "ALTER user howl superuser;"`))
+    );
+  });
+}
+
+const sql = fs.readFileSync(path.join(__dirname, '/dump-howl.sql')).toString();
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT
+  user: 'howl',
+  host: 'localhost',
+  database: 'howl',
+  password: 'howl',
+  port: 5432
 });
+
+function dropIfExists() {
+  return new Promise((resolve, reject) => {
+    resolve(
+      pgtools.dropdb({
+        user: 'howl',
+        host: 'localhost',
+        password: 'howl',
+        port: 5432
+      }, 'howl', (err, res) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log('Database Howl successfully deleted');
+      })
+    );
+  });
+}
 
 function createDb() {
   return new Promise((resolve, reject) => {
     resolve(
       pgtools.createdb({
-        user: process.env.DB_USER,
-        host: process.env.DB_HOST,
-        password: process.env.DB_PASSWORD,
-        port: process.env.DB_PORT
-      }, /*process.env.DB_DATABASE*/ 'howl-test', (err, res) => {
+        user: 'howl',
+        host: 'localhost',
+        password: 'howl',
+        port: 5432
+      }, 'howl', (err, res) => {
         if (err) {
           console.error(err);
           return;
@@ -41,7 +80,6 @@ async function setupDb() {
   try {
     await pool.query(sql);
     console.log('data successfully created');
-    pool.end();
   } catch (err) {
     console.log('error: ' + err.message);
   }
@@ -49,10 +87,19 @@ async function setupDb() {
 
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
-    console.log('creating db: ' + err.message);
-    createDb().then(() => setupDb());
+    console.log('the database doesn\'t exist, creating now');
+    makeUser()
+      .then(() => createDb())
+      .then(() => setupDb())
+      .then(() => console.log('database howl successfully loaded'))
+      .then(() => pool.end());
   } else {
-    console.log('database howl successfully loaded');
-    pool.end();
+    console.log('the database already exists, trying to delete it now');
+    dropIfExists()
+      .then(() => createDb())
+      .then(() => setupDb())
+      .then(() => console.log('database howl successfully loaded'))
+      .then(() => pool.end())
+      .catch(err => console.log(err))
   }
 });

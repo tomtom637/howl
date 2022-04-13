@@ -13,7 +13,7 @@ exports.getAllCategories = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // GET THE 5 MOST RECENT POSTS FROM OFFSET
 // ASSOCIATED WITH A CATEGORY
@@ -52,7 +52,7 @@ exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
 
     const fivePostsIds = fivePosts.rows.map(post => post.id);
     result = fivePosts.rows;
-    
+
     const repliesPromises = fivePostsIds.map(async (post, i) => {
       const replies = await pool.query(/*sql*/`
 
@@ -85,7 +85,7 @@ exports.getFivePostsAndTheirRepliesFromCategory = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error });
   }
-}
+};
 
 // REGISTER A NEW CATEGORY
 exports.addCategory = async (req, res) => {
@@ -99,41 +99,45 @@ exports.addCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // UPDATE A CATEGORY NAME
 exports.updateCategoryName = async (req, res) => {
   const { categoryId } = req.params;
   const { name } = req.body;
   const cleanedName = name.replace(/'/g, "''");
-  try {
-    await pool.query(/*sql*/`
-      UPDATE categories
-      SET "name" = '${cleanedName}'
-      WHERE id = ${categoryId};
-    `);
-    res.status(200).json({ message: 'Category name updated successfully' });
-  } catch (error) {
-    res.status(500).json({ error });
+  if (cleanedName) {
+    try {
+      await pool.query(/*sql*/`
+        UPDATE categories
+        SET "name" = '${cleanedName}'
+        WHERE id = ${categoryId};
+      `);
+      res.status(200).json({ message: 'Category name updated successfully' });
+    } catch (error) {
+      res.status(500).json({ error });
+    }
   }
-}
+};
 
 // UPDATE A CATEGORY DESCRIPTION
 exports.updateCategoryDescription = async (req, res) => {
   const { categoryId } = req.params;
   const { description } = req.body;
   const cleanedDescription = description.replace(/'/g, "''");
-  try {
-    await pool.query(/*sql*/`
-      UPDATE categories
-      SET "description" = '${cleanedDescription}'
-      WHERE id = ${categoryId};
-    `);
-    res.status(200).json({ message: 'Category description updated successfully' });
-  } catch (error) {
-    res.status(500).json({ error });
+  if (cleanedDescription) {
+    try {
+      await pool.query(/*sql*/`
+        UPDATE categories
+        SET "description" = '${cleanedDescription}'
+        WHERE id = ${categoryId};
+      `);
+      res.status(200).json({ message: 'Category description updated successfully' });
+    } catch (error) {
+      res.status(500).json({ error });
+    }
   }
-}
+};
 
 // UPDATE A CATEGORY'S PICTURE
 exports.updateCategoryPicture = async (req, res) => {
@@ -163,7 +167,7 @@ exports.updateCategoryPicture = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};
 
 // DELETE A CATEGORY, ALL ITS ASSOCIATED POSTS
 // AND READ_POSTS RECORDS ASSOCIATED WITH THEM
@@ -188,13 +192,13 @@ exports.deleteCategory = async (req, res) => {
         WHERE category_id = ${categoryId}
       );
     `);
-    for(p of [readPostsPromise]) { await p; }
+    for (p of [readPostsPromise]) { await p; }
     // then we delete the posts
     const postsPromise = await pool.query(/*sql*/`
       DELETE FROM posts
       WHERE category_id = ${categoryId};
     `);
-    for(p of [postsPromise]) { await p; }
+    for (p of [postsPromise]) { await p; }
     // then we delete the category
     await pool.query(/*sql*/`
       DELETE FROM categories
@@ -204,4 +208,4 @@ exports.deleteCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}
+};

@@ -31,7 +31,7 @@ function createDb() {
           console.error(err);
           return;
         }
-        console.log('Database Howl-Test successfully created');
+        console.log('Database Howl successfully created');
       })
     );
   });
@@ -52,7 +52,7 @@ pool.query('SELECT NOW()', (err, res) => {
     console.log('creating db: ' + err.message);
     createDb().then(() => setupDb());
   } else {
-    console.log('database howl-test successfully loaded');
+    console.log('database howl successfully loaded');
     pool.end();
   }
 });

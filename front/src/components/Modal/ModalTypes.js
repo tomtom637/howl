@@ -154,6 +154,8 @@ export const CategoryModal = ({ categoryIndex }) => {
   const [descriptionChanged, setDescriptionChanged] = useState(false);
   const [currentName, setCurrentName] = useState(categories[categoryIndex].name);
   const [currentDescription, setCurrentDescription] = useState(categories[categoryIndex].description);
+  const [emptyNameError, setEmptyNameError] = useState(false);
+  const [emptyDescriptionError, setEmptyDescriptionError] = useState(false);
   const preview = useRef(null);
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -173,14 +175,24 @@ export const CategoryModal = ({ categoryIndex }) => {
 
   const handleNameSubmit = e => {
     e.preventDefault();
+    setEmptyNameError(false);
     setNameChanged(false);
-    updateCategoryName(categories, setCategories, currentName, categoryIndex, token);
+    if (currentName !== categories[categoryIndex].name && currentName.trim() !== '') {
+      updateCategoryName(categories, setCategories, currentName, categoryIndex, token);
+    } else if (currentName.trim() === '') {
+      setEmptyNameError(true);
+    }
   };
 
   const handleDescriptionSubmit = e => {
     e.preventDefault();
+    setEmptyDescriptionError(false);
     setDescriptionChanged(false);
-    updateCategoryDescription(categories, setCategories, currentDescription, categoryIndex, token);
+    if (currentDescription !== categories[categoryIndex].description && currentDescription.trim() !== '') {
+      updateCategoryDescription(categories, setCategories, currentDescription, categoryIndex, token);
+    } else if (currentDescription.trim() === '') {
+      setEmptyDescriptionError(true);
+    }
   };
 
   const handlePictureSubmit = e => {
@@ -213,6 +225,7 @@ export const CategoryModal = ({ categoryIndex }) => {
       <ul className="category-modal__list">
         <li className="category-modal__item">
           <form onSubmit={e => handleNameSubmit(e)}>
+            {emptyNameError && <p className="category-modal__error">Please enter a name</p>}
             <textarea
               ref={nameRef}
               onFocus={() => handleTextAreaSize(nameRef.current)}
@@ -230,6 +243,7 @@ export const CategoryModal = ({ categoryIndex }) => {
           </form>
         </li>
         <li className="category-modal__item">
+          {emptyDescriptionError && <p className="category-modal__error">Please enter a description</p>}
           <form onSubmit={e => handleDescriptionSubmit(e)}>
             <textarea
               ref={descriptionRef}

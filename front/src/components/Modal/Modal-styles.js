@@ -163,6 +163,10 @@ const ModalStyled = styled.div`
       text-align: center;
       margin-bottom: 1rem;
     }
+    &__error {
+      font-size: 0.8rem;
+      color: var(--red);
+    }
 
   }
 

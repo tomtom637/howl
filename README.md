@@ -34,7 +34,7 @@ We can then visit [localhost:3000](http://localhost:3000) to see the project run
 
 This time, we do not need to have postgresql nor Nodejs installed, for they are already present in the Docker container.
 
-At the root directory execute this command (Docker must be running):
+At the root directory, we execute this command.
 
 ```
 docker-compose up

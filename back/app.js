@@ -18,7 +18,7 @@ app.use(helmet({
 }));
 
 // CORS
-const whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001'];
+const whitelist = ['http://localhost:3000', 'http://localhost:3001'];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -29,7 +29,7 @@ const corsOptions = {
     }
   }
 }
-app.use(cors(/*corsOptions*/));
+app.use(cors(corsOptions));
 
 // BODY PARSER
 app.use(bodyParser.json());

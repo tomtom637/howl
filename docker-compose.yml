@@ -1,0 +1,41 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./init-db/dump-howl.sql:/docker-entrypoint-initdb.d/dump-howl.sql
+    environment:
+      POSTGRES_PASSWORD: howl
+      POSTGRES_DB: howl
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    user: node
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_USER=postgres
+      - DB_HOST=db
+      - DB_DATABASE=howl
+      - DB_PASSWORD=howl
+      - DB_PORT=5432
+      - JWT_SECRET=howl
+    ports:
+      - 3000:3000
+    command: npm run startback
+    # command: tail -f /dev/null
+    depends_on:
+      - db

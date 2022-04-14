@@ -54,7 +54,7 @@ Password: howl
 Database: howl
 ```
 
-If we ever wanted to use our own SQL client, we could do that using the same values and host **localhost**.
+If we ever wanted to use our own SQL client, we could do that using the same values with host **localhost**.
 
 ## Usage
 

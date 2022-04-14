@@ -6,37 +6,41 @@ This is the last project in the **Openclassrooms** web developer path.
 
 This project uses a **Postgresql** database and a **node express** server that will serve the api and a built **react app**.
 
-A postgresql client and nodejs need to be installed.
+There are two ways of having this project running:
+1. manually
+2. using Docker
 
-Then we need to install the required packages to have our server running.
+### 1. Manually:
 
-From the root directory (only) we need to execute this command
+Installing the project manually requires to have installed the postgresql database as well as Nodejs.
+
+A new database named Howl then needs to be created. The database dump file present in /init-db/dump-howl.sql needs to be fed to it to create our tables and recover our data.
+
+Depending on the database configuration, user, password etc... the .env file present in the root folder needs to be updated to take the correct informations into account.
+
+Finally, those two commands will need to be executed at the root folder:
 
 ```
 npm i
 ```
-
-the next step is to initialize the database using the following command from the root directory:
-
-```
-node init-db/initDb
-```
-
-It will generate a database called Howl with user postgres and password howl on port 5432.
-
-The .env file is supplied in the repository to make things easier.
-
-That's about it, all that remains to do is start the web server:
-
+and
 ```
 npm run startback
 ```
 
-and visit the following URL in our favourite web browser:
+We can then visit [localhost:3000](http://localhost:3000) to see the project running
 
-[localhost:3000](http://localhost:3000)
+### 2. Using Docker
 
-*The used web browser being our favourite is optional :)*
+This time, we do not need to have postgresql nor Nodejs installed, for they are already present in the Docker container.
+
+At the root directory execute this command:
+
+```
+docker-compose up
+```
+
+We can then visit [localhost:3000](http://localhost:3000) to see the project running
 
 ## Usage
 

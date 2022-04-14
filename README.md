@@ -40,7 +40,21 @@ At the root directory execute this command:
 docker-compose up
 ```
 
-We can then visit [localhost:3000](http://localhost:3000) to see the project running
+We can then visit [localhost:3000](http://localhost:3000) to see the project running.
+
+Additionally, we can take a look at the database going to [localhost:8080](http://localhost:8080).
+
+To connect to Adminer:
+
+```
+system:   postgresSQL
+Server:   db
+Username: postgres
+Password: howl
+Database: howl
+```
+
+If we ever wanted to use our own SQL client, we could do that using the same values and host **localhost**.
 
 ## Usage
 

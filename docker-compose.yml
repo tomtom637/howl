@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    user: node
+    user: root
     working_dir: /home/node/app
     environment:
       - NODE_ENV=production
